@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { collection, getDocs, orderBy, query, deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../lib/firebase";
-import { Lock, Unlock, Search, Calendar, User, Phone, Mail, MessageSquare, Loader2, Trash2 } from "lucide-react";
+import { Lock, Unlock, Search, Calendar, User, Phone, Mail, MessageSquare, Loader2, Trash2, Plus, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
 export function Admin() {
@@ -12,7 +12,8 @@ export function Admin() {
   const [isLoading, setIsLoading] = useState(false);
   const [fetchError, setFetchError] = useState("");
   
-  const [notificationEmails, setNotificationEmails] = useState("");
+  const [emails, setEmails] = useState<string[]>([]);
+  const [newEmail, setNewEmail] = useState("");
   const [googleSheetsUrl, setGoogleSheetsUrl] = useState("");
   const [isSavingEmails, setIsSavingEmails] = useState(false);
 
@@ -23,7 +24,7 @@ export function Admin() {
       if (docSnap.exists()) {
         const data = docSnap.data();
         if (data.emails && Array.isArray(data.emails)) {
-          setNotificationEmails(data.emails.join(", "));
+          setEmails(data.emails);
         }
         if (data.googleSheetsUrl) {
           setGoogleSheetsUrl(data.googleSheetsUrl);
@@ -37,14 +38,9 @@ export function Admin() {
   const handleSaveEmails = async () => {
     setIsSavingEmails(true);
     try {
-      const emailsArray = notificationEmails
-        .split(",")
-        .map(email => email.trim())
-        .filter(email => email.length > 0 && email.includes("@"));
-      
       const docRef = doc(db, "contact_inquiries", "_config_notifications");
       await setDoc(docRef, { 
-        emails: emailsArray,
+        emails: emails,
         googleSheetsUrl: googleSheetsUrl.trim()
       }, { merge: true });
       alert("Settings saved successfully!");
@@ -54,6 +50,26 @@ export function Admin() {
     } finally {
       setIsSavingEmails(false);
     }
+  };
+
+  const handleAddEmail = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const emailToAdd = newEmail.trim().toLowerCase();
+    if (!emailToAdd) return;
+    if (!emailToAdd.includes("@") || !emailToAdd.includes(".")) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+    if (emails.includes(emailToAdd)) {
+      alert("This email is already in the list.");
+      return;
+    }
+    setEmails(prev => [...prev, emailToAdd]);
+    setNewEmail("");
+  };
+
+  const handleRemoveEmail = (emailToRemove: string) => {
+    setEmails(prev => prev.filter(email => email !== emailToRemove));
   };
 
   const handleLogin = (e: React.FormEvent) => {
@@ -246,21 +262,62 @@ export function Admin() {
             Configure email alerts and Google Sheets integration settings. Note: If you want sheet rows to delete when deleted here, add your Apps Script Web App URL below.
           </p>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-            <div className="space-y-2">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-6">
+            <div className="space-y-3">
               <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 block">
-                📬 Email Recipients (comma separated)
+                📬 Email Recipients
               </label>
-              <input
-                type="text"
-                placeholder="e.g. your-email@gmail.com, partner@gmail.com"
-                value={notificationEmails}
-                onChange={(e) => setNotificationEmails(e.target.value)}
-                className="w-full bg-zinc-950/60 border border-zinc-800 focus:border-brand/40 text-white rounded-xl px-4 py-3 text-xs focus:outline-none"
-              />
+              
+              {/* Chips container */}
+              <div className="flex flex-wrap gap-2 min-h-[50px] bg-zinc-950/60 border border-zinc-800/80 rounded-2xl p-3.5 items-center">
+                {emails.length === 0 ? (
+                  <span className="text-zinc-500 text-xs px-1">No recipients configured. Add an email below.</span>
+                ) : (
+                  emails.map(email => (
+                    <div 
+                      key={email}
+                      className="flex items-center gap-2 bg-zinc-900 border border-zinc-850 hover:border-red-500/30 hover:bg-red-500/5 px-3 py-1.5 rounded-full text-xs text-zinc-300 transition-all select-none"
+                    >
+                      <span>{email}</span>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveEmail(email)}
+                        className="text-zinc-500 hover:text-red-400 hover:bg-zinc-850 p-0.5 rounded-full transition-colors cursor-pointer animate-fade-in"
+                        title={`Remove ${email}`}
+                      >
+                        <X size={10} />
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              {/* Add recipient row */}
+              <div className="flex gap-2">
+                <input
+                  type="email"
+                  placeholder="e.g. partner@gmail.com"
+                  value={newEmail}
+                  onChange={(e) => setNewEmail(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      handleAddEmail();
+                    }
+                  }}
+                  className="flex-1 bg-zinc-950/60 border border-zinc-800 focus:border-brand/40 text-white rounded-xl px-4 py-3 text-xs focus:outline-none"
+                />
+                <button
+                  type="button"
+                  onClick={() => handleAddEmail()}
+                  className="bg-zinc-900 border border-zinc-800 hover:border-zinc-700 hover:bg-zinc-850 text-white px-5 py-3 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
+                >
+                  <Plus size={14} /> Add
+                </button>
+              </div>
             </div>
             
-            <div className="space-y-2">
+            <div className="space-y-3">
               <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 block">
                 🟢 Google Sheets Web App URL (Optional)
               </label>
@@ -271,6 +328,9 @@ export function Admin() {
                 onChange={(e) => setGoogleSheetsUrl(e.target.value)}
                 className="w-full bg-zinc-950/60 border border-zinc-800 focus:border-brand/40 text-white rounded-xl px-4 py-3 text-xs focus:outline-none"
               />
+              <p className="text-[10px] text-zinc-500 leading-normal">
+                To sync deletions with your Google Sheet, paste your Web App URL. Follow the guide in <code className="text-zinc-400 font-mono text-[9px]">google_sheets_sync_guide.md</code> in your project repository to set this up.
+              </p>
             </div>
           </div>
 
