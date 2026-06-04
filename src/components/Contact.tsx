@@ -48,29 +48,27 @@ export function Contact() {
         createdAt: serverTimestamp()
       });
       
-      // 2. Post to Google Sheets webhook if configured
-      const sheetsWebhookUrl = import.meta.env.VITE_GOOGLE_SHEETS_WEBHOOK_URL;
-      if (sheetsWebhookUrl) {
-        try {
-          await fetch(sheetsWebhookUrl, {
-            method: "POST",
-            mode: "no-cors",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              name: formData.name,
-              email: formData.email,
-              phone: formData.phone,
-              country: formData.country,
-              service: formData.service,
-              message: formData.message,
-              submittedAt: new Date().toLocaleString()
-            })
-          });
-        } catch (sheetsErr) {
-          console.error("Failed to sync to Google Sheets:", sheetsErr);
-        }
+      // 2. Direct Sync to user's Google Sheet (via Google Form submission)
+      const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSckKk0DgA_zT1eerWoDg8dBPrmGHTcQeE8z8j06TuEcfOCIbg/formResponse";
+      const formBody = new URLSearchParams();
+      formBody.append("entry.1050828459", formData.name);
+      formBody.append("entry.829173877", formData.email);
+      formBody.append("entry.1621150490", formData.phone);
+      formBody.append("entry.586442386", formData.country);
+      formBody.append("entry.1882487484", formData.service);
+      formBody.append("entry.295901912", formData.message);
+
+      try {
+        await fetch(formUrl, {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: formBody.toString()
+        });
+      } catch (sheetsErr) {
+        console.error("Failed to sync to Google Sheets:", sheetsErr);
       }
       
       setStatus("success");
