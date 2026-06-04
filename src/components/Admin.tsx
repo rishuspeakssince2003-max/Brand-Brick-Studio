@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { collection, getDocs, orderBy, query, deleteDoc, doc } from "firebase/firestore";
+import { collection, getDocs, orderBy, query, deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../lib/firebase";
 import { Lock, Unlock, Search, Calendar, User, Phone, Mail, MessageSquare, Loader2, Trash2 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
@@ -11,12 +11,50 @@ export function Admin() {
   const [inquiries, setInquiries] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [fetchError, setFetchError] = useState("");
+  
+  const [notificationEmails, setNotificationEmails] = useState("");
+  const [isSavingEmails, setIsSavingEmails] = useState(false);
+
+  const fetchNotificationEmails = async () => {
+    try {
+      const docRef = doc(db, "admin_config", "notifications");
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        if (data.emails && Array.isArray(data.emails)) {
+          setNotificationEmails(data.emails.join(", "));
+        }
+      }
+    } catch (err) {
+      console.error("Error fetching notification emails:", err);
+    }
+  };
+
+  const handleSaveEmails = async () => {
+    setIsSavingEmails(true);
+    try {
+      const emailsArray = notificationEmails
+        .split(",")
+        .map(email => email.trim())
+        .filter(email => email.length > 0 && email.includes("@"));
+      
+      const docRef = doc(db, "admin_config", "notifications");
+      await setDoc(docRef, { emails: emailsArray });
+      alert("Notification settings saved successfully!");
+    } catch (err) {
+      console.error("Error saving notification emails:", err);
+      alert("Failed to save notification settings.");
+    } finally {
+      setIsSavingEmails(false);
+    }
+  };
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (passcode === "396230") {
       setIsAuthenticated(true);
       fetchInquiries();
+      fetchNotificationEmails();
     } else {
       setIsError(true);
       setTimeout(() => setIsError(false), 1000);
@@ -129,6 +167,34 @@ export function Admin() {
             Refresh Data
           </button>
         </header>
+
+        {/* Email Lead Notifications Settings */}
+        <div className="bg-zinc-900/30 border border-zinc-800/80 p-6 rounded-3xl mb-8 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div className="flex-1">
+            <h3 className="text-lg font-bold text-white mb-1 flex items-center gap-2">
+              📬 Email Lead Notifications
+            </h3>
+            <p className="text-xs text-zinc-400">
+              Enter emails (separated by commas) to receive instant push alerts on your phone when new leads arrive.
+            </p>
+          </div>
+          <div className="flex items-center gap-3 w-full lg:w-auto">
+            <input
+              type="text"
+              placeholder="e.g. your-email@gmail.com, partner@gmail.com"
+              value={notificationEmails}
+              onChange={(e) => setNotificationEmails(e.target.value)}
+              className="bg-zinc-950/60 border border-zinc-800 focus:border-brand/40 text-white rounded-xl px-4 py-3 text-xs w-full lg:w-80 focus:outline-none"
+            />
+            <button
+              onClick={handleSaveEmails}
+              disabled={isSavingEmails}
+              className="bg-brand hover:shadow-[0_0_15px_rgba(220,38,38,0.25)] text-white text-xs font-bold px-6 py-3 rounded-xl transition-all cursor-pointer shrink-0 disabled:opacity-50"
+            >
+              {isSavingEmails ? "Saving..." : "Save Settings"}
+            </button>
+          </div>
+        </div>
 
         {fetchError && (
           <div className="bg-red-500/10 border border-red-500/50 text-red-400 p-6 rounded-2xl mb-8 flex items-start gap-4">

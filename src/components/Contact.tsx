@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "motion/react";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, getDoc, doc } from "firebase/firestore";
 import { db } from "../lib/firebase";
 import { ArrowRight, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
 import { countries } from "../lib/countries";
@@ -69,6 +69,43 @@ export function Contact() {
         });
       } catch (sheetsErr) {
         console.error("Failed to sync to Google Sheets:", sheetsErr);
+      }
+
+      // 3. Send email notifications to configured recipients in Firestore
+      try {
+        const configRef = doc(db, "admin_config", "notifications");
+        const configSnap = await getDoc(configRef);
+        if (configSnap.exists()) {
+          const emailList = configSnap.data().emails || [];
+          if (Array.isArray(emailList) && emailList.length > 0) {
+            const emailPromises = emailList.map(async (email: string) => {
+              try {
+                await fetch(`https://formsubmit.co/ajax/${email}`, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                  },
+                  body: JSON.stringify({
+                    _subject: `🔥 New Lead Submission - ${formData.name}`,
+                    Name: formData.name,
+                    Email: formData.email,
+                    Phone: formData.phone,
+                    Country: formData.country,
+                    "Requested Service": formData.service,
+                    Message: formData.message,
+                    _template: "table"
+                  })
+                });
+              } catch (mailErr) {
+                console.error(`Failed to trigger email notification for ${email}:`, mailErr);
+              }
+            });
+            await Promise.all(emailPromises);
+          }
+        }
+      } catch (emailConfigErr) {
+        console.error("Failed to load email configurations:", emailConfigErr);
       }
       
       setStatus("success");
