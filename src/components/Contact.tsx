@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "motion/react";
-import { collection, addDoc, serverTimestamp, getDoc, doc } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../lib/firebase";
 import { ArrowRight, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
 import { countries } from "../lib/countries";
@@ -42,28 +42,35 @@ export function Contact() {
     setStatus("idle");
     
     try {
-      // 1. Add to Firestore
+      // 1. Save to Firebase Firestore database
       await addDoc(collection(db, "contact_inquiries"), {
         ...formData,
         createdAt: serverTimestamp()
       });
-
-      // 2. Fetch and trigger Google Sheets webhook if set
-      try {
-        const settingsSnap = await getDoc(doc(db, "settings", "google_sheets"));
-        if (settingsSnap.exists() && settingsSnap.data().webhookUrl) {
-          await fetch(settingsSnap.data().webhookUrl, {
+      
+      // 2. Post to Google Sheets webhook if configured
+      const sheetsWebhookUrl = import.meta.env.VITE_GOOGLE_SHEETS_WEBHOOK_URL;
+      if (sheetsWebhookUrl) {
+        try {
+          await fetch(sheetsWebhookUrl, {
             method: "POST",
             mode: "no-cors",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              "Content-Type": "application/json"
+            },
             body: JSON.stringify({
-              ...formData,
-              createdAt: new Date().toLocaleString()
+              name: formData.name,
+              email: formData.email,
+              phone: formData.phone,
+              country: formData.country,
+              service: formData.service,
+              message: formData.message,
+              submittedAt: new Date().toLocaleString()
             })
           });
+        } catch (sheetsErr) {
+          console.error("Failed to sync to Google Sheets:", sheetsErr);
         }
-      } catch (sheetError) {
-        console.error("Failed to sync to Google Sheets:", sheetError);
       }
       
       setStatus("success");
