@@ -119,10 +119,14 @@ function ServiceCard({ service, index }: { service: typeof services[number]; ind
           transition: { type: "spring", stiffness: 70, damping: 16 },
         },
       }}
+      whileHover={{ 
+        scale: 1.04,
+        transition: { type: "spring", stiffness: 450, damping: 25 }
+      }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className="group relative rounded-[1.75rem] overflow-hidden cursor-default md:col-span-1"
-      style={{ minHeight: 240 }}
+      style={{ minHeight: 240, zIndex: hovered ? 20 : 1 }}
     >
       {/* ── Animated Border Trace ── */}
       <div className="absolute inset-0 rounded-[1.75rem] p-px overflow-hidden">
