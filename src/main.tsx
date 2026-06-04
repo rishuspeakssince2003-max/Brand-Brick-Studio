@@ -4,7 +4,7 @@ import App from './App.tsx';
 import { Admin } from './components/Admin.tsx';
 import './index.css';
 
-const path = window.location.pathname;
+const path = window.location.pathname.replace(/\/$/, "");
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
