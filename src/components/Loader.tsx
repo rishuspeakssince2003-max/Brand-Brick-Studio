@@ -14,7 +14,7 @@ export function Loader({ onComplete }: LoaderProps) {
     // Set a timeout to trigger onComplete (allowing transition to run and settle)
     const timer = setTimeout(() => {
       onComplete();
-    }, 2300); // 2.3 seconds total before slide-up starts
+    }, 1200); // 1.2 seconds total before slide-up starts
 
     return () => {
       // Re-enable scroll when loader unmounts
