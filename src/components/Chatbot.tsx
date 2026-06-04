@@ -147,18 +147,7 @@ export function Chatbot() {
                       transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                     />
                     <div className="relative w-8 h-8 rounded-full bg-black border border-white/10 flex items-center justify-center p-1.5">
-                      <svg viewBox="0 0 100 116" className="w-[14px] text-[#dc2626] fill-current drop-shadow-[0_0_8px_rgba(220,38,38,0.8)]" xmlns="http://www.w3.org/2000/svg">
-                        {/* Top Face */}
-                        <path d="M 47.5 40 L 24 26.5 L 47.5 13 L 71 26.5 Z" />
-                        {/* Left Face */}
-                        <path d="M 22 30.5 L 45.5 43.5 L 45.5 93.5 L 22 80.5 Z" />
-                        {/* Center Stem */}
-                        <path d="M 49.5 44.7 L 53.5 42.4 L 53.5 91.2 L 49.5 93.5 Z" />
-                        {/* Top Lobe */}
-                        <path d="M 57 40.4 L 74 30.6 C 83.5 36.1, 83.5 50.1, 74 55.5 L 57 65.3 Z" />
-                        {/* Bottom Lobe */}
-                        <path d="M 57 68.8 L 74 59.0 C 83.5 64.5, 83.5 78.4, 74 83.9 L 57 93.7 Z" />
-                      </svg>
+                      <img src="/logo.png" alt="BBS" className="w-[16px] h-auto" />
                     </div>
                   </div>
                   <div>
@@ -190,18 +179,7 @@ export function Chatbot() {
                     >
                       {msg.role === "model" ? (
                         <div className="w-6 h-6 rounded-full bg-black/50 border border-white/5 shrink-0 flex items-center justify-center p-1 mb-1 shadow-sm">
-                          <svg viewBox="0 0 100 116" className="w-2.5 text-[#dc2626] fill-current" xmlns="http://www.w3.org/2000/svg">
-                            {/* Top Face */}
-                            <path d="M 47.5 40 L 24 26.5 L 47.5 13 L 71 26.5 Z" />
-                            {/* Left Face */}
-                            <path d="M 22 30.5 L 45.5 43.5 L 45.5 93.5 L 22 80.5 Z" />
-                            {/* Center Stem */}
-                            <path d="M 49.5 44.7 L 53.5 42.4 L 53.5 91.2 L 49.5 93.5 Z" />
-                            {/* Top Lobe */}
-                            <path d="M 57 40.4 L 74 30.6 C 83.5 36.1, 83.5 50.1, 74 55.5 L 57 65.3 Z" />
-                            {/* Bottom Lobe */}
-                            <path d="M 57 68.8 L 74 59.0 C 83.5 64.5, 83.5 78.4, 74 83.9 L 57 93.7 Z" />
-                          </svg>
+                          <img src="/logo.png" alt="BBS" className="w-3.5 h-auto" />
                         </div>
                       ) : (
                         <div className="w-6 h-6 rounded-full bg-black/50 border border-white/5 shrink-0 flex items-center justify-center mb-1 shadow-sm">
@@ -230,18 +208,7 @@ export function Chatbot() {
                       className="flex items-end gap-3"
                     >
                       <div className="w-6 h-6 rounded-full bg-black/50 border border-white/5 shrink-0 flex items-center justify-center p-1 mb-1">
-                        <svg viewBox="0 0 100 116" className="w-2.5 text-[#dc2626] fill-current" xmlns="http://www.w3.org/2000/svg">
-                          {/* Top Face */}
-                          <path d="M 47.5 40 L 24 26.5 L 47.5 13 L 71 26.5 Z" />
-                          {/* Left Face */}
-                          <path d="M 22 30.5 L 45.5 43.5 L 45.5 93.5 L 22 80.5 Z" />
-                          {/* Center Stem */}
-                          <path d="M 49.5 44.7 L 53.5 42.4 L 53.5 91.2 L 49.5 93.5 Z" />
-                          {/* Top Lobe */}
-                          <path d="M 57 40.4 L 74 30.6 C 83.5 36.1, 83.5 50.1, 74 55.5 L 57 65.3 Z" />
-                          {/* Bottom Lobe */}
-                          <path d="M 57 68.8 L 74 59.0 C 83.5 64.5, 83.5 78.4, 74 83.9 L 57 93.7 Z" />
-                        </svg>
+                        <img src="/logo.png" alt="BBS" className="w-3.5 h-auto animate-pulse" />
                       </div>
                       <div className="bg-white/5 backdrop-blur-md p-4 rounded-2xl rounded-bl-sm border border-white/10 flex items-center gap-1.5 h-12">
                         <motion.div className="w-1.5 h-1.5 bg-[#dc2626] rounded-full" animate={{ scale: [1, 1.5, 1], opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 1, delay: 0 }} />

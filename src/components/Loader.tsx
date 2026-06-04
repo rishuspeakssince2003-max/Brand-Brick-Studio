@@ -132,22 +132,7 @@ export function Loader({ onComplete }: LoaderProps) {
           animate="show"
           className="relative z-20 origin-bottom"
         >
-          <svg
-            viewBox="0 0 100 116"
-            className="w-16 md:w-20 h-auto text-[#dc2626] fill-current"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            {/* Top Face */}
-            <path d="M 47.5 40 L 24 26.5 L 47.5 13 L 71 26.5 Z" />
-            {/* Left Face */}
-            <path d="M 22 30.5 L 45.5 43.5 L 45.5 93.5 L 22 80.5 Z" />
-            {/* Center Stem */}
-            <path d="M 49.5 44.7 L 53.5 42.4 L 53.5 91.2 L 49.5 93.5 Z" />
-            {/* Top Lobe */}
-            <path d="M 57 40.4 L 74 30.6 C 83.5 36.1, 83.5 50.1, 74 55.5 L 57 65.3 Z" />
-            {/* Bottom Lobe */}
-            <path d="M 57 68.8 L 74 59.0 C 83.5 64.5, 83.5 78.4, 74 83.9 L 57 93.7 Z" />
-          </svg>
+          <img src="/logo.png" alt="Brand Brick Logo" className="w-16 md:w-20 h-auto shrink-0" />
         </motion.div>
 
         {/* Brand Name Text (Reacting on Impact) */}

@@ -60,18 +60,7 @@ export function Navbar() {
         <div className="max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between">
           {/* Logo */}
           <a href="#" className="flex-shrink-0 relative z-50 flex items-center gap-3">
-            <svg viewBox="0 0 100 116" className="w-[34px] md:w-10 h-auto shrink-0 text-brand fill-current" xmlns="http://www.w3.org/2000/svg">
-              {/* Top Face */}
-              <path d="M 47.5 40 L 24 26.5 L 47.5 13 L 71 26.5 Z" />
-              {/* Left Face */}
-              <path d="M 22 30.5 L 45.5 43.5 L 45.5 93.5 L 22 80.5 Z" />
-              {/* Center Stem */}
-              <path d="M 49.5 44.7 L 53.5 42.4 L 53.5 91.2 L 49.5 93.5 Z" />
-              {/* Top Lobe */}
-              <path d="M 57 40.4 L 74 30.6 C 83.5 36.1, 83.5 50.1, 74 55.5 L 57 65.3 Z" />
-              {/* Bottom Lobe */}
-              <path d="M 57 68.8 L 74 59.0 C 83.5 64.5, 83.5 78.4, 74 83.9 L 57 93.7 Z" />
-            </svg>
+            <img src="/logo.png" alt="Brand Brick Logo" className="w-[34px] md:w-10 h-auto shrink-0" />
             <div className="flex flex-col items-center">
               <span className="font-sans font-medium text-2xl md:text-[28px] tracking-tight text-white flex items-center leading-none">
                 Brand<span className="font-bold text-brand ml-[2px]">Brick</span>
