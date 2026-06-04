@@ -13,6 +13,7 @@ export function Admin() {
   const [fetchError, setFetchError] = useState("");
   
   const [notificationEmails, setNotificationEmails] = useState("");
+  const [googleSheetsUrl, setGoogleSheetsUrl] = useState("");
   const [isSavingEmails, setIsSavingEmails] = useState(false);
 
   const fetchNotificationEmails = async () => {
@@ -24,9 +25,12 @@ export function Admin() {
         if (data.emails && Array.isArray(data.emails)) {
           setNotificationEmails(data.emails.join(", "));
         }
+        if (data.googleSheetsUrl) {
+          setGoogleSheetsUrl(data.googleSheetsUrl);
+        }
       }
     } catch (err) {
-      console.error("Error fetching notification emails:", err);
+      console.error("Error fetching notification settings:", err);
     }
   };
 
@@ -39,11 +43,14 @@ export function Admin() {
         .filter(email => email.length > 0 && email.includes("@"));
       
       const docRef = doc(db, "contact_inquiries", "_config_notifications");
-      await setDoc(docRef, { emails: emailsArray });
-      alert("Notification settings saved successfully!");
+      await setDoc(docRef, { 
+        emails: emailsArray,
+        googleSheetsUrl: googleSheetsUrl.trim()
+      });
+      alert("Settings saved successfully!");
     } catch (err) {
-      console.error("Error saving notification emails:", err);
-      alert("Failed to save notification settings.");
+      console.error("Error saving notification settings:", err);
+      alert("Failed to save settings.");
     } finally {
       setIsSavingEmails(false);
     }
@@ -70,12 +77,16 @@ export function Admin() {
       const querySnapshot = await getDocs(q);
       const data = querySnapshot.docs
         .filter(doc => doc.id !== "_config_notifications")
-        .map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-          // Convert Firestore timestamp to readable date
-          createdAt: doc.data().createdAt ? new Date(doc.data().createdAt.seconds * 1000).toLocaleString() : "Unknown Date"
-        }));
+        .map(doc => {
+          const d = doc.data();
+          return {
+            id: doc.id,
+            ...d,
+            // Convert Firestore timestamp to readable date
+            createdAt: d.createdAt ? new Date(d.createdAt.seconds * 1000).toLocaleString() : "Unknown Date"
+          };
+        })
+        .filter((inquiry: any) => !inquiry.deleted && inquiry.status !== "deleted");
       setInquiries(data);
     } catch (err: any) {
       console.error("Error fetching inquiries:", err);
@@ -89,14 +100,51 @@ export function Admin() {
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: string, name: string, email: string) => {
     if (!window.confirm("Are you sure you want to delete this inquiry?")) return;
+    
+    let dbDeleted = false;
+    
     try {
+      // 1. Try to delete document from Firestore
       await deleteDoc(doc(db, "contact_inquiries", id));
-      setInquiries(prev => prev.filter(inquiry => inquiry.id !== id));
+      dbDeleted = true;
     } catch (err: any) {
-      console.error("Error deleting inquiry:", err);
-      alert("Failed to delete entry.");
+      console.warn("Hard delete failed, trying soft delete fallback:", err);
+      try {
+        // Fallback: Soft-delete by setting deleted flag
+        await setDoc(doc(db, "contact_inquiries", id), { deleted: true }, { merge: true });
+        dbDeleted = true;
+      } catch (softErr: any) {
+        console.error("Soft delete fallback failed:", softErr);
+      }
+    }
+
+    if (dbDeleted) {
+      // Update UI state
+      setInquiries(prev => prev.filter(inquiry => inquiry.id !== id));
+      
+      // 2. Delete from Google Sheet if URL is configured
+      if (googleSheetsUrl) {
+        try {
+          await fetch(googleSheetsUrl, {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              action: "delete",
+              name: name,
+              email: email
+            })
+          });
+        } catch (sheetsErr) {
+          console.error("Failed to delete row from Google Sheet:", sheetsErr);
+        }
+      }
+    } else {
+      alert("Failed to delete entry. Please check your Firestore rules or internet connection.");
     }
   };
 
@@ -170,28 +218,48 @@ export function Admin() {
           </button>
         </header>
 
-        {/* Email Lead Notifications Settings */}
-        <div className="bg-zinc-900/30 border border-zinc-800/80 p-6 rounded-3xl mb-8 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-          <div className="flex-1">
-            <h3 className="text-lg font-bold text-white mb-1 flex items-center gap-2">
-              📬 Email Lead Notifications
-            </h3>
-            <p className="text-xs text-zinc-400">
-              Enter emails (separated by commas) to receive instant push alerts on your phone when new leads arrive.
-            </p>
+        {/* Sync & Notifications Settings */}
+        <div className="bg-zinc-900/30 border border-zinc-800/80 p-6 md:p-8 rounded-3xl mb-8">
+          <h3 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+            ⚙️ Notification & Google Sheet Sync
+          </h3>
+          <p className="text-xs text-zinc-400 mb-6">
+            Configure email alerts and Google Sheets integration settings. Note: If you want sheet rows to delete when deleted here, add your Apps Script Web App URL below.
+          </p>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 block">
+                📬 Email Recipients (comma separated)
+              </label>
+              <input
+                type="text"
+                placeholder="e.g. your-email@gmail.com, partner@gmail.com"
+                value={notificationEmails}
+                onChange={(e) => setNotificationEmails(e.target.value)}
+                className="w-full bg-zinc-950/60 border border-zinc-800 focus:border-brand/40 text-white rounded-xl px-4 py-3 text-xs focus:outline-none"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 block">
+                🟢 Google Sheets Web App URL (Optional)
+              </label>
+              <input
+                type="url"
+                placeholder="e.g. https://script.google.com/macros/s/.../exec"
+                value={googleSheetsUrl}
+                onChange={(e) => setGoogleSheetsUrl(e.target.value)}
+                className="w-full bg-zinc-950/60 border border-zinc-800 focus:border-brand/40 text-white rounded-xl px-4 py-3 text-xs focus:outline-none"
+              />
+            </div>
           </div>
-          <div className="flex items-center gap-3 w-full lg:w-auto">
-            <input
-              type="text"
-              placeholder="e.g. your-email@gmail.com, partner@gmail.com"
-              value={notificationEmails}
-              onChange={(e) => setNotificationEmails(e.target.value)}
-              className="bg-zinc-950/60 border border-zinc-800 focus:border-brand/40 text-white rounded-xl px-4 py-3 text-xs w-full lg:w-80 focus:outline-none"
-            />
+
+          <div className="flex justify-end border-t border-zinc-850 pt-4">
             <button
               onClick={handleSaveEmails}
               disabled={isSavingEmails}
-              className="bg-brand hover:shadow-[0_0_15px_rgba(220,38,38,0.25)] text-white text-xs font-bold px-6 py-3 rounded-xl transition-all cursor-pointer shrink-0 disabled:opacity-50"
+              className="bg-brand hover:shadow-[0_0_15px_rgba(220,38,38,0.25)] text-white text-xs font-bold px-8 py-3.5 rounded-xl transition-all cursor-pointer disabled:opacity-50"
             >
               {isSavingEmails ? "Saving..." : "Save Settings"}
             </button>
@@ -255,7 +323,7 @@ export function Admin() {
                         {inquiry.createdAt}
                       </div>
                       <button
-                        onClick={() => handleDelete(inquiry.id)}
+                        onClick={() => handleDelete(inquiry.id, inquiry.name, inquiry.email)}
                         className="p-2 bg-red-500/10 hover:bg-red-500/25 border border-red-500/20 hover:border-red-500/40 text-red-400 rounded-full transition-colors cursor-pointer shrink-0"
                         title="Delete Inquiry"
                       >
