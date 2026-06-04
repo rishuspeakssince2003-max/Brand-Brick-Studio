@@ -68,7 +68,7 @@ export function CustomCursor() {
         }
       `}</style>
       <motion.div
-        className="fixed top-0 left-0 z-[9999] pointer-events-none mix-blend-screen flex items-center justify-center w-[32px] h-[32px]"
+        className="fixed top-0 left-0 z-[99999999] pointer-events-none mix-blend-screen flex items-center justify-center w-[32px] h-[32px]"
         animate={{
           x: mousePosition.x - 16,
           y: mousePosition.y - 16,
