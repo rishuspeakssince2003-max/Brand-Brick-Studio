@@ -61,10 +61,16 @@ export function Navbar() {
           {/* Logo */}
           <a href="#" className="flex-shrink-0 relative z-50 flex items-center gap-3">
             <svg viewBox="0 0 100 116" className="w-[34px] md:w-10 h-auto shrink-0 text-brand fill-current" xmlns="http://www.w3.org/2000/svg">
-              <path d="M50 4 L94 29 L50 54 L6 29 Z" />
-              <path d="M4 33 L46 57 L46 109 L4 85 Z" />
-              <path d="M54 57 L96 33 L96 56 L54 80 Z" />
-              <path d="M54 86 L96 62 L96 85 L54 109 Z" />
+              {/* Top Face */}
+              <path d="M 47.5 40 L 24 26.5 L 47.5 13 L 71 26.5 Z" />
+              {/* Left Face */}
+              <path d="M 22 30.5 L 45.5 43.5 L 45.5 93.5 L 22 80.5 Z" />
+              {/* Center Stem */}
+              <path d="M 49.5 44.7 L 53.5 42.4 L 53.5 91.2 L 49.5 93.5 Z" />
+              {/* Top Lobe */}
+              <path d="M 57 40.4 L 74 30.6 C 83.5 36.1, 83.5 50.1, 74 55.5 L 57 65.3 Z" />
+              {/* Bottom Lobe */}
+              <path d="M 57 68.8 L 74 59.0 C 83.5 64.5, 83.5 78.4, 74 83.9 L 57 93.7 Z" />
             </svg>
             <div className="flex flex-col items-center">
               <span className="font-sans font-medium text-2xl md:text-[28px] tracking-tight text-white flex items-center leading-none">
