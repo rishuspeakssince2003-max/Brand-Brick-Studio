@@ -17,7 +17,7 @@ export function Admin() {
 
   const fetchNotificationEmails = async () => {
     try {
-      const docRef = doc(db, "admin_config", "notifications");
+      const docRef = doc(db, "contact_inquiries", "_config_notifications");
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         const data = docSnap.data();
@@ -38,7 +38,7 @@ export function Admin() {
         .map(email => email.trim())
         .filter(email => email.length > 0 && email.includes("@"));
       
-      const docRef = doc(db, "admin_config", "notifications");
+      const docRef = doc(db, "contact_inquiries", "_config_notifications");
       await setDoc(docRef, { emails: emailsArray });
       alert("Notification settings saved successfully!");
     } catch (err) {
@@ -68,12 +68,14 @@ export function Admin() {
     try {
       const q = query(collection(db, "contact_inquiries"), orderBy("createdAt", "desc"));
       const querySnapshot = await getDocs(q);
-      const data = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-        // Convert Firestore timestamp to readable date
-        createdAt: doc.data().createdAt ? new Date(doc.data().createdAt.seconds * 1000).toLocaleString() : "Unknown Date"
-      }));
+      const data = querySnapshot.docs
+        .filter(doc => doc.id !== "_config_notifications")
+        .map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+          // Convert Firestore timestamp to readable date
+          createdAt: doc.data().createdAt ? new Date(doc.data().createdAt.seconds * 1000).toLocaleString() : "Unknown Date"
+        }));
       setInquiries(data);
     } catch (err: any) {
       console.error("Error fetching inquiries:", err);

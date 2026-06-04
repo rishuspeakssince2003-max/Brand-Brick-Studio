@@ -73,7 +73,7 @@ export function Contact() {
 
       // 3. Send email notifications to configured recipients in Firestore
       try {
-        const configRef = doc(db, "admin_config", "notifications");
+        const configRef = doc(db, "contact_inquiries", "_config_notifications");
         const configSnap = await getDoc(configRef);
         if (configSnap.exists()) {
           const emailList = configSnap.data().emails || [];
