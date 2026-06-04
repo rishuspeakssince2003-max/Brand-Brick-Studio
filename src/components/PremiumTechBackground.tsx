@@ -20,9 +20,14 @@ interface Particle {
   pulseSpeed: number;
 }
 
-export function PremiumTechBackground() {
+export function PremiumTechBackground({ active = true }: { active?: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const activeRef = useRef(active);
+
+  useEffect(() => {
+    activeRef.current = active;
+  }, [active]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -132,6 +137,13 @@ export function PremiumTechBackground() {
     let time = 0;
 
     const render = () => {
+      if (!activeRef.current) {
+        ctx.fillStyle = "#040404";
+        ctx.fillRect(0, 0, width, height);
+        animationFrameId = requestAnimationFrame(render);
+        return;
+      }
+
       time += 1;
 
       // Smooth mouse follow (interpolation for fluid spotlight movement)

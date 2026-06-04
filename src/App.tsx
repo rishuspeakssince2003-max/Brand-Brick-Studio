@@ -23,7 +23,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-transparent text-zinc-50 font-sans selection:bg-brand selection:text-white relative">
-      <PremiumTechBackground />
+      <PremiumTechBackground active={!loading} />
       <AnimatePresence>
         {loading && <Loader onComplete={() => setLoading(false)} />}
       </AnimatePresence>

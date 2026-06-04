@@ -108,8 +108,8 @@ export function Loader({ onComplete }: LoaderProps) {
     exit: {
       y: "-100%",
       transition: {
-        duration: 0.95,
-        ease: [0.76, 0, 0.24, 1], // Premium cinematic ease-out curve
+        duration: 0.55,
+        ease: [0.16, 1, 0.3, 1], // Fast, smooth exponential ease-out
       },
     },
   };
