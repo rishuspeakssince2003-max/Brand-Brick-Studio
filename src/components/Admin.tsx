@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { collection, getDocs, orderBy, query, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../lib/firebase";
-import { Lock, Unlock, Search, Calendar, User, Phone, Mail, MessageSquare, Loader2 } from "lucide-react";
+import { Lock, Unlock, Search, Calendar, User, Phone, Mail, MessageSquare, Loader2, Trash2 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
 export function Admin() {
@@ -46,6 +46,17 @@ export function Admin() {
       }
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!window.confirm("Are you sure you want to delete this inquiry?")) return;
+    try {
+      await deleteDoc(doc(db, "contact_inquiries", id));
+      setInquiries(prev => prev.filter(inquiry => inquiry.id !== id));
+    } catch (err: any) {
+      console.error("Error deleting inquiry:", err);
+      alert("Failed to delete entry.");
     }
   };
 
@@ -170,10 +181,18 @@ export function Admin() {
                         </span>
                       </div>
                     </div>
-                    
-                    <div className="flex items-center gap-2 text-zinc-500 text-sm bg-black/40 px-4 py-2 rounded-full border border-zinc-800 shrink-0">
-                      <Calendar size={14} />
-                      {inquiry.createdAt}
+                    <div className="flex items-center gap-3 shrink-0 self-end md:self-auto">
+                      <div className="flex items-center gap-2 text-zinc-500 text-sm bg-black/40 px-4 py-2 rounded-full border border-zinc-800">
+                        <Calendar size={14} />
+                        {inquiry.createdAt}
+                      </div>
+                      <button
+                        onClick={() => handleDelete(inquiry.id)}
+                        className="p-2 bg-red-500/10 hover:bg-red-500/25 border border-red-500/20 hover:border-red-500/40 text-red-400 rounded-full transition-colors cursor-pointer shrink-0"
+                        title="Delete Inquiry"
+                      >
+                        <Trash2 size={16} />
+                      </button>
                     </div>
                   </div>
 
