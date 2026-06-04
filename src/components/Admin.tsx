@@ -46,7 +46,7 @@ export function Admin() {
       await setDoc(docRef, { 
         emails: emailsArray,
         googleSheetsUrl: googleSheetsUrl.trim()
-      });
+      }, { merge: true });
       alert("Settings saved successfully!");
     } catch (err) {
       console.error("Error saving notification settings:", err);
@@ -73,6 +73,12 @@ export function Admin() {
     setIsLoading(true);
     setFetchError("");
     try {
+      // 1. Fetch list of deleted IDs from config document
+      const configRef = doc(db, "contact_inquiries", "_config_notifications");
+      const configSnap = await getDoc(configRef);
+      const deletedIdsList: string[] = configSnap.exists() ? (configSnap.data().deletedIds || []) : [];
+
+      // 2. Fetch all inquiries
       const q = query(collection(db, "contact_inquiries"), orderBy("createdAt", "desc"));
       const querySnapshot = await getDocs(q);
       const data = querySnapshot.docs
@@ -86,7 +92,11 @@ export function Admin() {
             createdAt: d.createdAt ? new Date(d.createdAt.seconds * 1000).toLocaleString() : "Unknown Date"
           };
         })
-        .filter((inquiry: any) => !inquiry.deleted && inquiry.status !== "deleted");
+        .filter((inquiry: any) => 
+          !inquiry.deleted && 
+          inquiry.status !== "deleted" && 
+          !deletedIdsList.includes(inquiry.id)
+        );
       setInquiries(data);
     } catch (err: any) {
       console.error("Error fetching inquiries:", err);
@@ -110,10 +120,19 @@ export function Admin() {
       await deleteDoc(doc(db, "contact_inquiries", id));
       dbDeleted = true;
     } catch (err: any) {
-      console.warn("Hard delete failed, trying soft delete fallback:", err);
+      console.warn("Hard delete failed, trying soft delete fallback via configuration:", err);
       try {
-        // Fallback: Soft-delete by setting deleted flag
-        await setDoc(doc(db, "contact_inquiries", id), { deleted: true }, { merge: true });
+        // Fallback: Since document updates/deletions are locked, append this ID to a list of deleted IDs inside the open _config_notifications doc
+        const configRef = doc(db, "contact_inquiries", "_config_notifications");
+        const configSnap = await getDoc(configRef);
+        let deletedIdsList: string[] = [];
+        if (configSnap.exists()) {
+          deletedIdsList = configSnap.data().deletedIds || [];
+        }
+        if (!deletedIdsList.includes(id)) {
+          deletedIdsList.push(id);
+        }
+        await setDoc(configRef, { deletedIds: deletedIdsList }, { merge: true });
         dbDeleted = true;
       } catch (softErr: any) {
         console.error("Soft delete fallback failed:", softErr);
