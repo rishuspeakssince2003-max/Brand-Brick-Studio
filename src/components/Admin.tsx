@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { collection, getDocs, orderBy, query, deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../lib/firebase";
-import { Lock, Unlock, Search, Calendar, User, Phone, Mail, MessageSquare, Loader2, Trash2, Plus, X, Settings } from "lucide-react";
+import { Lock, Unlock, Search, Calendar, User, Phone, Mail, MessageSquare, Loader2, Trash2, Plus, X, Settings, RotateCw, Database } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
 export function Admin() {
@@ -250,24 +250,26 @@ export function Admin() {
             <p className="text-zinc-400">Viewing all active leads and contact submissions.</p>
           </div>
           
-          <div className="flex flex-wrap items-center gap-4 self-end md:self-auto">
+          <div className="flex items-center gap-3 self-end md:self-auto">
             {spreadsheetUrl && (
               <a 
                 href={spreadsheetUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-zinc-900 border border-zinc-800 hover:border-zinc-700 px-6 py-2.5 rounded-full text-sm font-semibold transition-colors flex items-center gap-2 text-white hover:shadow-[0_0_15px_rgba(255,255,255,0.05)] cursor-pointer"
+                className="p-2.5 bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700 rounded-full flex items-center justify-center cursor-pointer transition-all hover:shadow-[0_0_15px_rgba(255,255,255,0.05)]"
+                title="Open Google Sheet"
               >
-                📊 Open Google Sheet
+                <Database size={16} />
               </a>
             )}
             
             <button 
               onClick={fetchInquiries}
-              className="bg-zinc-900 border border-zinc-800 hover:border-zinc-600 px-6 py-2.5 rounded-full text-sm font-medium transition-colors flex items-center gap-2 cursor-pointer"
+              disabled={isLoading}
+              className="p-2.5 bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700 rounded-full flex items-center justify-center cursor-pointer transition-all disabled:opacity-50"
+              title="Refresh Data"
             >
-              {isLoading ? <Loader2 size={16} className="animate-spin" /> : <Search size={16} />}
-              Refresh Data
+              {isLoading ? <Loader2 size={16} className="animate-spin text-brand" /> : <RotateCw size={16} />}
             </button>
 
             <button 
