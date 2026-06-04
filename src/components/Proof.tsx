@@ -51,7 +51,6 @@ const testimonials = [
     author: "Rohan Malhotra",
     role: "Founder, Nexus Capital",
     metrics: "140% Lead Growth",
-    avatar: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=80&w=150&auto=format&fit=crop",
   },
   {
     id: 2,
@@ -59,7 +58,6 @@ const testimonials = [
     author: "Ishita Sharma",
     role: "Growth Head, Vortex Media",
     metrics: "1.2M Reach Gained",
-    avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=150&auto=format&fit=crop",
   },
   {
     id: 3,
@@ -67,7 +65,6 @@ const testimonials = [
     author: "Kabir Mehta",
     role: "CEO, Orion Retail",
     metrics: "Zero Friction Partners",
-    avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=150&auto=format&fit=crop",
   },
 ];
 
@@ -79,7 +76,33 @@ export function Proof() {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [displayedQuote, setDisplayedQuote] = useState(testimonials[0].quote);
+  const [displayedRole, setDisplayedRole] = useState(testimonials[0].role);
+  const [displayedMetric, setDisplayedMetric] = useState(testimonials[0].metrics);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
 
+  useEffect(() => {
+    setIsMobileDevice(window.innerWidth < 768);
+    const handleResize = () => setIsMobileDevice(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const handleSelect = (index: number) => {
+    if (index === activeIndex || isAnimating) return;
+    setIsAnimating(true);
+
+    setTimeout(() => {
+      setDisplayedQuote(testimonials[index].quote);
+      setDisplayedRole(testimonials[index].role);
+      setDisplayedMetric(testimonials[index].metrics);
+      setActiveIndex(index);
+      setTimeout(() => setIsAnimating(false), 400);
+    }, 200);
+  };
 
   return (
     <section
@@ -200,68 +223,107 @@ export function Proof() {
         <div className="mt-28 pt-20 border-t border-zinc-900/60 w-full">
           <div className="mb-12 text-center md:text-left">
             <span className="text-[#dc2626] text-xs font-mono font-bold uppercase tracking-[0.2em]">Client Success</span>
-            <h3 className="text-2xl md:text-4xl font-display font-bold text-white mt-2">What founders say about us.</h3>
+            <h3 className="text-2xl md:text-3xl font-display font-bold text-white mt-2">What founders say about us.</h3>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mt-12 w-full">
-            {testimonials.map((testimonial, idx) => (
-              <motion.div
-                key={testimonial.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, delay: 0.2 + idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className="relative flex flex-col justify-between p-6 md:p-8 bg-zinc-950/25 border border-zinc-900/80 hover:border-[#dc2626]/30 rounded-[2rem] backdrop-blur-md transition-all duration-500 group overflow-hidden"
+          <div className="flex flex-col items-center gap-10 py-10 md:py-16 bg-zinc-950/20 border border-zinc-900/60 rounded-[2.5rem] px-6 md:px-12 backdrop-blur-md relative overflow-hidden">
+            {/* Glowing spot in the middle */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-[#dc2626]/5 blur-[80px] rounded-full pointer-events-none" />
+
+            {/* Quote Container */}
+            <div className="relative px-4 md:px-12 w-full flex flex-col items-center min-h-[180px] md:min-h-[130px] justify-center z-10">
+              <span className="absolute left-0 md:left-6 top-0 text-7xl md:text-8xl font-serif text-[#dc2626]/[0.08] select-none pointer-events-none">
+                “
+              </span>
+
+              <p
+                className={cn(
+                  "text-base sm:text-lg md:text-xl lg:text-2xl font-light text-zinc-200 text-center max-w-2xl leading-relaxed transition-all duration-400 ease-out",
+                  isAnimating ? "opacity-0 blur-sm scale-[0.98]" : "opacity-100 blur-0 scale-100",
+                )}
               >
-                {/* Glowing radial accent background */}
-                <div className="absolute -inset-px bg-gradient-to-br from-[#dc2626]/[0.08] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                {displayedQuote}
+              </p>
 
-                <div className="relative z-10 flex flex-col gap-5">
-                  {/* Top row: stars + metrics */}
-                  <div className="flex items-center justify-between">
-                    {/* Glowing Stars */}
-                    <div className="flex gap-1 text-[#dc2626]">
-                      {[...Array(5)].map((_, i) => (
-                        <svg
-                          key={i}
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                          className="w-3.5 h-3.5"
-                        >
-                          <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clipRule="evenodd" />
-                        </svg>
-                      ))}
-                    </div>
+              <span className="absolute right-0 md:right-6 bottom-0 text-7xl md:text-8xl font-serif text-[#dc2626]/[0.08] select-none pointer-events-none">
+                ”
+              </span>
+            </div>
 
-                    {/* Metric badge */}
-                    <span className="text-[10px] font-mono font-bold text-[#dc2626] bg-[#dc2626]/10 border border-[#dc2626]/20 px-2.5 py-1 rounded-md tracking-wider">
-                      {testimonial.metrics}
-                    </span>
-                  </div>
+            <div className="flex flex-col items-center gap-6 mt-2 z-10 w-full">
+              {/* Metadata row: Role + Metric tag */}
+              <div
+                className={cn(
+                  "flex flex-col sm:flex-row items-center gap-3 transition-all duration-500 ease-out text-center",
+                  isAnimating ? "opacity-0 translate-y-2" : "opacity-100 translate-y-0",
+                )}
+              >
+                <p className="text-xs text-zinc-500 tracking-[0.2em] uppercase font-semibold">
+                  {displayedRole}
+                </p>
+                <span className="hidden sm:inline text-zinc-800">•</span>
+                <span className="text-[10px] font-mono font-bold text-[#dc2626] bg-[#dc2626]/10 border border-[#dc2626]/20 px-2.5 py-1 rounded-md shrink-0">
+                  {displayedMetric}
+                </span>
+              </div>
 
-                  {/* Testimonial Quote */}
-                  <div className="relative mt-2">
-                    <span className="text-4xl font-serif text-[#dc2626]/20 absolute -top-4 -left-2 select-none">“</span>
-                    <p className="relative z-10 pl-3 text-zinc-300 text-sm md:text-[15px] font-light leading-relaxed">
-                      {testimonial.quote}
-                    </p>
-                  </div>
-                </div>
+              {/* Avatar Selector Grid */}
+              <div className="flex items-center justify-center gap-2 md:gap-3 flex-nowrap max-w-full overflow-x-auto hide-scrollbar py-2">
+                {testimonials.map((testimonial, index) => {
+                  const isActive = activeIndex === index;
+                  // Only allow hover name expansion on desktop (non-mobile) devices to prevent layout shift/wrapping bugs on touchscreens
+                  const isHovered = hoveredIndex === index && !isActive && !isMobileDevice;
+                  const showName = isActive || isHovered;
 
-                {/* Profile + Author Details */}
-                <div className="relative z-10 flex items-center gap-3.5 mt-8 pt-5 border-t border-zinc-900/80">
-                  <img
-                    src={testimonial.avatar}
-                    alt={testimonial.author}
-                    className="w-10 h-10 rounded-full object-cover ring-2 ring-zinc-800/80 group-hover:ring-[#dc2626]/20 transition-all duration-500"
-                  />
-                  <div>
-                    <h4 className="text-sm font-bold text-zinc-100 tracking-wide">{testimonial.author}</h4>
-                    <p className="text-xs text-zinc-500 mt-0.5 tracking-wide">{testimonial.role}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+                  return (
+                    <button
+                      key={testimonial.id}
+                      onClick={() => handleSelect(index)}
+                      onMouseEnter={() => setHoveredIndex(index)}
+                      onMouseLeave={() => setHoveredIndex(null)}
+                      className={cn(
+                        "relative flex items-center rounded-full cursor-pointer transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] border border-transparent shadow-md shrink-0",
+                        isActive 
+                          ? "bg-[#dc2626] border-[#dc2626]/50 text-white shadow-[0_0_20px_rgba(220,38,38,0.3)] pr-4 pl-1.5 py-1.5" 
+                          : "bg-zinc-900/40 hover:bg-zinc-900/80 border-zinc-850 text-zinc-400 hover:text-zinc-200 p-1.5",
+                        showName && !isActive ? "pr-4 pl-1.5 py-1.5" : ""
+                      )}
+                    >
+                      {/* Initials Badge with smooth scaling and color states */}
+                      <div 
+                        className={cn(
+                          "w-8 h-8 rounded-full flex items-center justify-center text-xs font-black tracking-wider relative flex-shrink-0 transition-all duration-300",
+                          isActive 
+                            ? "bg-white text-[#dc2626] shadow-sm" 
+                            : "bg-zinc-800 text-zinc-400 group-hover:text-zinc-200 group-hover:bg-zinc-700/80"
+                        )}
+                      >
+                        {testimonial.author.split(' ').map(n => n[0]).join('')}
+                      </div>
+
+                      <div
+                        className={cn(
+                          "grid transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]",
+                          showName ? "grid-cols-[1fr] opacity-100 ml-2" : "grid-cols-[0fr] opacity-0 ml-0",
+                        )}
+                      >
+                        <div className="overflow-hidden">
+                          <span
+                            className={cn(
+                              "text-xs font-bold whitespace-nowrap block tracking-wide",
+                              "transition-colors duration-300",
+                              isActive ? "text-white" : "text-zinc-300",
+                            )}
+                          >
+                            {testimonial.author}
+                          </span>
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
       </div>
