@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { collection, getDocs, orderBy, query, deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../lib/firebase";
-import { Lock, Unlock, Search, Calendar, User, Phone, Mail, MessageSquare, Loader2, Trash2, Plus, X } from "lucide-react";
+import { Lock, Unlock, Search, Calendar, User, Phone, Mail, MessageSquare, Loader2, Trash2, Plus, X, Settings } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
 export function Admin() {
@@ -16,6 +16,7 @@ export function Admin() {
   const [newEmail, setNewEmail] = useState("");
   const [googleSheetsUrl, setGoogleSheetsUrl] = useState("");
   const [spreadsheetUrl, setSpreadsheetUrl] = useState("");
+  const [showSettings, setShowSettings] = useState(false);
   const [isSavingEmails, setIsSavingEmails] = useState(false);
 
   const fetchNotificationEmails = async () => {
@@ -263,104 +264,128 @@ export function Admin() {
             
             <button 
               onClick={fetchInquiries}
-              className="bg-zinc-900 border border-zinc-800 hover:border-zinc-600 px-6 py-2.5 rounded-full text-sm font-medium transition-colors flex items-center gap-2"
+              className="bg-zinc-900 border border-zinc-800 hover:border-zinc-600 px-6 py-2.5 rounded-full text-sm font-medium transition-colors flex items-center gap-2 cursor-pointer"
             >
               {isLoading ? <Loader2 size={16} className="animate-spin" /> : <Search size={16} />}
               Refresh Data
             </button>
+
+            <button 
+              onClick={() => setShowSettings(!showSettings)}
+              className={`p-2.5 rounded-full border transition-all flex items-center justify-center cursor-pointer ${
+                showSettings 
+                  ? "bg-brand/20 border-brand/50 text-brand hover:bg-brand/35 shadow-[0_0_15px_rgba(220,38,38,0.15)]" 
+                  : "bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-700"
+              }`}
+              title="Toggle Settings"
+            >
+              <Settings size={16} className={showSettings ? "animate-[spin_6s_linear_infinite]" : ""} />
+            </button>
           </div>
         </header>
 
-        {/* Sync & Notifications Settings */}
-        <div className="bg-zinc-900/30 border border-zinc-800/80 p-6 md:p-8 rounded-3xl mb-8">
-          <h3 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
-            ⚙️ Notification & Google Sheet Sync
-          </h3>
-          <p className="text-xs text-zinc-400 mb-6">
-            Configure email alerts and Google Sheets integration settings. Note: If you want sheet rows to delete when deleted here, add your Apps Script Web App URL below.
-          </p>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-6">
-            <div className="space-y-3">
-              <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 block">
-                📬 Email Recipients
-              </label>
-              
-              {/* Chips container */}
-              <div className="flex flex-wrap gap-2 min-h-[50px] bg-zinc-950/60 border border-zinc-800/80 rounded-2xl p-3.5 items-center">
-                {emails.length === 0 ? (
-                  <span className="text-zinc-500 text-xs px-1">No recipients configured. Add an email below.</span>
-                ) : (
-                  emails.map(email => (
-                    <div 
-                      key={email}
-                      className="flex items-center gap-2 bg-zinc-900 border border-zinc-850 hover:border-red-500/30 hover:bg-red-500/5 px-3 py-1.5 rounded-full text-xs text-zinc-300 transition-all select-none"
-                    >
-                      <span>{email}</span>
+        {/* Sync & Notifications Settings Panel */}
+        <AnimatePresence>
+          {showSettings && (
+            <motion.div
+              initial={{ height: 0, opacity: 0, marginBottom: 0 }}
+              animate={{ height: "auto", opacity: 1, marginBottom: 32 }}
+              exit={{ height: 0, opacity: 0, marginBottom: 0 }}
+              transition={{ type: "spring", stiffness: 200, damping: 25 }}
+              className="overflow-hidden"
+            >
+              <div className="bg-zinc-900/30 border border-zinc-800/80 p-6 md:p-8 rounded-3xl">
+                <h3 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                  ⚙️ Notification & Google Sheet Sync
+                </h3>
+                <p className="text-xs text-zinc-400 mb-6">
+                  Configure email alerts and Google Sheets integration settings. Note: If you want sheet rows to delete when deleted here, add your Apps Script Web App URL below.
+                </p>
+                
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-6">
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 block">
+                      📬 Email Recipients
+                    </label>
+                    
+                    {/* Chips container */}
+                    <div className="flex flex-wrap gap-2 min-h-[50px] bg-zinc-950/60 border border-zinc-800/80 rounded-2xl p-3.5 items-center">
+                      {emails.length === 0 ? (
+                        <span className="text-zinc-500 text-xs px-1">No recipients configured. Add an email below.</span>
+                      ) : (
+                        emails.map(email => (
+                          <div 
+                            key={email}
+                            className="flex items-center gap-2 bg-zinc-900 border border-zinc-850 hover:border-red-500/30 hover:bg-red-500/5 px-3 py-1.5 rounded-full text-xs text-zinc-300 transition-all select-none"
+                          >
+                            <span>{email}</span>
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveEmail(email)}
+                              className="text-zinc-500 hover:text-red-400 hover:bg-zinc-850 p-0.5 rounded-full transition-colors cursor-pointer animate-fade-in"
+                              title={`Remove ${email}`}
+                            >
+                              <X size={10} />
+                            </button>
+                          </div>
+                        ))
+                      )}
+                    </div>
+
+                    {/* Add recipient row */}
+                    <div className="flex gap-2">
+                      <input
+                        type="email"
+                        placeholder="e.g. partner@gmail.com"
+                        value={newEmail}
+                        onChange={(e) => setNewEmail(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            handleAddEmail();
+                          }
+                        }}
+                        className="flex-1 bg-zinc-950/60 border border-zinc-800 focus:border-brand/40 text-white rounded-xl px-4 py-3 text-xs focus:outline-none"
+                      />
                       <button
                         type="button"
-                        onClick={() => handleRemoveEmail(email)}
-                        className="text-zinc-500 hover:text-red-400 hover:bg-zinc-850 p-0.5 rounded-full transition-colors cursor-pointer animate-fade-in"
-                        title={`Remove ${email}`}
+                        onClick={() => handleAddEmail()}
+                        className="bg-zinc-900 border border-zinc-800 hover:border-zinc-700 hover:bg-zinc-850 text-white px-5 py-3 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
                       >
-                        <X size={10} />
+                        <Plus size={14} /> Add
                       </button>
                     </div>
-                  ))
-                )}
-              </div>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 block">
+                        📊 Direct Google Sheet Link (for quick dashboard shortcut)
+                      </label>
+                      <input
+                        type="url"
+                        placeholder="e.g. https://docs.google.com/spreadsheets/d/.../edit"
+                        value={spreadsheetUrl}
+                        onChange={(e) => setSpreadsheetUrl(e.target.value)}
+                        className="w-full bg-zinc-950/60 border border-zinc-800 focus:border-brand/40 text-white rounded-xl px-4 py-3 text-xs focus:outline-none"
+                      />
+                    </div>
+                  </div>
+                </div>
 
-              {/* Add recipient row */}
-              <div className="flex gap-2">
-                <input
-                  type="email"
-                  placeholder="e.g. partner@gmail.com"
-                  value={newEmail}
-                  onChange={(e) => setNewEmail(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      handleAddEmail();
-                    }
-                  }}
-                  className="flex-1 bg-zinc-950/60 border border-zinc-800 focus:border-brand/40 text-white rounded-xl px-4 py-3 text-xs focus:outline-none"
-                />
-                <button
-                  type="button"
-                  onClick={() => handleAddEmail()}
-                  className="bg-zinc-900 border border-zinc-800 hover:border-zinc-700 hover:bg-zinc-850 text-white px-5 py-3 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
-                >
-                  <Plus size={14} /> Add
-                </button>
+                <div className="flex justify-end border-t border-zinc-850 pt-4">
+                  <button
+                    onClick={handleSaveEmails}
+                    disabled={isSavingEmails}
+                    className="bg-brand hover:shadow-[0_0_15px_rgba(220,38,38,0.25)] text-white text-xs font-bold px-8 py-3.5 rounded-xl transition-all cursor-pointer disabled:opacity-50"
+                  >
+                    {isSavingEmails ? "Saving..." : "Save Settings"}
+                  </button>
+                </div>
               </div>
-            </div>
-            
-            <div className="space-y-4">
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 block">
-                  📊 Direct Google Sheet Link (for quick dashboard shortcut)
-                </label>
-                <input
-                  type="url"
-                  placeholder="e.g. https://docs.google.com/spreadsheets/d/.../edit"
-                  value={spreadsheetUrl}
-                  onChange={(e) => setSpreadsheetUrl(e.target.value)}
-                  className="w-full bg-zinc-950/60 border border-zinc-800 focus:border-brand/40 text-white rounded-xl px-4 py-3 text-xs focus:outline-none"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="flex justify-end border-t border-zinc-850 pt-4">
-            <button
-              onClick={handleSaveEmails}
-              disabled={isSavingEmails}
-              className="bg-brand hover:shadow-[0_0_15px_rgba(220,38,38,0.25)] text-white text-xs font-bold px-8 py-3.5 rounded-xl transition-all cursor-pointer disabled:opacity-50"
-            >
-              {isSavingEmails ? "Saving..." : "Save Settings"}
-            </button>
-          </div>
-        </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {fetchError && (
           <div className="bg-red-500/10 border border-red-500/50 text-red-400 p-6 rounded-2xl mb-8 flex items-start gap-4">
