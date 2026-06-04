@@ -338,19 +338,6 @@ export function Admin() {
             <div className="space-y-4">
               <div className="space-y-1.5">
                 <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 block">
-                  🟢 Google Sheets Web App URL (for deletion sync)
-                </label>
-                <input
-                  type="url"
-                  placeholder="e.g. https://script.google.com/macros/s/.../exec"
-                  value={googleSheetsUrl}
-                  onChange={(e) => setGoogleSheetsUrl(e.target.value)}
-                  className="w-full bg-zinc-950/60 border border-zinc-800 focus:border-brand/40 text-white rounded-xl px-4 py-3 text-xs focus:outline-none"
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 block">
                   📊 Direct Google Sheet Link (for quick dashboard shortcut)
                 </label>
                 <input
@@ -361,9 +348,6 @@ export function Admin() {
                   className="w-full bg-zinc-950/60 border border-zinc-800 focus:border-brand/40 text-white rounded-xl px-4 py-3 text-xs focus:outline-none"
                 />
               </div>
-              <p className="text-[10px] text-zinc-500 leading-normal">
-                Follow the guide in <code className="text-zinc-400 font-mono text-[9px]">google_sheets_sync_guide.md</code> in your project repository to set up deletion sync.
-              </p>
             </div>
           </div>
 
