@@ -15,6 +15,7 @@ export function Admin() {
   const [emails, setEmails] = useState<string[]>([]);
   const [newEmail, setNewEmail] = useState("");
   const [googleSheetsUrl, setGoogleSheetsUrl] = useState("");
+  const [spreadsheetUrl, setSpreadsheetUrl] = useState("");
   const [isSavingEmails, setIsSavingEmails] = useState(false);
 
   const fetchNotificationEmails = async () => {
@@ -29,6 +30,9 @@ export function Admin() {
         if (data.googleSheetsUrl) {
           setGoogleSheetsUrl(data.googleSheetsUrl);
         }
+        if (data.spreadsheetUrl) {
+          setSpreadsheetUrl(data.spreadsheetUrl);
+        }
       }
     } catch (err) {
       console.error("Error fetching notification settings:", err);
@@ -41,7 +45,8 @@ export function Admin() {
       const docRef = doc(db, "contact_inquiries", "_config_notifications");
       await setDoc(docRef, { 
         emails: emails,
-        googleSheetsUrl: googleSheetsUrl.trim()
+        googleSheetsUrl: googleSheetsUrl.trim(),
+        spreadsheetUrl: spreadsheetUrl.trim()
       }, { merge: true });
       alert("Settings saved successfully!");
     } catch (err) {
@@ -244,13 +249,26 @@ export function Admin() {
             <p className="text-zinc-400">Viewing all active leads and contact submissions.</p>
           </div>
           
-          <button 
-            onClick={fetchInquiries}
-            className="bg-zinc-900 border border-zinc-800 hover:border-zinc-600 px-6 py-2.5 rounded-full text-sm font-medium transition-colors flex items-center gap-2"
-          >
-            {isLoading ? <Loader2 size={16} className="animate-spin" /> : <Search size={16} />}
-            Refresh Data
-          </button>
+          <div className="flex flex-wrap items-center gap-4 self-end md:self-auto">
+            {spreadsheetUrl && (
+              <a 
+                href={spreadsheetUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-zinc-900 border border-zinc-800 hover:border-zinc-700 px-6 py-2.5 rounded-full text-sm font-semibold transition-colors flex items-center gap-2 text-white hover:shadow-[0_0_15px_rgba(255,255,255,0.05)] cursor-pointer"
+              >
+                📊 Open Google Sheet
+              </a>
+            )}
+            
+            <button 
+              onClick={fetchInquiries}
+              className="bg-zinc-900 border border-zinc-800 hover:border-zinc-600 px-6 py-2.5 rounded-full text-sm font-medium transition-colors flex items-center gap-2"
+            >
+              {isLoading ? <Loader2 size={16} className="animate-spin" /> : <Search size={16} />}
+              Refresh Data
+            </button>
+          </div>
         </header>
 
         {/* Sync & Notifications Settings */}
@@ -317,19 +335,34 @@ export function Admin() {
               </div>
             </div>
             
-            <div className="space-y-3">
-              <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 block">
-                🟢 Google Sheets Web App URL (Optional)
-              </label>
-              <input
-                type="url"
-                placeholder="e.g. https://script.google.com/macros/s/.../exec"
-                value={googleSheetsUrl}
-                onChange={(e) => setGoogleSheetsUrl(e.target.value)}
-                className="w-full bg-zinc-950/60 border border-zinc-800 focus:border-brand/40 text-white rounded-xl px-4 py-3 text-xs focus:outline-none"
-              />
+            <div className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 block">
+                  🟢 Google Sheets Web App URL (for deletion sync)
+                </label>
+                <input
+                  type="url"
+                  placeholder="e.g. https://script.google.com/macros/s/.../exec"
+                  value={googleSheetsUrl}
+                  onChange={(e) => setGoogleSheetsUrl(e.target.value)}
+                  className="w-full bg-zinc-950/60 border border-zinc-800 focus:border-brand/40 text-white rounded-xl px-4 py-3 text-xs focus:outline-none"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 block">
+                  📊 Direct Google Sheet Link (for quick dashboard shortcut)
+                </label>
+                <input
+                  type="url"
+                  placeholder="e.g. https://docs.google.com/spreadsheets/d/.../edit"
+                  value={spreadsheetUrl}
+                  onChange={(e) => setSpreadsheetUrl(e.target.value)}
+                  className="w-full bg-zinc-950/60 border border-zinc-800 focus:border-brand/40 text-white rounded-xl px-4 py-3 text-xs focus:outline-none"
+                />
+              </div>
               <p className="text-[10px] text-zinc-500 leading-normal">
-                To sync deletions with your Google Sheet, paste your Web App URL. Follow the guide in <code className="text-zinc-400 font-mono text-[9px]">google_sheets_sync_guide.md</code> in your project repository to set this up.
+                Follow the guide in <code className="text-zinc-400 font-mono text-[9px]">google_sheets_sync_guide.md</code> in your project repository to set up deletion sync.
               </p>
             </div>
           </div>
