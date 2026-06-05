@@ -21,6 +21,24 @@ export function Contact() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     
+    if (name === "name") {
+      // Allow only letters, spaces, hyphens, and apostrophes for name input
+      const cleanValue = value.replace(/[^a-zA-Z\s\-\']/g, "");
+      setFormData(prev => ({ ...prev, [name]: cleanValue }));
+      return;
+    }
+
+    if (name === "phone") {
+      // Allow only digits, space, and a leading plus sign for phone input
+      let cleanValue = value.replace(/[^\d\s\+]/g, "");
+      if (cleanValue.includes("+")) {
+        const startsWithPlus = cleanValue.startsWith("+");
+        cleanValue = (startsWithPlus ? "+" : "") + cleanValue.replace(/\+/g, "");
+      }
+      setFormData(prev => ({ ...prev, [name]: cleanValue }));
+      return;
+    }
+
     if (name === "country") {
       const selectedCountry = countries.find(c => c.name === value);
       if (selectedCountry) {
@@ -33,30 +51,80 @@ export function Contact() {
       }
     }
     
-    setFormData({ ...formData, [name]: value });
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
     setStatus("idle");
+    setErrorMessage("");
+
+    const trimmedName = formData.name.trim();
+    const trimmedEmail = formData.email.trim();
+    const trimmedPhone = formData.phone.trim();
+    const trimmedCountry = formData.country;
+    const trimmedMessage = formData.message.trim();
+
+    // 1. Name validation
+    if (trimmedName.length < 2) {
+      setStatus("error");
+      setErrorMessage("Please enter a valid Full Name (at least 2 letters).");
+      return;
+    }
+
+    // 2. Email validation (strict regex pattern)
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(trimmedEmail)) {
+      setStatus("error");
+      setErrorMessage("Please enter a valid email address.");
+      return;
+    }
+
+    // 3. Phone validation
+    const digitsOnly = trimmedPhone.replace(/\D/g, "");
+    if (digitsOnly.length < 9 || digitsOnly.length > 15) {
+      setStatus("error");
+      setErrorMessage("Please enter a valid phone number (9 to 15 digits including dial code).");
+      return;
+    }
+
+    // 4. Country validation
+    if (!trimmedCountry) {
+      setStatus("error");
+      setErrorMessage("Please select your Country.");
+      return;
+    }
+
+    // 5. Message validation
+    if (trimmedMessage.length < 10) {
+      setStatus("error");
+      setErrorMessage("Please write a message with at least 10 characters.");
+      return;
+    }
+
+    setIsSubmitting(true);
     
     try {
       // 1. Save to Firebase Firestore database
       await addDoc(collection(db, "contact_inquiries"), {
-        ...formData,
+        name: trimmedName,
+        email: trimmedEmail,
+        phone: trimmedPhone,
+        country: trimmedCountry,
+        service: formData.service || "General Inquiry",
+        message: trimmedMessage,
         createdAt: serverTimestamp()
       });
       
       // 2. Direct Sync to user's Google Sheet (via Google Form submission)
       const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSckKk0DgA_zT1eerWoDg8dBPrmGHTcQeE8z8j06TuEcfOCIbg/formResponse";
       const formBody = new URLSearchParams();
-      formBody.append("entry.1050828459", formData.name);
-      formBody.append("entry.829173877", formData.email);
-      formBody.append("entry.1621150490", formData.phone);
-      formBody.append("entry.586442386", formData.country);
-      formBody.append("entry.1882487484", formData.service);
-      formBody.append("entry.295901912", formData.message);
+      formBody.append("entry.1050828459", trimmedName);
+      formBody.append("entry.829173877", trimmedEmail);
+      formBody.append("entry.1621150490", trimmedPhone);
+      formBody.append("entry.586442386", trimmedCountry);
+      formBody.append("entry.1882487484", formData.service || "General Inquiry");
+      formBody.append("entry.295901912", trimmedMessage);
 
       try {
         await fetch(formUrl, {
@@ -87,13 +155,13 @@ export function Contact() {
                     "Accept": "application/json"
                   },
                   body: JSON.stringify({
-                    _subject: `🔥 New Lead Submission - ${formData.name}`,
-                    Name: formData.name,
-                    Email: formData.email,
-                    Phone: formData.phone,
-                    Country: formData.country,
-                    "Requested Service": formData.service,
-                    Message: formData.message,
+                    _subject: `🔥 New Lead Submission - ${trimmedName}`,
+                    Name: trimmedName,
+                    Email: trimmedEmail,
+                    Phone: trimmedPhone,
+                    Country: trimmedCountry,
+                    "Requested Service": formData.service || "General Inquiry",
+                    Message: trimmedMessage,
                     _template: "table"
                   })
                 });
