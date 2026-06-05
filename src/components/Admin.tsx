@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { collection, getDocs, orderBy, query, deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../lib/firebase";
-import { Lock, Unlock, Search, Calendar, User, Phone, Mail, MessageSquare, Loader2, Trash2, Plus, X, Settings, RotateCw, Database } from "lucide-react";
+import { Lock, Unlock, Search, Calendar, User, Phone, Mail, MessageSquare, Loader2, Trash2, Plus, X, Settings, RotateCw, Database, Globe, Download, BarChart3, TrendingUp, Check } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
 export function Admin() {
@@ -21,6 +21,8 @@ export function Admin() {
   const [settingsPasscode, setSettingsPasscode] = useState("");
   const [isSettingsPasscodeError, setIsSettingsPasscodeError] = useState(false);
   const [isSavingEmails, setIsSavingEmails] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedServiceFilter, setSelectedServiceFilter] = useState("All");
 
   const fetchNotificationEmails = async () => {
     try {
@@ -114,6 +116,81 @@ export function Admin() {
       setTimeout(() => setIsSettingsPasscodeError(false), 1000);
       setSettingsPasscode("");
     }
+  };
+
+  // 1. Filtered inquiries based on search term and service category selection
+  const filteredInquiries = inquiries.filter(inquiry => {
+    const nameMatch = (inquiry.name || "").toLowerCase().includes(searchTerm.toLowerCase());
+    const emailMatch = (inquiry.email || "").toLowerCase().includes(searchTerm.toLowerCase());
+    const phoneMatch = (inquiry.phone || "").toLowerCase().includes(searchTerm.toLowerCase());
+    const countryMatch = (inquiry.country || "").toLowerCase().includes(searchTerm.toLowerCase());
+    const msgMatch = (inquiry.message || "").toLowerCase().includes(searchTerm.toLowerCase());
+    const serviceMatch = (inquiry.service || "").toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesSearch = nameMatch || emailMatch || phoneMatch || countryMatch || msgMatch || serviceMatch;
+    
+    if (selectedServiceFilter === "All") {
+      return matchesSearch;
+    }
+    return matchesSearch && (inquiry.service || "General Inquiry") === selectedServiceFilter;
+  });
+
+  // 2. Dynamically gather available service categories from loaded inquiries
+  const availableServices = ["All", ...Array.from(new Set(inquiries.map(i => i.service || "General Inquiry")))];
+
+  // 3. Analytics Computations
+  const totalLeads = inquiries.length;
+  
+  const leadsToday = inquiries.filter(inquiry => {
+    if (!inquiry.createdAt) return false;
+    const todayDatePart = new Date().toLocaleDateString();
+    return inquiry.createdAt.includes(todayDatePart);
+  }).length;
+
+  const getMostPopularService = () => {
+    if (inquiries.length === 0) return "N/A";
+    const counts: { [key: string]: number } = {};
+    inquiries.forEach(inquiry => {
+      const s = inquiry.service || "General Inquiry";
+      counts[s] = (counts[s] || 0) + 1;
+    });
+    let maxService = "General Inquiry";
+    let maxCount = 0;
+    Object.entries(counts).forEach(([service, count]) => {
+      if (count > maxCount) {
+        maxCount = count;
+        maxService = service;
+      }
+    });
+    return maxService;
+  };
+
+  // 4. Export CSV Handler
+  const handleExportCSV = () => {
+    if (filteredInquiries.length === 0) {
+      alert("No data available to export.");
+      return;
+    }
+    const headers = ["Name", "Email", "Phone", "Country", "Service", "Message", "Submitted At"];
+    const rows = filteredInquiries.map(inquiry => [
+      `"${(inquiry.name || "").replace(/"/g, '""')}"`,
+      `"${(inquiry.email || "").replace(/"/g, '""')}"`,
+      `"${(inquiry.phone || "").replace(/"/g, '""')}"`,
+      `"${(inquiry.country || "").replace(/"/g, '""')}"`,
+      `"${(inquiry.service || "General Inquiry").replace(/"/g, '""')}"`,
+      `"${(inquiry.message || "").replace(/"/g, '""')}"`,
+      `"${(inquiry.createdAt || "").replace(/"/g, '""')}"`
+    ]);
+    
+    const csvContent = [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `brand_brick_leads_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const fetchInquiries = async () => {
@@ -317,6 +394,136 @@ export function Admin() {
           </div>
         </header>
 
+        {/* Key Metrics Section */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-zinc-900/30 border border-zinc-800/80 p-6 rounded-2xl relative overflow-hidden group hover:border-zinc-700/80 transition-all"
+          >
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#dc2626]/5 blur-[50px] pointer-events-none" />
+            <div className="flex justify-between items-start mb-4">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-550">Total Pipeline Leads</span>
+              <div className="p-2 bg-[#dc2626]/10 text-brand rounded-lg">
+                <BarChart3 size={16} />
+              </div>
+            </div>
+            <h4 className="text-3xl font-display font-bold text-white tracking-tight mb-1">{totalLeads}</h4>
+            <p className="text-zinc-550 text-xs flex items-center gap-1.5 font-light">
+              <TrendingUp size={12} className="text-green-500" />
+              Accumulated in database
+            </p>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.05 }}
+            className="bg-zinc-900/30 border border-zinc-800/80 p-6 rounded-2xl relative overflow-hidden group hover:border-zinc-700/80 transition-all"
+          >
+            <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/5 blur-[50px] pointer-events-none" />
+            <div className="flex justify-between items-start mb-4">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-550">Transmissions Today</span>
+              <div className="p-2 bg-green-500/10 text-green-400 rounded-lg">
+                <Calendar size={16} />
+              </div>
+            </div>
+            <h4 className="text-3xl font-display font-bold text-white tracking-tight mb-1">{leadsToday}</h4>
+            <p className="text-zinc-550 text-xs flex items-center gap-1.5 font-light">
+              <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+              Real-time tracker active
+            </p>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="bg-zinc-900/30 border border-zinc-800/80 p-6 rounded-2xl relative overflow-hidden group hover:border-zinc-700/80 transition-all"
+          >
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#dc2626]/5 blur-[50px] pointer-events-none" />
+            <div className="flex justify-between items-start mb-4">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-550">Dominant Pipeline</span>
+              <div className="p-2 bg-[#dc2626]/10 text-brand rounded-lg">
+                <TrendingUp size={16} />
+              </div>
+            </div>
+            <h4 className="text-lg font-bold text-white tracking-tight truncate mb-1" title={getMostPopularService()}>
+              {getMostPopularService()}
+            </h4>
+            <p className="text-zinc-550 text-xs font-light">Most requested service category</p>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+            className="bg-zinc-900/30 border border-zinc-800/80 p-6 rounded-2xl relative overflow-hidden group hover:border-zinc-700/80 transition-all"
+          >
+            <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 blur-[50px] pointer-events-none" />
+            <div className="flex justify-between items-start mb-4">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-550">Sheet Sync Integration</span>
+              <div className="p-2 bg-blue-500/10 text-blue-400 rounded-lg">
+                <Database size={16} />
+              </div>
+            </div>
+            <h4 className="text-3xl font-display font-bold text-white tracking-tight mb-1">Active</h4>
+            <p className="text-zinc-550 text-xs flex items-center gap-1.5 font-light">
+              <Check size={12} className="text-green-500" />
+              Direct Google Forms bridge
+            </p>
+          </motion.div>
+        </div>
+
+        {/* Search, Filter & Export Controls */}
+        <div className="flex flex-col md:flex-row gap-4 items-center justify-between mb-8 pb-6 border-b border-zinc-900/80">
+          <div className="relative w-full md:w-80">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500" size={15} />
+            <input 
+              type="text" 
+              placeholder="Search leads, names, emails..." 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full bg-zinc-900/40 border border-zinc-800/80 focus:border-brand/40 text-white rounded-xl pl-10 pr-4 py-2.5 text-xs focus:outline-none transition-all placeholder:text-zinc-600"
+            />
+            {searchTerm && (
+              <button 
+                onClick={() => setSearchTerm("")}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors"
+              >
+                <X size={14} />
+              </button>
+            )}
+          </div>
+
+          <div className="flex items-center gap-3 w-full md:w-auto self-start md:self-auto overflow-x-auto no-scrollbar py-1">
+            <div className="flex gap-1.5 bg-zinc-950/60 border border-zinc-900/60 rounded-xl p-1 shrink-0">
+              {availableServices.map(service => (
+                <button
+                  key={service}
+                  onClick={() => setSelectedServiceFilter(service)}
+                  className={`px-3.5 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                    selectedServiceFilter === service
+                      ? "bg-zinc-900 text-white shadow-md border border-zinc-800"
+                      : "text-zinc-500 hover:text-zinc-350"
+                  }`}
+                >
+                  {service === "All" ? "All Categories" : service}
+                </button>
+              ))}
+            </div>
+
+            <button
+              onClick={handleExportCSV}
+              className="px-4 py-2 bg-zinc-900 border border-zinc-800 hover:border-zinc-700 hover:bg-zinc-850 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shrink-0 ml-auto md:ml-0"
+              title="Export filtered data to CSV"
+            >
+              <Download size={14} />
+              Export
+            </button>
+          </div>
+        </div>
+
         {/* Sync & Notifications Settings Panel */}
         <AnimatePresence>
           {showSettings && (
@@ -446,23 +653,31 @@ export function Admin() {
             <h3 className="text-xl font-bold mb-2">No transmissions received</h3>
             <p className="text-zinc-500">Your inbox is currently empty.</p>
           </div>
+        ) : filteredInquiries.length === 0 ? (
+          <div className="bg-zinc-900/30 border border-zinc-800/50 rounded-3xl p-16 text-center">
+            <div className="w-16 h-16 bg-zinc-900 rounded-full flex items-center justify-center mx-auto mb-4 border border-zinc-800">
+              <Search className="text-zinc-500" size={24} />
+            </div>
+            <h3 className="text-xl font-bold mb-2">No matching records</h3>
+            <p className="text-zinc-500 font-light">Try adjusting your search query or filter category.</p>
+          </div>
         ) : (
           <div className="grid grid-cols-1 gap-6">
             <AnimatePresence>
-              {inquiries.map((inquiry, idx) => (
+              {filteredInquiries.map((inquiry, idx) => (
                 <motion.div 
                   key={inquiry.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.05 }}
-                  className="bg-zinc-900/40 backdrop-blur-sm border border-zinc-800 hover:border-zinc-700 p-6 md:p-8 rounded-[2rem] transition-colors relative overflow-hidden group"
+                  className="bg-zinc-900/40 backdrop-blur-sm border border-zinc-800/80 hover:border-zinc-700 p-6 md:p-8 rounded-[2rem] transition-colors relative overflow-hidden group"
                 >
                   <div className="absolute top-0 left-0 w-1 h-full bg-brand opacity-0 group-hover:opacity-100 transition-opacity" />
                   
                   <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 pb-6 border-b border-zinc-800/50 gap-4">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-full bg-brand/10 border border-brand/20 flex items-center justify-center text-brand shrink-0">
-                        <User size={20} />
+                      <div className="w-12 h-12 rounded-full bg-zinc-950 border border-zinc-850 hover:border-brand/40 flex items-center justify-center text-lg font-bold text-white shrink-0 uppercase select-none transition-all shadow-inner">
+                        {inquiry.name ? inquiry.name.charAt(0) : <User size={20} />}
                       </div>
                       <div>
                         <h2 className="text-xl font-bold text-white">{inquiry.name}</h2>
@@ -472,8 +687,14 @@ export function Admin() {
                       </div>
                     </div>
                     <div className="flex items-center gap-3 shrink-0 self-end md:self-auto">
-                      <div className="flex items-center gap-2 text-zinc-500 text-sm bg-black/40 px-4 py-2 rounded-full border border-zinc-800">
-                        <Calendar size={14} />
+                      {inquiry.country && (
+                        <div className="flex items-center gap-2 text-zinc-400 text-xs bg-black/40 px-4 py-2 rounded-full border border-zinc-850">
+                          <Globe size={13} className="text-brand shrink-0" />
+                          {inquiry.country}
+                        </div>
+                      )}
+                      <div className="flex items-center gap-2 text-zinc-500 text-xs bg-black/40 px-4 py-2 rounded-full border border-zinc-850">
+                        <Calendar size={13} />
                         {inquiry.createdAt}
                       </div>
                       <button
