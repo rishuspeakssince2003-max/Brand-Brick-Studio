@@ -54,6 +54,60 @@ export function Contact() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const handlePhoneKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const allowedKeys = [
+      "Backspace", "Delete", "Tab", "Escape", "Enter",
+      "ArrowLeft", "ArrowRight", "Home", "End"
+    ];
+    
+    if (allowedKeys.includes(e.key)) {
+      return;
+    }
+
+    if ((e.ctrlKey || e.metaKey) && ["a", "c", "v", "x"].includes(e.key.toLowerCase())) {
+      return;
+    }
+
+    const isDigit = /[0-9]/.test(e.key);
+    const isSpace = e.key === " ";
+    const isPlus = e.key === "+";
+
+    if (isPlus) {
+      const input = e.currentTarget;
+      const hasPlus = input.value.includes("+");
+      if (input.selectionStart !== 0 || hasPlus) {
+        e.preventDefault();
+      }
+      return;
+    }
+
+    if (!isDigit && !isSpace) {
+      e.preventDefault();
+    }
+  };
+
+  const handleNameKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const allowedKeys = [
+      "Backspace", "Delete", "Tab", "Escape", "Enter",
+      "ArrowLeft", "ArrowRight", "Home", "End"
+    ];
+    
+    if (allowedKeys.includes(e.key)) {
+      return;
+    }
+
+    if ((e.ctrlKey || e.metaKey) && ["a", "c", "v", "x"].includes(e.key.toLowerCase())) {
+      return;
+    }
+
+    const isLetter = /[a-zA-Z]/.test(e.key);
+    const isAllowedChar = [" ", "-", "'"].includes(e.key);
+
+    if (!isLetter && !isAllowedChar) {
+      e.preventDefault();
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("idle");
@@ -253,7 +307,7 @@ export function Contact() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <div className="group space-y-2">
                   <label htmlFor="name" className={labelClasses}>Full Name</label>
-                  <input type="text" id="name" name="name" required value={formData.name} onChange={handleChange} className={inputClasses} placeholder="Rahul Sharma" />
+                  <input type="text" id="name" name="name" required value={formData.name} onChange={handleChange} onKeyDown={handleNameKeyDown} className={inputClasses} placeholder="Rahul Sharma" />
                 </div>
 
                 <div className="group space-y-2">
@@ -265,7 +319,7 @@ export function Contact() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <div className="group space-y-2">
                   <label htmlFor="phone" className={labelClasses}>Phone Number</label>
-                  <input type="tel" id="phone" name="phone" required value={formData.phone} onChange={handleChange} className={inputClasses} placeholder="+91 98765 43210" />
+                  <input type="tel" id="phone" name="phone" required value={formData.phone} onChange={handleChange} onKeyDown={handlePhoneKeyDown} className={inputClasses} placeholder="+91 98765 43210" />
                 </div>
                 
                 <div className="group space-y-2 relative">
