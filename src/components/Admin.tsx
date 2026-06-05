@@ -274,7 +274,7 @@ export function Admin() {
             <div className="flex items-center gap-3.5 mb-2">
               <img src="/logo.png" alt="Brand Brick Logo" className="w-10 h-auto shrink-0" />
               <h1 className="text-3xl md:text-4xl font-display font-bold tracking-tight flex items-center gap-2.5">
-                Command Center
+                Admin Panel
                 <div className="w-2.5 h-2.5 rounded-full bg-brand animate-pulse" />
               </h1>
             </div>
