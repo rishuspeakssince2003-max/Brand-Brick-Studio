@@ -121,7 +121,7 @@ export function Stack() {
   const displayTool = tools.find((t) => t.id === hoveredTool) || activeTool;
 
   return (
-    <section ref={sectionRef} className="relative py-32 bg-transparent overflow-hidden" id="stack">
+    <section ref={sectionRef} className="relative py-32 bg-transparent overflow-hidden scroll-mt-24 md:scroll-mt-28" id="stack">
       {/* Subtle Background Glow tied to active tool color */}
       <div 
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] rounded-full blur-[150px] opacity-5 pointer-events-none transition-colors duration-1000"

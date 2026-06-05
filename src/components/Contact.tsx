@@ -267,7 +267,7 @@ export function Contact() {
   const labelClasses = "text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-500 group-focus-within:text-[#dc2626] transition-colors duration-500";
 
   return (
-    <section className="py-24 md:py-40 px-4 md:px-6 max-w-7xl mx-auto relative overflow-hidden" id="contact">
+    <section className="py-24 md:py-40 px-4 md:px-6 max-w-7xl mx-auto relative overflow-hidden scroll-mt-24 md:scroll-mt-28" id="contact">
       {/* Premium Minimalist Layout */}
       <motion.div
         className="flex flex-col lg:flex-row gap-16 lg:gap-24 relative z-10"

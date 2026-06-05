@@ -66,7 +66,7 @@ const featureVariants = {
 
 export function Packages() {
   return (
-    <section className="py-24 md:py-32 px-4 md:px-6 max-w-7xl mx-auto relative overflow-hidden" id="packages">
+    <section className="py-24 md:py-32 px-4 md:px-6 max-w-7xl mx-auto relative overflow-hidden scroll-mt-24 md:scroll-mt-28" id="packages">
       {/* Background glow behind pricing */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[400px] bg-[#dc2626]/5 blur-[150px] rounded-[100%] pointer-events-none" />
 
@@ -194,7 +194,7 @@ export function Packages() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8, delay: 0.2 }}
-        className="mt-16 mb-8 max-w-4xl mx-auto relative z-10"
+        className="mt-16 mb-8 max-w-4xl mx-auto relative z-10 scroll-mt-24 md:scroll-mt-28"
       >
         <div className="relative p-6 md:p-8 rounded-3xl bg-zinc-950/60 border border-zinc-800/40 backdrop-blur-md hover:border-amber-500/30 transition-all duration-500 group/promo overflow-hidden">
           {/* Golden ticket cut-out notches on sides */}

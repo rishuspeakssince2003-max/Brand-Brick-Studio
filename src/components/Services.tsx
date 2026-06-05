@@ -233,7 +233,7 @@ export function Services() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-24 md:py-36 bg-transparent px-4 md:px-6 overflow-hidden"
+      className="relative py-24 md:py-36 bg-transparent px-4 md:px-6 overflow-hidden scroll-mt-24 md:scroll-mt-28"
       id="services"
     >
       {/* ── Floating Background Orbs ── */}

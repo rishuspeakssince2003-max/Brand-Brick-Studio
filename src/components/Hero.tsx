@@ -182,7 +182,7 @@ export function Hero() {
   return (
     <section
       ref={ref}
-      className="relative min-h-[100dvh] flex items-center px-4 md:px-6 overflow-hidden"
+      className="relative min-h-[100dvh] flex items-center pt-24 md:pt-32 px-4 md:px-6 overflow-hidden"
     >
       {/* ── Backgrounds ── */}
       {/* Background is now fully transparent to show the WebGL fluid simulation underneath */}
@@ -215,7 +215,7 @@ export function Hero() {
       />
 
       {/* ── Content ── */}
-      <div className="max-w-7xl mx-auto w-full relative z-10 py-28 md:py-0">
+      <div className="max-w-7xl mx-auto w-full relative z-10 pt-4 pb-28 md:py-0">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
 
           {/* LEFT — Copy */}
