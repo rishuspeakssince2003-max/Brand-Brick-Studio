@@ -263,7 +263,7 @@ export function Contact() {
     }
   };
 
-  const inputClasses = "w-full bg-transparent border-b border-zinc-800 text-white md:text-xl lg:text-2xl px-0 py-4 focus:outline-none focus:border-[#dc2626] transition-colors duration-500 placeholder:text-zinc-600 font-display shadow-none rounded-none";
+  const inputClasses = "w-full bg-transparent border-b border-zinc-800 text-white md:text-xl lg:text-2xl px-0 py-4 focus:outline-none focus:border-[#dc2626] transition-colors duration-500 placeholder:text-zinc-800 font-display shadow-none rounded-none";
   const labelClasses = "text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-500 group-focus-within:text-[#dc2626] transition-colors duration-500";
 
   return (
@@ -327,12 +327,12 @@ export function Contact() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <div className="group space-y-2">
                   <label htmlFor="name" className={labelClasses}>Full Name</label>
-                  <input type="text" id="name" name="name" required value={formData.name} onChange={handleChange} onKeyDown={handleNameKeyDown} className={inputClasses} placeholder="Rahul Sharma" />
+                  <input type="text" id="name" name="name" required value={formData.name} onChange={handleChange} onKeyDown={handleNameKeyDown} className={inputClasses} placeholder="" />
                 </div>
 
                 <div className="group space-y-2">
                   <label htmlFor="email" className={labelClasses}>Email Address</label>
-                  <input type="email" id="email" name="email" required value={formData.email} onChange={handleChange} className={inputClasses} placeholder="rahul@example.com" />
+                  <input type="email" id="email" name="email" required value={formData.email} onChange={handleChange} className={inputClasses} placeholder="" />
                 </div>
               </div>
 
