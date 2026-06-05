@@ -1,10 +1,6 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
-import { useState } from "react";
-import { AnimatePresence } from "motion/react";
+import { useState, useEffect } from "react";
+import { AnimatePresence, motion, useScroll, useSpring } from "motion/react";
+import Lenis from "lenis";
 import { Loader } from "./components/Loader";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
@@ -21,8 +17,45 @@ import { PremiumTechBackground } from "./components/PremiumTechBackground";
 export default function App() {
   const [loading, setLoading] = useState(true);
 
+  // 1. Lenis Smooth Inertial Scroll
+  useEffect(() => {
+    if (loading) return;
+
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+    });
+
+    let rafId: number;
+    function raf(time: number) {
+      lenis.raf(time);
+      rafId = requestAnimationFrame(raf);
+    }
+    rafId = requestAnimationFrame(raf);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      lenis.destroy();
+    };
+  }, [loading]);
+
+  // 2. Framer Motion Scroll Progress Indicator
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
   return (
     <div className="min-h-screen bg-transparent text-zinc-50 font-sans selection:bg-brand selection:text-white relative">
+      {/* Top Scroll Progress Bar */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-[#dc2626] origin-left z-[100]"
+        style={{ scaleX }}
+      />
+      
       <PremiumTechBackground active={!loading} />
       <AnimatePresence>
         {loading && <Loader onComplete={() => setLoading(false)} />}
