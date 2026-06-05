@@ -9,8 +9,8 @@ export function Contact() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phone: "",
-    country: "",
+    phone: "+91 ",
+    country: "India",
     service: "",
     message: ""
   });
@@ -251,7 +251,7 @@ export function Contact() {
       }
       
       setStatus("success");
-      setFormData({ name: "", email: "", phone: "", country: "", service: "", message: "" });
+      setFormData({ name: "", email: "", phone: "+91 ", country: "India", service: "", message: "" });
       
       setTimeout(() => setStatus("idle"), 5000);
     } catch (error: any) {
