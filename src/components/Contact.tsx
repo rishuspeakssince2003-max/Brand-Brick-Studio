@@ -269,7 +269,13 @@ export function Contact() {
   return (
     <section className="py-24 md:py-40 px-4 md:px-6 max-w-7xl mx-auto relative overflow-hidden" id="contact">
       {/* Premium Minimalist Layout */}
-      <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 relative z-10">
+      <motion.div
+        className="flex flex-col lg:flex-row gap-16 lg:gap-24 relative z-10"
+        initial={{ opacity: 0, y: 80 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-120px" }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      >
         
         {/* Left: Huge Typography Header */}
         <div className="lg:w-1/2 flex flex-col justify-center">
@@ -393,7 +399,7 @@ export function Contact() {
             </form>
           </motion.div>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 }

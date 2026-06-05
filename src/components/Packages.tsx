@@ -70,6 +70,14 @@ export function Packages() {
       {/* Background glow behind pricing */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[400px] bg-[#dc2626]/5 blur-[150px] rounded-[100%] pointer-events-none" />
 
+      <motion.div
+        initial={{ opacity: 0, y: 80 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-120px" }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="w-full h-full"
+      >
+
       <div className="mb-16 md:mb-20 text-center max-w-3xl mx-auto relative z-10">
         <motion.h2 
           initial={{ opacity: 0, y: 20 }}
@@ -250,6 +258,7 @@ export function Packages() {
           All solutions are fully customizable. Ad spend is billed separately. Custom agreements available on request.
         </p>
       </motion.div>
+    </motion.div>
 
       {/* ── CSS Animations ── */}
       <style>{`

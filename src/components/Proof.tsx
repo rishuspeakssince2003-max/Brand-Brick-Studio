@@ -113,7 +113,12 @@ export function Proof() {
       {/* ──── Background Glow ──── */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[600px] bg-[#dc2626]/[0.04] blur-[150px] rounded-full pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto relative z-10">
+      <motion.div
+        className="max-w-7xl mx-auto relative z-10"
+        initial={{ opacity: 0, y: 80 }}
+        animate={isInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      >
         {/* ──── Section Header ──── */}
         <motion.div
           className="mb-20 md:mb-28"
@@ -326,7 +331,7 @@ export function Proof() {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* ──── Marquee Keyframes ──── */}
       <style>{`

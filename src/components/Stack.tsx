@@ -128,7 +128,12 @@ export function Stack() {
         style={{ backgroundColor: displayTool.color }}
       />
 
-      <div className="max-w-6xl mx-auto px-4 md:px-6 relative z-10 flex flex-col items-center">
+      <motion.div
+        className="max-w-6xl mx-auto px-4 md:px-6 relative z-10 flex flex-col items-center"
+        initial={{ opacity: 0, y: 80 }}
+        animate={isInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      >
         
         {/* Section Header */}
         <motion.div 
@@ -286,7 +291,7 @@ export function Stack() {
           </div>
         </motion.div>
 
-      </div>
+      </motion.div>
     </section>
   );
 }

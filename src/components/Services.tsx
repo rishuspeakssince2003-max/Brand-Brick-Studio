@@ -252,7 +252,12 @@ export function Services() {
         }}
       />
 
-      <div className="max-w-7xl mx-auto relative z-10">
+      <motion.div
+        className="max-w-7xl mx-auto relative z-10"
+        initial={{ opacity: 0, y: 80 }}
+        animate={isInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      >
         {/* ── Section Header ── */}
         <div className="mb-20 md:mb-28 max-w-4xl">
           <motion.span
@@ -338,7 +343,7 @@ export function Services() {
             <ServiceCard key={i} service={service} index={i} />
           ))}
         </motion.div>
-      </div>
+      </motion.div>
 
       {/* ── CSS Animations ── */}
       <style>{`
