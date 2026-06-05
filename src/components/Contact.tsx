@@ -343,7 +343,7 @@ export function Contact() {
                     <option value="" disabled className="bg-[#050505] text-zinc-500">Select country</option>
                     {countries.map(c => (
                       <option key={c.name} value={c.name} className="bg-[#050505] text-white">
-                        {c.name}
+                        {c.flag} &nbsp; {c.name}
                       </option>
                     ))}
                   </select>
