@@ -21,19 +21,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: "Missing required fields: name, email" });
   }
 
-  const GMAIL_USER = process.env.GMAIL_USER;
-  const GMAIL_APP_PASSWORD = process.env.GMAIL_APP_PASSWORD;
+  const GMAIL_USER = (process.env.GMAIL_USER || "").trim();
+  const GMAIL_APP_PASSWORD = (process.env.GMAIL_APP_PASSWORD || "").replace(/\s+/g, "").trim();
+
+  // Debug logging — logs partial credentials to verify env vars are loaded
+  console.log("[Email API] GMAIL_USER loaded:", GMAIL_USER ? `${GMAIL_USER.substring(0, 4)}***` : "EMPTY");
+  console.log("[Email API] GMAIL_APP_PASSWORD loaded:", GMAIL_APP_PASSWORD ? `${GMAIL_APP_PASSWORD.length} chars, starts with '${GMAIL_APP_PASSWORD.substring(0, 3)}...'` : "EMPTY");
 
   if (!GMAIL_USER || !GMAIL_APP_PASSWORD) {
     console.error("Missing GMAIL_USER or GMAIL_APP_PASSWORD environment variables");
     return res.status(500).json({ error: "Email service is not configured" });
   }
 
-  // Create transporter with Gmail SMTP
+  // Create transporter using nodemailer's built-in Gmail service
   const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
+    service: "gmail",
     auth: {
       user: GMAIL_USER,
       pass: GMAIL_APP_PASSWORD,
