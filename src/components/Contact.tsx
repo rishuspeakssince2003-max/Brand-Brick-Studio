@@ -337,11 +337,6 @@ export function Contact() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                <div className="group space-y-2">
-                  <label htmlFor="phone" className={labelClasses}>Phone Number</label>
-                  <input type="tel" id="phone" name="phone" required value={formData.phone} onChange={handleChange} onKeyDown={handlePhoneKeyDown} className={inputClasses} placeholder="+91 98765 43210" />
-                </div>
-                
                 <div className="group space-y-2 relative">
                   <label htmlFor="country" className={labelClasses}>Country</label>
                   <select id="country" name="country" required value={formData.country} onChange={handleChange} className={`${inputClasses} appearance-none cursor-pointer relative z-10`}>
@@ -353,6 +348,11 @@ export function Contact() {
                     ))}
                   </select>
                   <div className="absolute right-0 bottom-4 text-zinc-600 pointer-events-none">▼</div>
+                </div>
+
+                <div className="group space-y-2">
+                  <label htmlFor="phone" className={labelClasses}>Phone Number</label>
+                  <input type="tel" id="phone" name="phone" required value={formData.phone} onChange={handleChange} onKeyDown={handlePhoneKeyDown} className={inputClasses} placeholder="+91 98765 43210" />
                 </div>
               </div>
 
