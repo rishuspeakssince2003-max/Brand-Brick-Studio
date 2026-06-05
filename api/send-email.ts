@@ -45,8 +45,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const currentYear = new Date().getFullYear();
   const firstName = name.split(" ")[0];
   const serviceName = service || "General Inquiry";
+  const refId = `BBS-${Date.now().toString(36).toUpperCase()}`;
+  const submittedDate = new Date().toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" });
 
-  // Build the beautiful HTML email
+  // Build the professional HTML email
   const htmlEmail = `
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -55,7 +57,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="x-apple-disable-message-reformatting">
-  <title>Thank You for Your Enquiry - Brand Brick Studio</title>
+  <title>Enquiry Received - Brand Brick Studio</title>
   <!--[if mso]>
   <noscript>
     <xml>
@@ -67,189 +69,110 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   </noscript>
   <![endif]-->
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-    
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
     * { margin: 0; padding: 0; }
     body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
     table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
     img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
-
     @media only screen and (max-width: 620px) {
       .email-container { width: 100% !important; max-width: 100% !important; }
-      .fluid { width: 100% !important; max-width: 100% !important; height: auto !important; }
-      .stack-column { display: block !important; width: 100% !important; }
-      .mobile-padding { padding-left: 20px !important; padding-right: 20px !important; }
+      .mobile-padding { padding-left: 24px !important; padding-right: 24px !important; }
       .mobile-center { text-align: center !important; }
-      .detail-label { width: 100px !important; }
+      .detail-label { width: 90px !important; font-size: 10px !important; }
+      .detail-value { font-size: 13px !important; }
+      .hero-title { font-size: 24px !important; }
+      .hero-sub { font-size: 13px !important; }
+      .step-title { font-size: 13px !important; }
+      .step-desc { font-size: 12px !important; }
     }
   </style>
 </head>
-<body style="margin:0; padding:0; background-color:#f0f0f0; font-family:'Inter','Helvetica Neue',Arial,sans-serif; -webkit-font-smoothing:antialiased;">
+<body style="margin:0; padding:0; background-color:#f5f5f5; font-family:'Inter','Helvetica Neue',Arial,sans-serif; -webkit-font-smoothing:antialiased;">
+
+  <!-- Preheader text (hidden, helps inbox preview) -->
+  <div style="display:none; max-height:0; overflow:hidden; mso-hide:all;">
+    Thank you for reaching out to Brand Brick Studio. We have received your enquiry and a representative will contact you shortly.
+  </div>
 
   <!-- Background Wrapper -->
-  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color:#f0f0f0;">
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color:#f5f5f5;">
     <tr>
-      <td style="padding: 40px 10px;">
+      <td style="padding: 32px 10px;">
 
         <!-- Main Email Container -->
-        <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="580" class="email-container" style="max-width:580px; margin:auto; background-color:#ffffff; border-radius:16px; overflow:hidden; box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="600" class="email-container" style="max-width:600px; margin:auto; background-color:#ffffff; border-radius:12px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.05);">
 
-          <!-- ===== HERO HEADER ===== -->
+          <!-- ===== TOP ACCENT BAR ===== -->
           <tr>
-            <td style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%); padding: 48px 40px 40px 40px; text-align: center;" class="mobile-padding">
-              
-              <!-- Brand Name -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center">
-                <tr>
-                  <td style="padding-bottom: 8px;">
-                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center">
-                      <tr>
-                        <td style="width:10px; height:10px; background-color:#dc2626; border-radius:3px;"></td>
-                        <td style="width:8px;"></td>
-                        <td style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:22px; font-weight:800; color:#ffffff; letter-spacing:-0.5px;">
-                          Brand Brick Studio
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:11px; font-weight:600; color:#666666; letter-spacing:3px; text-transform:uppercase;">
-                    Creative &bull; Content &bull; Code &bull; Growth
-                  </td>
-                </tr>
-              </table>
-
-              <!-- Divider Line -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" style="margin: 32px auto 28px auto;">
-                <tr>
-                  <td style="width:60px; height:1px; background-color:#333333;"></td>
-                  <td style="width:12px;"></td>
-                  <td style="width:8px; height:8px; background-color:#dc2626; border-radius:50%;"></td>
-                  <td style="width:12px;"></td>
-                  <td style="width:60px; height:1px; background-color:#333333;"></td>
-                </tr>
-              </table>
-
-              <!-- Welcome Message -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center">
-                <tr>
-                  <td style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:28px; font-weight:700; color:#ffffff; line-height:1.3; padding-bottom:12px;">
-                    Thank You, ${firstName}!
-                  </td>
-                </tr>
-                <tr>
-                  <td style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:15px; font-weight:400; color:#a0a0a0; line-height:1.6;">
-                    We've received your enquiry and our team is already on it.
-                  </td>
-                </tr>
-              </table>
-            </td>
+            <td style="height:4px; background: linear-gradient(90deg, #dc2626 0%, #b91c1c 40%, #1a1a1a 100%);"></td>
           </tr>
 
-          <!-- ===== CONFIRMATION BADGE ===== -->
+          <!-- ===== HEADER ===== -->
           <tr>
-            <td style="padding: 36px 40px 0 40px;" class="mobile-padding">
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color:#f0fdf4; border:1px solid #bbf7d0; border-radius:12px;">
+            <td style="padding: 32px 44px 24px 44px;" class="mobile-padding">
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                 <tr>
-                  <td style="padding: 18px 24px;">
+                  <!-- Brand -->
+                  <td style="vertical-align: middle;">
                     <table role="presentation" cellspacing="0" cellpadding="0" border="0">
                       <tr>
-                        <td style="vertical-align:middle; padding-right: 14px;">
-                          <table role="presentation" cellspacing="0" cellpadding="0" border="0">
-                            <tr>
-                              <td style="width:36px; height:36px; background-color:#22c55e; border-radius:50%; text-align:center; vertical-align:middle; font-size:18px; color:#ffffff;">
-                                &#10003;
-                              </td>
-                            </tr>
-                          </table>
-                        </td>
-                        <td style="vertical-align:middle;">
-                          <p style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:14px; font-weight:700; color:#15803d; margin:0 0 2px 0;">Enquiry Confirmed</p>
-                          <p style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:12px; font-weight:400; color:#16a34a; margin:0;">Your request has been logged successfully in our system.</p>
-                        </td>
+                        <td style="width:11px; height:11px; background-color:#dc2626; border-radius:3px;"></td>
+                        <td style="width:8px;"></td>
+                        <td style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:16px; font-weight:800; color:#0a0a0a; letter-spacing:-0.3px;">Brand Brick Studio</td>
                       </tr>
                     </table>
+                  </td>
+                  <!-- Reference Badge -->
+                  <td style="vertical-align: middle; text-align: right;">
+                    <span style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:10px; font-weight:600; color:#9ca3af; background-color:#f5f5f5; padding:5px 10px; border-radius:6px; letter-spacing:0.5px;">${refId}</span>
                   </td>
                 </tr>
               </table>
             </td>
           </tr>
 
-          <!-- ===== WHAT HAPPENS NEXT ===== -->
+          <!-- ===== DIVIDER ===== -->
           <tr>
-            <td style="padding: 32px 40px 0 40px;" class="mobile-padding">
+            <td style="padding: 0 44px;" class="mobile-padding">
               <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                <tr>
-                  <td style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:11px; font-weight:700; color:#dc2626; letter-spacing:2px; text-transform:uppercase; padding-bottom:16px;">
-                    What Happens Next
-                  </td>
-                </tr>
+                <tr><td style="height:1px; background-color:#f0f0f0;"></td></tr>
               </table>
+            </td>
+          </tr>
 
-              <!-- Steps -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                <!-- Step 1 -->
+          <!-- ===== HERO SECTION ===== -->
+          <tr>
+            <td style="padding: 40px 44px 32px 44px;" class="mobile-padding">
+              <p style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:13px; font-weight:500; color:#dc2626; letter-spacing:1.5px; text-transform:uppercase; margin:0 0 12px 0;">Enquiry Received</p>
+              <h1 class="hero-title" style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:28px; font-weight:800; color:#0a0a0a; line-height:1.25; margin:0 0 16px 0; letter-spacing:-0.5px;">
+                Hello ${firstName},<br>thank you for reaching out.
+              </h1>
+              <p class="hero-sub" style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:15px; font-weight:400; color:#6b7280; line-height:1.65; margin:0;">
+                We have received your enquiry and it has been assigned to our team. A dedicated representative will review your requirements and get back to you within <strong style="color:#374151;">24 hours</strong>.
+              </p>
+            </td>
+          </tr>
+
+          <!-- ===== STATUS BANNER ===== -->
+          <tr>
+            <td style="padding: 0 44px 32px 44px;" class="mobile-padding">
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color:#f8faf8; border:1px solid #e2e8e0; border-radius:10px;">
                 <tr>
-                  <td style="padding-bottom:20px;">
+                  <td style="padding: 16px 20px;">
                     <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                       <tr>
-                        <td style="width:44px; vertical-align:top;">
+                        <td style="width:32px; vertical-align:middle;">
                           <table role="presentation" cellspacing="0" cellpadding="0" border="0">
                             <tr>
-                              <td style="width:36px; height:36px; background-color:#fef2f2; border:1px solid #fecaca; border-radius:10px; text-align:center; vertical-align:middle; font-family:'Inter',sans-serif; font-size:14px; font-weight:800; color:#dc2626;">
-                                1
-                              </td>
+                              <td style="width:28px; height:28px; background-color:#22c55e; border-radius:50%; text-align:center; vertical-align:middle; font-size:14px; color:#ffffff; line-height:28px;">&#10003;</td>
                             </tr>
                           </table>
                         </td>
-                        <td style="vertical-align:top; padding-left:12px;">
-                          <p style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:14px; font-weight:600; color:#1a1a1a; margin:0 0 3px 0;">Review &amp; Research</p>
-                          <p style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:13px; font-weight:400; color:#6b7280; line-height:1.5; margin:0;">Our team will carefully review your project requirements and conduct any necessary research.</p>
+                        <td style="padding-left:12px; vertical-align:middle;">
+                          <p style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:13px; font-weight:600; color:#15803d; margin:0;">Successfully logged</p>
                         </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-                <!-- Step 2 -->
-                <tr>
-                  <td style="padding-bottom:20px;">
-                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                      <tr>
-                        <td style="width:44px; vertical-align:top;">
-                          <table role="presentation" cellspacing="0" cellpadding="0" border="0">
-                            <tr>
-                              <td style="width:36px; height:36px; background-color:#fef2f2; border:1px solid #fecaca; border-radius:10px; text-align:center; vertical-align:middle; font-family:'Inter',sans-serif; font-size:14px; font-weight:800; color:#dc2626;">
-                                2
-                              </td>
-                            </tr>
-                          </table>
-                        </td>
-                        <td style="vertical-align:top; padding-left:12px;">
-                          <p style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:14px; font-weight:600; color:#1a1a1a; margin:0 0 3px 0;">Personal Outreach</p>
-                          <p style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:13px; font-weight:400; color:#6b7280; line-height:1.5; margin:0;">A dedicated representative will reach out to you within 24 hours to discuss your goals.</p>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-                <!-- Step 3 -->
-                <tr>
-                  <td style="padding-bottom:8px;">
-                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                      <tr>
-                        <td style="width:44px; vertical-align:top;">
-                          <table role="presentation" cellspacing="0" cellpadding="0" border="0">
-                            <tr>
-                              <td style="width:36px; height:36px; background-color:#fef2f2; border:1px solid #fecaca; border-radius:10px; text-align:center; vertical-align:middle; font-family:'Inter',sans-serif; font-size:14px; font-weight:800; color:#dc2626;">
-                                3
-                              </td>
-                            </tr>
-                          </table>
-                        </td>
-                        <td style="vertical-align:top; padding-left:12px;">
-                          <p style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:14px; font-weight:600; color:#1a1a1a; margin:0 0 3px 0;">Custom Strategy</p>
-                          <p style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:13px; font-weight:400; color:#6b7280; line-height:1.5; margin:0;">We'll present a tailored growth strategy designed specifically for your brand's success.</p>
+                        <td style="text-align:right; vertical-align:middle;">
+                          <p style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:11px; font-weight:500; color:#9ca3af; margin:0;">${submittedDate}</p>
                         </td>
                       </tr>
                     </table>
@@ -261,34 +184,27 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
           <!-- ===== YOUR ENQUIRY DETAILS ===== -->
           <tr>
-            <td style="padding: 32px 40px 0 40px;" class="mobile-padding">
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                <tr>
-                  <td style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:11px; font-weight:700; color:#dc2626; letter-spacing:2px; text-transform:uppercase; padding-bottom:16px;">
-                    Your Enquiry Details
-                  </td>
-                </tr>
-              </table>
-
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color:#fafafa; border:1px solid #e5e7eb; border-radius:12px; overflow:hidden;">
+            <td style="padding: 0 44px 32px 44px;" class="mobile-padding">
+              <p style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:10px; font-weight:700; color:#9ca3af; letter-spacing:2px; text-transform:uppercase; margin:0 0 14px 0;">Enquiry Summary</p>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="border:1px solid #e5e7eb; border-radius:10px; overflow:hidden;">
                 <!-- Name -->
                 <tr>
-                  <td style="padding: 14px 20px; border-bottom:1px solid #f0f0f0;">
+                  <td style="padding: 13px 18px; border-bottom:1px solid #f3f4f6; background-color:#fafafa;">
                     <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                       <tr>
-                        <td class="detail-label" style="width:120px; vertical-align:top; font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:12px; font-weight:600; color:#9ca3af; text-transform:uppercase; letter-spacing:0.5px;">Name</td>
-                        <td style="vertical-align:top; font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:14px; font-weight:600; color:#1a1a1a;">${name}</td>
+                        <td class="detail-label" style="width:110px; vertical-align:top; font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:11px; font-weight:600; color:#9ca3af; text-transform:uppercase; letter-spacing:0.5px;">Name</td>
+                        <td class="detail-value" style="vertical-align:top; font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:14px; font-weight:600; color:#111827;">${name}</td>
                       </tr>
                     </table>
                   </td>
                 </tr>
                 <!-- Email -->
                 <tr>
-                  <td style="padding: 14px 20px; border-bottom:1px solid #f0f0f0;">
+                  <td style="padding: 13px 18px; border-bottom:1px solid #f3f4f6;">
                     <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                       <tr>
-                        <td class="detail-label" style="width:120px; vertical-align:top; font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:12px; font-weight:600; color:#9ca3af; text-transform:uppercase; letter-spacing:0.5px;">Email</td>
-                        <td style="vertical-align:top; font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:14px; font-weight:500; color:#1a1a1a;">${email}</td>
+                        <td class="detail-label" style="width:110px; vertical-align:top; font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:11px; font-weight:600; color:#9ca3af; text-transform:uppercase; letter-spacing:0.5px;">Email</td>
+                        <td class="detail-value" style="vertical-align:top; font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:14px; font-weight:500; color:#111827;">${email}</td>
                       </tr>
                     </table>
                   </td>
@@ -296,11 +212,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                 ${phone ? `
                 <!-- Phone -->
                 <tr>
-                  <td style="padding: 14px 20px; border-bottom:1px solid #f0f0f0;">
+                  <td style="padding: 13px 18px; border-bottom:1px solid #f3f4f6; background-color:#fafafa;">
                     <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                       <tr>
-                        <td class="detail-label" style="width:120px; vertical-align:top; font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:12px; font-weight:600; color:#9ca3af; text-transform:uppercase; letter-spacing:0.5px;">Phone</td>
-                        <td style="vertical-align:top; font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:14px; font-weight:500; color:#1a1a1a;">${phone}</td>
+                        <td class="detail-label" style="width:110px; vertical-align:top; font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:11px; font-weight:600; color:#9ca3af; text-transform:uppercase; letter-spacing:0.5px;">Phone</td>
+                        <td class="detail-value" style="vertical-align:top; font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:14px; font-weight:500; color:#111827;">${phone}</td>
                       </tr>
                     </table>
                   </td>
@@ -309,11 +225,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                 ${country ? `
                 <!-- Country -->
                 <tr>
-                  <td style="padding: 14px 20px; border-bottom:1px solid #f0f0f0;">
+                  <td style="padding: 13px 18px; border-bottom:1px solid #f3f4f6;">
                     <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                       <tr>
-                        <td class="detail-label" style="width:120px; vertical-align:top; font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:12px; font-weight:600; color:#9ca3af; text-transform:uppercase; letter-spacing:0.5px;">Country</td>
-                        <td style="vertical-align:top; font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:14px; font-weight:500; color:#1a1a1a;">${country}</td>
+                        <td class="detail-label" style="width:110px; vertical-align:top; font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:11px; font-weight:600; color:#9ca3af; text-transform:uppercase; letter-spacing:0.5px;">Country</td>
+                        <td class="detail-value" style="vertical-align:top; font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:14px; font-weight:500; color:#111827;">${country}</td>
                       </tr>
                     </table>
                   </td>
@@ -321,12 +237,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                 ` : ""}
                 <!-- Service -->
                 <tr>
-                  <td style="padding: 14px 20px; border-bottom:1px solid #f0f0f0;">
+                  <td style="padding: 13px 18px; border-bottom:1px solid #f3f4f6; background-color:#fafafa;">
                     <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                       <tr>
-                        <td class="detail-label" style="width:120px; vertical-align:top; font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:12px; font-weight:600; color:#9ca3af; text-transform:uppercase; letter-spacing:0.5px;">Service</td>
-                        <td style="vertical-align:top;">
-                          <span style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:12px; font-weight:700; color:#dc2626; background-color:#fef2f2; padding:4px 12px; border-radius:6px; display:inline-block;">${serviceName}</span>
+                        <td class="detail-label" style="width:110px; vertical-align:top; font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:11px; font-weight:600; color:#9ca3af; text-transform:uppercase; letter-spacing:0.5px;">Service</td>
+                        <td class="detail-value" style="vertical-align:top;">
+                          <span style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:11px; font-weight:700; color:#dc2626; background-color:#fef2f2; padding:4px 10px; border-radius:5px; display:inline-block; letter-spacing:0.3px;">${serviceName}</span>
                         </td>
                       </tr>
                     </table>
@@ -334,11 +250,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                 </tr>
                 <!-- Message -->
                 <tr>
-                  <td style="padding: 14px 20px;">
+                  <td style="padding: 13px 18px;">
                     <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                       <tr>
-                        <td class="detail-label" style="width:120px; vertical-align:top; font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:12px; font-weight:600; color:#9ca3af; text-transform:uppercase; letter-spacing:0.5px;">Message</td>
-                        <td style="vertical-align:top; font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:14px; font-weight:400; color:#374151; line-height:1.6;">${message || "No message provided"}</td>
+                        <td class="detail-label" style="width:110px; vertical-align:top; font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:11px; font-weight:600; color:#9ca3af; text-transform:uppercase; letter-spacing:0.5px; padding-top:2px;">Message</td>
+                        <td class="detail-value" style="vertical-align:top; font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:13px; font-weight:400; color:#374151; line-height:1.65;">${message || "—"}</td>
                       </tr>
                     </table>
                   </td>
@@ -347,23 +263,96 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             </td>
           </tr>
 
-          <!-- ===== CTA SECTION ===== -->
+          <!-- ===== PROCESS TIMELINE ===== -->
           <tr>
-            <td style="padding: 36px 40px 0 40px; text-align:center;" class="mobile-padding">
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" style="background-color:#0a0a0a; border-radius:12px; width:100%;">
+            <td style="padding: 0 44px 36px 44px;" class="mobile-padding">
+              <p style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:10px; font-weight:700; color:#9ca3af; letter-spacing:2px; text-transform:uppercase; margin:0 0 16px 0;">What Happens Next</p>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <!-- Step 1 -->
                 <tr>
-                  <td style="padding: 28px 32px; text-align:center;">
-                    <p style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:15px; font-weight:600; color:#ffffff; margin:0 0 6px 0;">
-                      Need to reach us sooner?
+                  <td style="padding-bottom:6px;">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                      <tr>
+                        <td style="width:40px; vertical-align:top;">
+                          <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                            <tr>
+                              <td style="width:32px; height:32px; background-color:#0a0a0a; border-radius:8px; text-align:center; vertical-align:middle; font-family:'Inter',sans-serif; font-size:12px; font-weight:800; color:#ffffff; line-height:32px;">01</td>
+                            </tr>
+                          </table>
+                        </td>
+                        <td style="vertical-align:top; padding-left:14px;">
+                          <p class="step-title" style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:14px; font-weight:600; color:#111827; margin:0 0 3px 0;">Requirement Analysis</p>
+                          <p class="step-desc" style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:12px; font-weight:400; color:#9ca3af; line-height:1.5; margin:0;">Our team carefully evaluates your project scope, objectives, and deliverables.</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <!-- Connector -->
+                <tr><td style="padding: 0 0 6px 15px;"><table role="presentation" cellspacing="0" cellpadding="0" border="0"><tr><td style="width:1px; height:14px; background-color:#e5e7eb;"></td></tr></table></td></tr>
+                <!-- Step 2 -->
+                <tr>
+                  <td style="padding-bottom:6px;">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                      <tr>
+                        <td style="width:40px; vertical-align:top;">
+                          <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                            <tr>
+                              <td style="width:32px; height:32px; background-color:#0a0a0a; border-radius:8px; text-align:center; vertical-align:middle; font-family:'Inter',sans-serif; font-size:12px; font-weight:800; color:#ffffff; line-height:32px;">02</td>
+                            </tr>
+                          </table>
+                        </td>
+                        <td style="vertical-align:top; padding-left:14px;">
+                          <p class="step-title" style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:14px; font-weight:600; color:#111827; margin:0 0 3px 0;">Consultation Call</p>
+                          <p class="step-desc" style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:12px; font-weight:400; color:#9ca3af; line-height:1.5; margin:0;">A dedicated representative connects with you to understand your vision in detail.</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <!-- Connector -->
+                <tr><td style="padding: 0 0 6px 15px;"><table role="presentation" cellspacing="0" cellpadding="0" border="0"><tr><td style="width:1px; height:14px; background-color:#e5e7eb;"></td></tr></table></td></tr>
+                <!-- Step 3 -->
+                <tr>
+                  <td>
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                      <tr>
+                        <td style="width:40px; vertical-align:top;">
+                          <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                            <tr>
+                              <td style="width:32px; height:32px; background-color:#dc2626; border-radius:8px; text-align:center; vertical-align:middle; font-family:'Inter',sans-serif; font-size:12px; font-weight:800; color:#ffffff; line-height:32px;">03</td>
+                            </tr>
+                          </table>
+                        </td>
+                        <td style="vertical-align:top; padding-left:14px;">
+                          <p class="step-title" style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:14px; font-weight:600; color:#111827; margin:0 0 3px 0;">Tailored Proposal</p>
+                          <p class="step-desc" style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:12px; font-weight:400; color:#9ca3af; line-height:1.5; margin:0;">We present a customised strategy and proposal crafted specifically for your brand.</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ===== CTA ===== -->
+          <tr>
+            <td style="padding: 0 44px 36px 44px;" class="mobile-padding">
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color:#fafafa; border:1px solid #e5e7eb; border-radius:10px;">
+                <tr>
+                  <td style="padding: 24px 28px; text-align:center;">
+                    <p style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:14px; font-weight:600; color:#111827; margin:0 0 4px 0;">
+                      Need immediate assistance?
                     </p>
-                    <p style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:13px; font-weight:400; color:#a0a0a0; margin:0 0 20px 0;">
-                      Reply directly to this email or reach out on our channels below.
+                    <p style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:12px; font-weight:400; color:#9ca3af; margin:0 0 18px 0;">
+                      Reply directly to this email — our team monitors responses in real time.
                     </p>
                     <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center">
                       <tr>
                         <td>
-                          <a href="mailto:brandbrickstudio@gmail.com" style="display:inline-block; background-color:#dc2626; color:#ffffff; font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:13px; font-weight:700; text-decoration:none; padding:12px 28px; border-radius:8px; letter-spacing:0.5px;">
-                            Reply to Us
+                          <a href="mailto:brandbrickstudio@gmail.com" style="display:inline-block; background-color:#0a0a0a; color:#ffffff; font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:12px; font-weight:700; text-decoration:none; padding:11px 28px; border-radius:7px; letter-spacing:0.3px;">
+                            Contact Us Directly
                           </a>
                         </td>
                       </tr>
@@ -376,45 +365,27 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
           <!-- ===== FOOTER ===== -->
           <tr>
-            <td style="padding: 36px 40px 40px 40px; text-align:center;" class="mobile-padding">
-              
+            <td style="padding: 0 44px 32px 44px;" class="mobile-padding">
               <!-- Divider -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" style="margin-bottom:20px;">
-                <tr>
-                  <td style="width:200px; height:1px; background-color:#e5e7eb;"></td>
-                </tr>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom:20px;">
+                <tr><td style="height:1px; background-color:#f0f0f0;"></td></tr>
               </table>
-
-              <!-- Brand Footer -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center">
+              <!-- Footer Content -->
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                 <tr>
-                  <td style="padding-bottom:8px;">
-                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center">
+                  <td style="vertical-align:middle;">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0">
                       <tr>
-                        <td style="width:8px; height:8px; background-color:#dc2626; border-radius:2px;"></td>
+                        <td style="width:7px; height:7px; background-color:#dc2626; border-radius:2px;"></td>
                         <td style="width:6px;"></td>
-                        <td style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:14px; font-weight:700; color:#1a1a1a;">
-                          Brand Brick Studio
-                        </td>
+                        <td style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:12px; font-weight:700; color:#111827;">Brand Brick Studio</td>
                       </tr>
                     </table>
+                    <p style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:10px; font-weight:500; color:#9ca3af; margin:4px 0 0 0; letter-spacing:1px; text-transform:uppercase;">Creative &bull; Content &bull; Code</p>
                   </td>
-                </tr>
-                <tr>
-                  <td style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:11px; font-weight:400; color:#9ca3af; line-height:1.6; padding-bottom: 6px;">
-                    Creative. Content. Code. Growth.
-                  </td>
-                </tr>
-                <tr>
-                  <td style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:11px; font-weight:400; color:#9ca3af; line-height:1.6;">
-                    &copy; ${currentYear} Brand Brick Studio. All rights reserved.
-                  </td>
-                </tr>
-                <tr>
-                  <td style="padding-top: 12px;">
-                    <a href="https://brandbrickstudio.in" style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:11px; font-weight:600; color:#dc2626; text-decoration:none;">
-                      brandbrickstudio.in
-                    </a>
+                  <td style="text-align:right; vertical-align:middle;">
+                    <a href="https://brandbrickstudio.in" style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:11px; font-weight:600; color:#dc2626; text-decoration:none;">brandbrickstudio.in</a>
+                    <p style="font-family:'Inter','Helvetica Neue',Arial,sans-serif; font-size:10px; font-weight:400; color:#d1d5db; margin:4px 0 0 0;">&copy; ${currentYear} All rights reserved.</p>
                   </td>
                 </tr>
               </table>
@@ -434,30 +405,33 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 `;
 
   // Build plain text version for deliverability
-  const textEmail = `
-Thank You, ${firstName}!
+  const textEmail = `BRAND BRICK STUDIO — Enquiry Received
+Reference: ${refId}
+Date: ${submittedDate}
 
-We've received your enquiry and our team is already on it.
+Hello ${firstName},
 
-WHAT HAPPENS NEXT:
-1. Review & Research - Our team will carefully review your project requirements.
-2. Personal Outreach - A dedicated representative will reach out within 24 hours.
-3. Custom Strategy - We'll present a tailored growth strategy for your brand.
+Thank you for reaching out to Brand Brick Studio. We have received your enquiry and it has been assigned to our team. A dedicated representative will review your requirements and get back to you within 24 hours.
 
-YOUR ENQUIRY DETAILS:
+ENQUIRY SUMMARY
 - Name: ${name}
 - Email: ${email}
 ${phone ? `- Phone: ${phone}` : ""}
 ${country ? `- Country: ${country}` : ""}
 - Service: ${serviceName}
-- Message: ${message || "No message provided"}
+- Message: ${message || "—"}
 
-Need to reach us sooner? Reply directly to this email.
+WHAT HAPPENS NEXT
+01 — Requirement Analysis: Our team evaluates your project scope and objectives.
+02 — Consultation Call: A representative connects with you to discuss your vision.
+03 — Tailored Proposal: We present a customised strategy crafted for your brand.
 
----
+Need immediate assistance? Reply directly to this email.
+
+—
 Brand Brick Studio
-Creative. Content. Code. Growth.
-© ${currentYear} Brand Brick Studio. All rights reserved.
+Creative. Content. Code.
+© ${currentYear} All rights reserved.
 https://brandbrickstudio.in
 `;
 
@@ -469,12 +443,12 @@ https://brandbrickstudio.in
       },
       replyTo: GMAIL_USER,
       to: email,
-      subject: `Thank you for your enquiry, ${firstName}! — Brand Brick Studio`,
+      subject: `Enquiry Received — Ref ${refId} | Brand Brick Studio`,
       text: textEmail,
       html: htmlEmail,
       headers: {
         "X-Priority": "3",
-        "X-Mailer": "Brand Brick Studio Mailer",
+        "X-Mailer": "Brand Brick Studio",
         "List-Unsubscribe": `<mailto:${GMAIL_USER}?subject=unsubscribe>`,
       },
     });
