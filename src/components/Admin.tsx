@@ -17,6 +17,9 @@ export function Admin() {
   const [googleSheetsUrl, setGoogleSheetsUrl] = useState("");
   const [spreadsheetUrl, setSpreadsheetUrl] = useState("");
   const [showSettings, setShowSettings] = useState(false);
+  const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
+  const [settingsPasscode, setSettingsPasscode] = useState("");
+  const [isSettingsPasscodeError, setIsSettingsPasscodeError] = useState(false);
   const [isSavingEmails, setIsSavingEmails] = useState(false);
 
   const fetchNotificationEmails = async () => {
@@ -88,6 +91,28 @@ export function Admin() {
       setIsError(true);
       setTimeout(() => setIsError(false), 1000);
       setPasscode("");
+    }
+  };
+
+  const handleToggleSettings = () => {
+    if (showSettings) {
+      setShowSettings(false);
+    } else {
+      setShowPasswordPrompt(true);
+    }
+  };
+
+  const handleVerifySettingsPasscode = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (settingsPasscode === "8128901411") {
+      setShowPasswordPrompt(false);
+      setShowSettings(true);
+      setSettingsPasscode("");
+      setIsSettingsPasscodeError(false);
+    } else {
+      setIsSettingsPasscodeError(true);
+      setTimeout(() => setIsSettingsPasscodeError(false), 1000);
+      setSettingsPasscode("");
     }
   };
 
@@ -273,7 +298,7 @@ export function Admin() {
             </button>
 
             <button 
-              onClick={() => setShowSettings(!showSettings)}
+              onClick={handleToggleSettings}
               className={`p-2.5 rounded-full border transition-all flex items-center justify-center cursor-pointer ${
                 showSettings 
                   ? "bg-brand/20 border-brand/50 text-brand hover:bg-brand/35 shadow-[0_0_15px_rgba(220,38,38,0.15)]" 
@@ -485,6 +510,66 @@ export function Admin() {
           </div>
         )}
       </div>
+
+      {/* Settings Password Prompt Modal */}
+      <AnimatePresence>
+        {showPasswordPrompt && (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-[99999]">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="w-full max-w-sm bg-[#0a0a0a] border border-zinc-800/80 p-8 rounded-3xl shadow-2xl relative overflow-hidden"
+            >
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-brand to-transparent opacity-50" />
+              
+              <div className="flex justify-center mb-6">
+                <div className="w-12 h-12 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center">
+                  <Lock className="text-brand" size={20} />
+                </div>
+              </div>
+              
+              <div className="text-center mb-6">
+                <h3 className="text-lg font-bold text-white mb-1">Settings Access</h3>
+                <p className="text-zinc-500 text-xs">Enter settings passcode to proceed</p>
+              </div>
+
+              <form onSubmit={handleVerifySettingsPasscode} className="space-y-4">
+                <motion.input
+                  animate={isSettingsPasscodeError ? { x: [-8, 8, -8, 8, 0] } : {}}
+                  transition={{ duration: 0.4 }}
+                  type="password"
+                  value={settingsPasscode}
+                  onChange={(e) => setSettingsPasscode(e.target.value)}
+                  placeholder="••••••••••"
+                  className={`w-full bg-zinc-950/60 border ${isSettingsPasscodeError ? 'border-red-500' : 'border-zinc-800/80 focus:border-brand/40'} text-white text-center text-xl tracking-[0.4em] rounded-xl px-4 py-3 focus:outline-none transition-colors`}
+                  autoFocus
+                />
+                
+                <div className="flex gap-3 pt-2">
+                  <button 
+                    type="button"
+                    onClick={() => {
+                      setShowPasswordPrompt(false);
+                      setSettingsPasscode("");
+                      setIsSettingsPasscodeError(false);
+                    }}
+                    className="flex-1 bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-white py-3 rounded-xl text-xs font-bold transition-all text-center cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button 
+                    type="submit"
+                    className="flex-1 bg-brand text-white py-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 hover:shadow-[0_0_15px_rgba(220,38,38,0.25)] cursor-pointer"
+                  >
+                    <Unlock size={12} /> Unlock
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
