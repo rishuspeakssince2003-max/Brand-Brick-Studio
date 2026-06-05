@@ -227,8 +227,11 @@ export function Admin() {
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-brand to-transparent opacity-50" />
           
           <div className="flex justify-center mb-8">
-            <div className="w-16 h-16 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center">
-              <Lock className="text-brand" size={28} />
+            <div className="w-20 h-20 rounded-full bg-zinc-900 border border-zinc-800/80 flex items-center justify-center relative">
+              <img src="/logo.png" alt="Brand Brick Logo" className="w-11 h-auto" />
+              <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-zinc-950 border border-zinc-800 flex items-center justify-center text-brand">
+                <Lock size={12} />
+              </div>
             </div>
           </div>
           
@@ -268,10 +271,13 @@ export function Admin() {
       <div className="max-w-7xl mx-auto">
         <header className="flex flex-col md:flex-row items-start md:items-center justify-between mb-12 gap-6">
           <div>
-            <h1 className="text-3xl md:text-4xl font-display font-bold tracking-tight mb-2 flex items-center gap-3">
-              <div className="w-3 h-3 rounded-full bg-brand animate-pulse" />
-              Command Center
-            </h1>
+            <div className="flex items-center gap-3.5 mb-2">
+              <img src="/logo.png" alt="Brand Brick Logo" className="w-10 h-auto shrink-0" />
+              <h1 className="text-3xl md:text-4xl font-display font-bold tracking-tight flex items-center gap-2.5">
+                Command Center
+                <div className="w-2.5 h-2.5 rounded-full bg-brand animate-pulse" />
+              </h1>
+            </div>
             <p className="text-zinc-400">Viewing all active leads and contact submissions.</p>
           </div>
           
