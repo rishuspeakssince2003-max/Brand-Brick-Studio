@@ -229,6 +229,26 @@ export function Contact() {
       } catch (emailConfigErr) {
         console.error("Failed to load email configurations:", emailConfigErr);
       }
+
+      // 4. Send branded confirmation email to the enquiry submitter
+      try {
+        await fetch("/api/send-email", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            name: trimmedName,
+            email: trimmedEmail,
+            phone: trimmedPhone,
+            country: trimmedCountry,
+            service: formData.service || "General Inquiry",
+            message: trimmedMessage
+          })
+        });
+      } catch (confirmEmailErr) {
+        console.error("Failed to send confirmation email:", confirmEmailErr);
+      }
       
       setStatus("success");
       setFormData({ name: "", email: "", phone: "", country: "", service: "", message: "" });
