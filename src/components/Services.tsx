@@ -102,6 +102,24 @@ const services = [
 ];
 
 /* ══════════════════════════════════════════════════════════
+   BENTO LAYOUTS DEFINITIONS
+   ══════════════════════════════════════════════════════════ */
+const cardLayouts = [
+  "md:col-span-2 md:row-span-1", // Card 0: Horizontal wide (col 1-2, row 1)
+  "md:col-span-1 md:row-span-2", // Card 1: Vertical tall (col 3, row 1-2)
+  "md:col-span-1 md:row-span-1", // Card 2: Standard (col 1, row 2)
+  "md:col-span-1 md:row-span-1", // Card 3: Standard (col 2, row 2)
+  "md:col-span-1 md:row-span-2", // Card 4: Vertical tall (col 1, row 3-4)
+  "md:col-span-2 md:row-span-1", // Card 5: Horizontal wide (col 2-3, row 3)
+  "md:col-span-1 md:row-span-1", // Card 6: Standard (col 2, row 4)
+  "md:col-span-1 md:row-span-1", // Card 7: Standard (col 3, row 4)
+  "md:col-span-2 md:row-span-1", // Card 8: Horizontal wide (col 1-2, row 5)
+  "md:col-span-1 md:row-span-1", // Card 9: Standard (col 3, row 5)
+  "md:col-span-1 md:row-span-1", // Card 10: Standard (col 1, row 6)
+  "md:col-span-2 md:row-span-1", // Card 11: Horizontal wide (col 2-3, row 6)
+];
+
+/* ══════════════════════════════════════════════════════════
    ANIMATED SERVICE CARD
    ══════════════════════════════════════════════════════════ */
 function ServiceCard({ service, index }: { service: typeof services[number]; index: number; key?: any }) {
@@ -120,16 +138,18 @@ function ServiceCard({ service, index }: { service: typeof services[number]; ind
         },
       }}
       whileHover={{ 
-        scale: 1.04,
-        transition: { type: "spring", stiffness: 450, damping: 25 }
+        y: -8,
+        rotateX: 2,
+        rotateY: -2,
+        transition: { type: "spring", stiffness: 400, damping: 30 }
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="group relative rounded-[1.75rem] overflow-hidden cursor-default md:col-span-1"
+      className={`group relative rounded-[2rem] overflow-hidden cursor-default ${cardLayouts[index] || "md:col-span-1"}`}
       style={{ minHeight: 240, zIndex: hovered ? 20 : 1 }}
     >
       {/* ── Animated Border Trace ── */}
-      <div className="absolute inset-0 rounded-[1.75rem] p-px overflow-hidden">
+      <div className="absolute inset-0 rounded-[2rem] p-px overflow-hidden">
         <div
           className="absolute inset-[-200%] transition-opacity duration-500"
           style={{
@@ -138,12 +158,12 @@ function ServiceCard({ service, index }: { service: typeof services[number]; ind
             animation: hovered ? "border-spin 3s linear infinite" : "none",
           }}
         />
-        {/* Static border */}
-        <div className="absolute inset-px rounded-[calc(1.75rem-1px)] bg-[#0a0a0a] transition-colors duration-500 light:bg-white" />
+        {/* Frosted glass container with subtle white borders at 10% opacity */}
+        <div className="absolute inset-px rounded-[calc(2rem-1px)] bg-[#050505]/45 border border-white/10 backdrop-blur-md transition-colors duration-500 light:bg-white/45 light:border-zinc-200" />
       </div>
 
-      {/* ── Card inner ── */}
-      <div className="relative z-10 h-full flex flex-col justify-between p-7 md:p-8 rounded-[1.75rem] border border-zinc-800/60 light:border-zinc-200 group-hover:border-transparent transition-colors duration-500 overflow-hidden">
+      {/* ── Card inner with electric blue or neon purple glows ── */}
+      <div className="relative z-10 h-full flex flex-col justify-between p-7 md:p-8 rounded-[2rem] border border-transparent transition-all duration-500 overflow-hidden shadow-[inset_0_0_20px_rgba(59,130,246,0.03)] hover:shadow-[inset_0_0_25px_rgba(168,85,247,0.15),0_15px_30px_rgba(0,0,0,0.5)]">
 
         {/* Hover gradient wash */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#dc2626]/[0.07] via-transparent to-[#dc2626]/[0.03] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
@@ -332,6 +352,7 @@ export function Services() {
         {/* ── Bento Grid ── */}
         <motion.div
           className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 auto-rows-[minmax(240px,auto)]"
+          style={{ perspective: 1200 }}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
           variants={{

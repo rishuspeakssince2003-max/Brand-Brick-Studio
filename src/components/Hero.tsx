@@ -202,163 +202,163 @@ export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true });
 
-  // Mouse spotlight
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const sx = useSpring(mx, { stiffness: 30, damping: 20 });
-  const sy = useSpring(my, { stiffness: 30, damping: 20 });
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const h = (e: MouseEvent) => {
-      const r = el.getBoundingClientRect();
-      mx.set(e.clientX - r.left);
-      my.set(e.clientY - r.top);
-    };
-    el.addEventListener("mousemove", h);
-    return () => el.removeEventListener("mousemove", h);
-  }, [mx, my]);
-
   return (
     <section
       ref={ref}
-      className="relative min-h-[100dvh] flex items-center pt-24 md:pt-32 px-4 md:px-6 overflow-hidden"
+      className="relative min-h-[100dvh] flex flex-col justify-between pt-32 pb-16 px-4 md:px-6 overflow-hidden"
     >
-      {/* ── Backgrounds ── */}
-      {/* Background is now fully transparent to show the WebGL fluid simulation underneath */}
+      {/* ── Background Video & Fallback Overlay ── */}
+      <video 
+        autoplay 
+        loop 
+        muted 
+        playsinline 
+        poster="hero-poster.webp"
+        className="absolute inset-0 w-full h-full object-cover -z-25 pointer-events-none"
+      >
+        <source src="hero-loop.webm" type="video/webm" />
+        <source src="hero-loop.mp4" type="video/mp4" />
+      </video>
 
-      {/* Grid */}
+      {/* 60% Dark Overlay over video */}
+      <div className="absolute inset-0 bg-[#050505]/65 light:bg-[#fafafa]/85 -z-20 pointer-events-none" />
+
+      {/* Subtle WebGL fluid / lava container backdrop glow fallbacks */}
+      <motion.div
+        animate={{ scale: [1, 1.2, 1], opacity: [0.03, 0.08, 0.03] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#dc2626]/20 blur-[180px] rounded-full pointer-events-none -z-10"
+      />
+
+      {/* Faint dot pattern grid overlay */}
       <div
-        className="absolute inset-0 -z-20 opacity-[0.02] pointer-events-none"
+        className="absolute inset-0 -z-15 opacity-[0.015] pointer-events-none"
         style={{
-          backgroundImage: `linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px),
-                            linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px)`,
+          backgroundImage: `linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px)`,
           backgroundSize: "72px 72px",
         }}
       />
 
-      {/* Mouse spot */}
-      <motion.div
-        className="absolute w-[500px] h-[500px] rounded-full -z-10 pointer-events-none hidden md:block"
-        style={{
-          x: sx, y: sy,
-          translateX: "-50%", translateY: "-50%",
-          background: "radial-gradient(circle, rgba(220,38,38,0.05) 0%, transparent 60%)",
-        }}
-      />
+      {/* ── Main Content Container ── */}
+      <div className="max-w-7xl mx-auto w-full flex-grow flex flex-col items-center justify-center relative z-10 text-center py-12">
+        {/* Top Badge */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="mb-8"
+        >
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-zinc-800/80 bg-zinc-900/40 backdrop-blur-md light:border-zinc-200 light:bg-white/50">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-[#dc2626] opacity-75 animate-ping" />
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#dc2626]" />
+            </span>
+            <span className="text-[10px] md:text-[11px] font-bold text-zinc-500 uppercase tracking-[0.2em] font-mono">
+              Silvassa's #1 Creative Studio
+            </span>
+          </span>
+        </motion.div>
 
-      {/* Ambient */}
-      <motion.div
-        animate={{ scale: [1, 1.25, 1], opacity: [0.06, 0.12, 0.06] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-[5%] left-[10%] w-[500px] h-[500px] bg-[#dc2626]/15 blur-[160px] rounded-full pointer-events-none -z-10"
-      />
+        {/* Kinetic Massive Headline */}
+        <motion.h1
+          className="font-display font-black tracking-tighter leading-[0.9] mb-6 max-w-5xl text-center"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <span className="block text-[2.8rem] sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-white light:text-zinc-900 uppercase font-extrabold">
+            Engineered
+          </span>
+          <span className="block text-[2.8rem] sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-[#dc2626] italic uppercase font-extrabold">
+            For Growth.
+          </span>
+        </motion.h1>
 
-      {/* ── Content ── */}
-      <div className="max-w-7xl mx-auto w-full relative z-10 pt-4 pb-28 md:py-0">
-        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+        {/* Subtitle */}
+        <motion.p
+          className="text-zinc-400 light:text-zinc-500 text-base sm:text-lg md:text-xl leading-relaxed mb-12 max-w-xl font-light font-display"
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+        >
+          One team, twelve services, zero excuses.
+        </motion.p>
 
-          {/* LEFT — Copy */}
-          <div className="flex-1 max-w-2xl">
-            {/* Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="mb-8"
-            >
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-zinc-800/80 bg-zinc-900/50 backdrop-blur-sm light:border-zinc-200 light:bg-white/50">
-                <span className="relative flex h-1.5 w-1.5">
-                  <span className="absolute inline-flex h-full w-full rounded-full bg-[#dc2626] opacity-75 animate-ping" />
-                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#dc2626]" />
-                </span>
-                <span className="text-[10px] md:text-[11px] font-bold text-zinc-500 uppercase tracking-[0.2em]">
-                  Silvassa's #1 Creative Studio
-                </span>
-              </span>
-            </motion.div>
+        {/* Tactile Switch CTA Button */}
+        <motion.div
+          className="flex flex-col sm:flex-row items-center gap-6 justify-center"
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <motion.a
+            href="#contact"
+            className="relative px-10 py-5 rounded-2xl font-display font-bold uppercase tracking-wider text-white bg-[#dc2626] border border-white/20 select-none cursor-pointer flex items-center justify-center text-sm md:text-base"
+            style={{
+              boxShadow: "0 6px 0 #991b1b, 0 12px 25px rgba(220,38,38,0.35)",
+              textShadow: "0 1px 2px rgba(0,0,0,0.5)"
+            }}
+            whileHover={{
+              y: 2,
+              boxShadow: "0 4px 0 #991b1b, 0 8px 30px rgba(220,38,38,0.65)",
+            }}
+            whileTap={{
+              y: 6,
+              boxShadow: "0 0px 0 #991b1b, 0 2px 10px rgba(220,38,38,0.4)",
+            }}
+            transition={{ type: "spring", stiffness: 600, damping: 15 }}
+          >
+            Book a Call
+          </motion.a>
 
-            {/* Headline */}
-            <motion.h1
-              className="font-display font-bold tracking-tight leading-[1.0] mb-6"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <span className="block text-[1.9rem] sm:text-5xl md:text-[3.5rem] lg:text-[4rem] text-white light:text-zinc-900 mb-2">
-                We make brands
-              </span>
-              <span className="block text-[1.9rem] sm:text-5xl md:text-[3.5rem] lg:text-[4rem] text-white light:text-zinc-900 whitespace-nowrap">
-                impossible to <RotatingWord />
-              </span>
-            </motion.h1>
+          <a
+            href="#services"
+            className="group bg-transparent text-zinc-300 border border-zinc-800 hover:border-zinc-600 px-9 py-5 rounded-2xl text-sm font-bold uppercase tracking-wider hover:bg-white/[0.03] transition-all duration-400 text-center inline-flex justify-center items-center gap-2 light:text-zinc-850 light:border-zinc-300 light:hover:bg-zinc-100/50"
+          >
+            See What We Do
+            <svg className="w-4 h-4 text-zinc-500 group-hover:text-white light:group-hover:text-zinc-900 group-hover:translate-x-1 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+        </motion.div>
+      </div>
 
-            {/* Subtext */}
-            <motion.p
-              className="text-zinc-500 light:text-zinc-600 text-base md:text-lg leading-relaxed mb-8 max-w-lg"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            >
-              Strategy. Design. Video. Code. Ads. One team, twelve services, zero excuses.
-              We build everything your brand needs to win.
-            </motion.p>
-
-            {/* CTAs */}
-            <motion.div
-              className="flex flex-col sm:flex-row gap-3 mb-12"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <LiquidButton href="#contact" variant="solid" size="lg">
-                Start Your Project
-              </LiquidButton>
-              <a
-                href="#services"
-                className="group bg-transparent text-white border border-zinc-800 px-8 py-4 md:px-10 md:py-5 rounded-full text-sm font-bold uppercase tracking-wider hover:border-zinc-600 hover:bg-white/[0.03] transition-all duration-400 text-center inline-flex justify-center items-center gap-2 light:text-zinc-900 light:border-zinc-300 light:hover:bg-zinc-100/50"
-              >
-                See What We Do
-                <svg className="w-4 h-4 text-zinc-600 light:text-zinc-400 group-hover:text-white light:group-hover:text-zinc-900 group-hover:translate-x-1 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </a>
-            </motion.div>
-
-            {/* Stats row */}
-            <motion.div
-              className="flex flex-wrap items-center gap-x-6 gap-y-4 md:gap-10 pt-6 border-t border-zinc-900/80"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.7, duration: 0.8 }}
-            >
-              {stats.map((s, i) => {
-                const count = useCounter(s.value, 2, inView);
-                return (
-                  <div key={i} className="flex items-center gap-6 md:gap-10">
-                    <div className="flex flex-col">
-                      <div className="flex items-baseline gap-0.5">
-                        <span className="text-2xl md:text-3xl font-display font-bold text-white light:text-zinc-900 tracking-tighter tabular-nums">
-                          {count}
-                        </span>
-                        {s.suffix && <span className="text-lg font-display font-bold text-[#dc2626]">{s.suffix}</span>}
-                      </div>
-                      <span className="text-[9px] md:text-[10px] text-zinc-600 font-bold uppercase tracking-[0.2em]">{s.label}</span>
+      {/* ── Bottom Section: Stats & Logo Marquee ── */}
+      <div className="max-w-7xl mx-auto w-full relative z-10 pt-8 border-t border-zinc-900/60 light:border-zinc-200">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
+          {/* Centered Stats Grid */}
+          <motion.div
+            className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 md:gap-12"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.7, duration: 0.8 }}
+          >
+            {stats.map((s, i) => {
+              const count = useCounter(s.value, 2, inView);
+              return (
+                <div key={i} className="flex items-center gap-8 md:gap-12">
+                  <div className="flex flex-col items-center md:items-start">
+                    <div className="flex items-baseline gap-0.5">
+                      <span className="text-3xl md:text-4xl font-display font-black text-white light:text-zinc-900 tracking-tighter tabular-nums">
+                        {count}
+                      </span>
+                      {s.suffix && <span className="text-xl font-display font-bold text-[#dc2626]">{s.suffix}</span>}
                     </div>
-                    {i < stats.length - 1 && (
-                      <div className="w-px h-6 bg-zinc-900 light:bg-zinc-200 hidden sm:block" />
-                    )}
+                    <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-[0.25em] mt-1">{s.label}</span>
                   </div>
-                );
-              })}
-            </motion.div>
-          </div>
+                  {i < stats.length - 1 && (
+                    <div className="w-px h-8 bg-zinc-850 light:bg-zinc-200 hidden sm:block" />
+                  )}
+                </div>
+              );
+            })}
+          </motion.div>
 
-          {/* RIGHT — Interactive Service Deck */}
-          <div className="flex-shrink-0 relative w-[300px] h-[300px] md:w-[420px] md:h-[420px] lg:w-[500px] lg:h-[500px] hidden lg:block" style={{ perspective: "1200px" }}>
-            <FloatingServiceDeck />
-          </div>
+          {/* Micro Marquee statement */}
+          <p className="text-[10px] md:text-[11px] font-bold text-zinc-500 light:text-zinc-500 uppercase tracking-[0.25em] text-center md:text-right max-w-xs leading-relaxed">
+            Crafting raw digital growth fromSilvassa to the world.
+          </p>
         </div>
 
         {/* Brand Logos Marquee */}
@@ -366,60 +366,56 @@ export function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.9, duration: 0.8 }}
-          className="mt-16 pt-10 border-t border-zinc-900/60"
+          className="mt-12 pt-8 border-t border-zinc-900/60 light:border-zinc-200"
         >
-          <p className="text-center text-[10px] md:text-[11px] font-bold text-zinc-600 uppercase tracking-[0.25em] mb-6">
-            TRUSTED BY THE NEXT GENERATION OF HIGH-GROWTH BRANDS
-          </p>
-          <div className="w-full overflow-hidden relative py-4">
+          <div className="w-full overflow-hidden relative py-2">
             {/* Soft fade masks on left and right edges */}
-            <div className="absolute inset-y-0 left-0 w-20 md:w-32 bg-gradient-to-r from-[#040404] to-transparent light:from-[#fafafa] z-10 pointer-events-none" />
-            <div className="absolute inset-y-0 right-0 w-20 md:w-32 bg-gradient-to-l from-[#040404] to-transparent light:from-[#fafafa] z-10 pointer-events-none" />
+            <div className="absolute inset-y-0 left-0 w-16 md:w-32 bg-gradient-to-r from-[#050505] to-transparent light:from-[#fafafa] z-10 pointer-events-none" />
+            <div className="absolute inset-y-0 right-0 w-16 md:w-32 bg-gradient-to-l from-[#050505] to-transparent light:from-[#fafafa] z-10 pointer-events-none" />
             
             <div className="flex w-[200%] animate-marquee gap-16 md:gap-24 whitespace-nowrap">
-              {/* Set of logos */}
               {Array(2).fill(null).map((_, i) => (
                 <div key={i} className="flex justify-around items-center min-w-full shrink-0">
                   {/* APEX */}
-                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 light:text-zinc-400 hover:text-white light:hover:text-zinc-900 transition-all duration-300">
-                    <svg className="w-6 h-6 text-zinc-600 light:text-zinc-400 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
+                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-500 light:text-zinc-400 hover:text-white light:hover:text-zinc-900 transition-all duration-300">
+                    <svg className="w-5 h-5 text-zinc-500 light:text-zinc-400 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
                       <path d="M12 2L2 22h4l6-12 6 12h4z" />
                     </svg>
-                    <span className="font-display font-bold text-xs md:text-sm tracking-[0.2em] group-hover:text-white light:group-hover:text-zinc-900 transition-colors duration-300">APEX.LABS</span>
+                    <span className="font-display font-bold text-xs tracking-[0.2em] group-hover:text-white light:group-hover:text-zinc-900 transition-colors duration-300">APEX.LABS</span>
                   </div>
                   
                   {/* KRONOS */}
-                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 light:text-zinc-400 hover:text-white light:hover:text-zinc-900 transition-all duration-300">
-                    <svg className="w-6 h-6 text-zinc-600 light:text-zinc-400 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
+                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-500 light:text-zinc-400 hover:text-white light:hover:text-zinc-900 transition-all duration-300">
+                    <svg className="w-5 h-5 text-zinc-500 light:text-zinc-400 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
                       <path d="M12 2v20M12 12l8-8M12 12l8 8M4 4h4v16H4z" />
                     </svg>
-                    <span className="font-display font-bold text-xs md:text-sm tracking-[0.2em] group-hover:text-white light:group-hover:text-zinc-900 transition-colors duration-300">KRONOS</span>
+                    <span className="font-display font-bold text-xs tracking-[0.2em] group-hover:text-white light:group-hover:text-zinc-900 transition-colors duration-300">KRONOS</span>
                   </div>
                   
                   {/* NEXUS */}
-                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 light:text-zinc-400 hover:text-white light:hover:text-zinc-900 transition-all duration-300">
-                    <svg className="w-6 h-6 text-zinc-600 light:text-zinc-400 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
+                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-500 light:text-zinc-400 hover:text-white light:hover:text-zinc-900 transition-all duration-300">
+                    <svg className="w-5 h-5 text-zinc-500 light:text-zinc-400 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
                       <circle cx="9" cy="12" r="5" />
                       <circle cx="15" cy="12" r="5" />
                     </svg>
-                    <span className="font-display font-bold text-xs md:text-sm tracking-[0.2em] group-hover:text-white light:group-hover:text-zinc-900 transition-colors duration-300">NEXUS.DIGITAL</span>
+                    <span className="font-display font-bold text-xs tracking-[0.2em] group-hover:text-white light:group-hover:text-zinc-900 transition-colors duration-300">NEXUS.DIGITAL</span>
                   </div>
                   
                   {/* VORTEX */}
-                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 light:text-zinc-400 hover:text-white light:hover:text-zinc-900 transition-all duration-300">
-                    <svg className="w-6 h-6 text-zinc-600 light:text-zinc-400 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
+                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-500 light:text-zinc-400 hover:text-white light:hover:text-zinc-900 transition-all duration-300">
+                    <svg className="w-5 h-5 text-zinc-500 light:text-zinc-400 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
                       <path d="M4 12a8 8 0 018-8v8H4zM20 12a8 8 0 01-8 8v-8h8z" />
                     </svg>
-                    <span className="font-display font-bold text-xs md:text-sm tracking-[0.2em] group-hover:text-white light:group-hover:text-zinc-900 transition-colors duration-300">VORTEX.MEDIA</span>
+                    <span className="font-display font-bold text-xs tracking-[0.2em] group-hover:text-white light:group-hover:text-zinc-900 transition-colors duration-300">VORTEX.MEDIA</span>
                   </div>
                   
                   {/* ORION */}
-                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 light:text-zinc-400 hover:text-white light:hover:text-zinc-900 transition-all duration-300">
-                    <svg className="w-6 h-6 text-zinc-600 light:text-zinc-400 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
+                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-500 light:text-zinc-400 hover:text-white light:hover:text-zinc-900 transition-all duration-300">
+                    <svg className="w-5 h-5 text-zinc-500 light:text-zinc-400 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
                       <path d="M12 2l2 4 4 1-3 3 1 5-4-2-4 2 1-5-3-3 4-1z" />
                       <circle cx="12" cy="12" r="9" />
                     </svg>
-                    <span className="font-display font-bold text-xs md:text-sm tracking-[0.2em] group-hover:text-white light:group-hover:text-zinc-900 transition-colors duration-300">ORION</span>
+                    <span className="font-display font-bold text-xs tracking-[0.2em] group-hover:text-white light:group-hover:text-zinc-900 transition-colors duration-300">ORION</span>
                   </div>
                 </div>
               ))}
@@ -440,7 +436,6 @@ export function Hero() {
           animation-play-state: paused;
         }
       `}</style>
-
     </section>
   );
 }
