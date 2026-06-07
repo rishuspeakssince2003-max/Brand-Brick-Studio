@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { MonitorPlay, Layout, Code2, LineChart } from "lucide-react";
 import {
   motion,
   useInView,
@@ -60,10 +61,10 @@ function RotatingWord() {
    FLOATING SERVICE DECK
    ══════════════════════════════════════════════════════════ */
 const servicesList = [
-  { title: "UI/UX Design", illustration: "/ui_ux_illustration.png" },
-  { title: "Web Development", illustration: "/web_dev_illustration.png" },
-  { title: "Video Production", illustration: "/video_prod_illustration.png" },
-  { title: "Performance Ads", illustration: "/perf_ads_illustration.png" },
+  { icon: Layout, title: "UI/UX Design" },
+  { icon: Code2, title: "Web Development" },
+  { icon: MonitorPlay, title: "Video Production" },
+  { icon: LineChart, title: "Performance Ads" },
 ];
 
 function FloatingServiceDeck() {
@@ -86,6 +87,7 @@ function FloatingServiceDeck() {
       onClick={() => setOffset((prev) => (prev + 1) % servicesList.length)}
     >
       {servicesList.map((service, idx) => {
+        const Icon = service.icon;
         const visualIdx = (idx - offset + servicesList.length) % servicesList.length;
 
         return (
@@ -125,12 +127,8 @@ function FloatingServiceDeck() {
             {/* Ambient inner glow that activates on hover */}
             <div className="absolute inset-[1.5px] bg-gradient-to-br from-[#dc2626]/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[calc(2rem-1.5px)] pointer-events-none -z-10" />
             
-            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-white border border-zinc-200 shadow-[0_8px_30px_rgba(0,0,0,0.06)] flex items-center justify-center relative z-10 overflow-hidden group-hover:border-[#dc2626]/30 transition-all duration-500">
-              <img 
-                src={service.illustration} 
-                alt={service.title} 
-                className="w-[88%] h-[88%] object-contain group-hover:scale-105 group-hover:rotate-2 transition-transform duration-500"
-              />
+            <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center relative z-10 group-hover:border-[#dc2626]/50 group-hover:bg-[#dc2626]/15 transition-all duration-300 light:bg-zinc-50 light:border-zinc-200 light:text-zinc-600 light:group-hover:bg-red-50 light:group-hover:border-red-200">
+              <Icon className="w-8 h-8 text-zinc-400 group-hover:text-[#dc2626] transition-colors duration-300 light:text-zinc-500 light:group-hover:text-[#dc2626]" />
             </div>
             
             <h3 className="font-display font-bold text-lg md:text-xl text-white light:text-zinc-900 relative z-10 text-center leading-tight">
