@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { MonitorPlay, Layout, Code2, LineChart } from "lucide-react";
 import {
   motion,
   useInView,
@@ -10,6 +9,48 @@ import {
   AnimatePresence,
 } from "motion/react";
 import { LiquidButton } from "./ui/LiquidButton";
+
+/* ══════════════════════════════════════════════════════════
+   BRAND SERVICE LOGOS (SVG)
+   ══════════════════════════════════════════════════════════ */
+const FigmaIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 18 18" fill="currentColor" className={className}>
+    {/* Top Left Semicircle */}
+    <path d="M6 0a3 3 0 0 0 0 6h3V0H6z" />
+    {/* Top Right Circle */}
+    <circle cx="12" cy="3" r="3" />
+    {/* Middle Left Circle */}
+    <circle cx="6" cy="9" r="3" />
+    {/* Middle Right Semicircle */}
+    <path d="M9 6h3a3 3 0 0 1 0 6H9V6z" />
+    {/* Bottom Left Teardrop */}
+    <path d="M6 12a3 3 0 0 0 3 3v-3H6z" />
+  </svg>
+);
+
+const ReactIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <circle cx="16" cy="16" r="2" fill="currentColor" />
+    <ellipse cx="16" cy="16" rx="5" ry="12" transform="rotate(0 16 16)" />
+    <ellipse cx="16" cy="16" rx="5" ry="12" transform="rotate(60 16 16)" />
+    <ellipse cx="16" cy="16" rx="5" ry="12" transform="rotate(120 16 16)" />
+  </svg>
+);
+
+const PremiereIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <rect x="4" y="4" width="24" height="24" rx="5" />
+    <path d="M10 11v10M10 11h4.5a3 3 0 0 1 0 6H10" strokeWidth="2.5" />
+    <path d="M19 15v6M19 17a2.5 2.5 0 0 1 2.5-2.5h0.5" strokeWidth="2.5" />
+  </svg>
+);
+
+const MetaIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M7 16c0-4.5 3-8 5.5-8S16 11.5 16 16s3.5 8 5.5 8S27 20.5 27 16" />
+    <path d="M27 16c0 4.5-3 8-5.5 8S16 20.5 16 16s-3.5-8-5.5-8S7 11.5 7 16" />
+  </svg>
+);
 
 /* ══════════════════════════════════════════════════════════
    ANIMATED COUNTER
@@ -61,10 +102,10 @@ function RotatingWord() {
    FLOATING SERVICE DECK
    ══════════════════════════════════════════════════════════ */
 const servicesList = [
-  { icon: Layout, title: "UI/UX Design" },
-  { icon: Code2, title: "Web Development" },
-  { icon: MonitorPlay, title: "Video Production" },
-  { icon: LineChart, title: "Performance Ads" },
+  { icon: FigmaIcon, title: "UI/UX Design" },
+  { icon: ReactIcon, title: "Web Development" },
+  { icon: PremiereIcon, title: "Video Production" },
+  { icon: MetaIcon, title: "Performance Ads" },
 ];
 
 function FloatingServiceDeck() {
