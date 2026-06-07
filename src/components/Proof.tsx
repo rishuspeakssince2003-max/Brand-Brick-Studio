@@ -290,7 +290,7 @@ export function Proof() {
                         "relative flex items-center rounded-full cursor-pointer transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] border border-transparent shadow-md shrink-0",
                         isActive 
                           ? "bg-[#dc2626] border-[#dc2626]/50 text-white shadow-[0_0_20px_rgba(220,38,38,0.3)] pr-4 pl-1.5 py-1.5" 
-                          : "bg-zinc-900/40 hover:bg-zinc-900/80 border-zinc-850 text-zinc-400 hover:text-zinc-200 p-1.5 light:bg-zinc-100 light:border-zinc-200 light:text-zinc-600 light:hover:bg-zinc-200 light:hover:text-zinc-900",
+                          : "bg-zinc-900/40 hover:bg-zinc-900/80 border-zinc-800 text-zinc-400 hover:text-zinc-200 p-1.5 light:bg-zinc-100 light:border-zinc-200 light:text-zinc-600 light:hover:bg-zinc-200 light:hover:text-zinc-900",
                         showName && !isActive ? "pr-4 pl-1.5 py-1.5" : ""
                       )}
                     >
@@ -402,7 +402,7 @@ function StatCard({
         </div>
         <span
           className={`text-xs md:text-sm font-bold uppercase tracking-[0.15em] whitespace-pre-line leading-snug
-            ${stat.accent ? "text-white/70" : "text-zinc-500 light:text-zinc-500 group-hover:text-zinc-400 transition-colors duration-300"}`}
+            ${stat.accent ? "text-white/70" : "text-zinc-500 light:text-zinc-500 group-hover:text-zinc-400 light:group-hover:text-zinc-850 transition-colors duration-300"}`}
         >
           {stat.label}
         </span>
@@ -411,7 +411,7 @@ function StatCard({
       {/* Decorative corner index */}
       <span
         className={`absolute bottom-3 right-4 text-[10px] font-mono font-bold tracking-wider
-          ${stat.accent ? "text-white/20" : "text-zinc-800 light:text-zinc-350 group-hover:text-zinc-700 transition-colors duration-300"}`}
+          ${stat.accent ? "text-white/20" : "text-zinc-800 light:text-zinc-400 light:group-hover:text-zinc-600 group-hover:text-zinc-700 transition-colors duration-300"}`}
       >
         0{index + 1}
       </span>
@@ -445,7 +445,7 @@ function ReasonCard({ reason }: { reason: (typeof reasons)[number]; key?: any })
         <h3 className="text-xl md:text-2xl font-display font-bold text-white light:text-zinc-900 mb-3 group-hover:text-[#dc2626] transition-colors duration-300">
           {reason.title}
         </h3>
-        <p className="text-zinc-400 light:text-zinc-600 text-sm md:text-base leading-relaxed max-w-md group-hover:text-zinc-300 transition-colors duration-300">
+        <p className="text-zinc-400 light:text-zinc-600 text-sm md:text-base leading-relaxed max-w-md group-hover:text-zinc-300 light:group-hover:text-zinc-800 transition-colors duration-300">
           {reason.desc}
         </p>
       </div>

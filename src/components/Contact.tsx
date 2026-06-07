@@ -263,7 +263,7 @@ export function Contact() {
     }
   };
 
-  const inputClasses = "w-full bg-transparent border-b border-zinc-800 text-white md:text-xl lg:text-2xl px-0 py-4 focus:outline-none focus:border-[#dc2626] transition-colors duration-500 placeholder:text-zinc-800 font-display shadow-none rounded-none light:border-zinc-200 light:text-zinc-900 focus:light:border-[#dc2626] placeholder:light:text-zinc-450";
+  const inputClasses = "w-full bg-transparent border-b border-zinc-800 text-white md:text-xl lg:text-2xl px-0 py-4 focus:outline-none focus:border-[#dc2626] transition-colors duration-500 placeholder:text-zinc-700 font-display shadow-none rounded-none light:border-zinc-200 light:text-zinc-900 light:focus:border-[#dc2626] light:placeholder:text-zinc-400";
   const labelClasses = "text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-500 group-focus-within:text-[#dc2626] transition-colors duration-500";
 
   return (
@@ -353,7 +353,7 @@ export function Contact() {
                       </option>
                     ))}
                   </select>
-                  <div className="absolute right-0 bottom-4 text-zinc-600 light:text-zinc-400 pointer-events-none">▼</div>
+                  <div className="absolute right-0 bottom-4 text-zinc-600 light:text-zinc-600 pointer-events-none">▼</div>
                 </div>
 
                 <div className="group space-y-2">

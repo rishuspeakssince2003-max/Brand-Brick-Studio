@@ -138,7 +138,7 @@ export function Chatbot() {
               className="fixed bottom-0 right-0 w-full h-[85dvh] rounded-t-[2rem] rounded-b-none md:bottom-8 md:right-8 md:w-[420px] md:h-[650px] md:max-h-[85vh] md:rounded-[2rem] bg-[#050505]/70 backdrop-blur-3xl border-t border-white/10 md:border md:border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.8),inset_0_0_80px_rgba(220,38,38,0.03)] flex flex-col z-[100] overflow-hidden light:bg-white/95 light:border-zinc-200 light:shadow-[0_0_60px_rgba(0,0,0,0.15)]"
             >
               {/* HEADER */}
-              <div className="relative px-6 py-5 flex items-center justify-between border-b border-white/5 bg-gradient-to-b from-white/5 to-transparent shrink-0 light:border-zinc-150 light:from-zinc-50">
+              <div className="relative px-6 py-5 flex items-center justify-between border-b border-white/5 bg-gradient-to-b from-white/5 to-transparent shrink-0 light:border-zinc-200 light:from-zinc-50">
                 <div className="flex items-center gap-4">
                   <div className="relative flex items-center justify-center w-10 h-10">
                     <motion.div 
@@ -159,7 +159,7 @@ export function Chatbot() {
                 </div>
                 <button 
                   onClick={() => setIsOpen(false)}
-                  className="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10 border border-white/5 transition-all light:bg-zinc-100 light:text-zinc-650 light:hover:text-zinc-900 light:hover:bg-zinc-200 light:border-zinc-150"
+                  className="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10 border border-white/5 transition-all light:bg-zinc-100 light:text-zinc-600 light:hover:text-zinc-900 light:hover:bg-zinc-200 light:border-zinc-200"
                 >
                   <X size={16} />
                 </button>
@@ -232,7 +232,7 @@ export function Chatbot() {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Type a message..."
-                    className="w-full bg-black/60 backdrop-blur-xl border border-white/10 text-white rounded-full pl-6 pr-14 py-4 text-[14px] focus:outline-none focus:border-[#dc2626]/50 focus:bg-black/80 transition-all placeholder:text-zinc-600 shadow-inner light:bg-zinc-50 light:border-zinc-200 light:text-zinc-900 focus:light:border-[#dc2626]/50 focus:light:bg-white placeholder:light:text-zinc-400"
+                    className="w-full bg-black/60 backdrop-blur-xl border border-white/10 text-white rounded-full pl-6 pr-14 py-4 text-[14px] focus:outline-none focus:border-[#dc2626]/50 focus:bg-black/80 transition-all placeholder:text-zinc-600 shadow-inner light:bg-zinc-50 light:border-zinc-200 light:text-zinc-900 light:focus:border-[#dc2626]/50 light:focus:bg-white light:placeholder:text-zinc-400"
                   />
                   <button 
                     type="submit"

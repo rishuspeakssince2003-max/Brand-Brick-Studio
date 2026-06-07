@@ -121,7 +121,7 @@ export function Packages() {
             className={`relative flex flex-col p-8 md:p-10 rounded-[2rem] backdrop-blur-md transition-all duration-500 group ${
               pkg.popular 
                 ? "bg-[#050505]/90 shadow-[0_0_60px_rgba(220,38,38,0.15)] lg:-translate-y-4 hover:shadow-[0_0_80px_rgba(220,38,38,0.25)] z-10 light:bg-white/95 light:shadow-[0_0_40px_rgba(220,38,38,0.08)]" 
-                : "bg-black/40 border border-zinc-800/40 hover:border-transparent hover:bg-[#050505]/75 light:bg-white/50 light:border-zinc-200/80 hover:light:bg-white/85"
+                : "bg-black/40 border border-zinc-800/40 hover:border-transparent hover:bg-[#050505]/75 light:bg-white/50 light:border-zinc-200/80 light:hover:bg-white/85"
             }`}
           >
             {/* Animated Conic Border Trace */}
@@ -152,11 +152,11 @@ export function Packages() {
                 <span className="text-3xl sm:text-4xl font-display font-bold text-white light:text-zinc-900 tracking-tight leading-none">{pkg.price}</span>
                 <span className="text-zinc-500 text-[10px] font-bold uppercase tracking-[0.15em] mt-2">{pkg.period}</span>
               </div>
-              <p className="text-sm text-zinc-400 light:text-zinc-650 h-16 leading-relaxed font-light">{pkg.desc}</p>
+              <p className="text-sm text-zinc-400 light:text-zinc-600 h-16 leading-relaxed font-light">{pkg.desc}</p>
             </div>
             
             <div className="flex-grow mb-10 line-clamp-none relative z-10">
-              <p className="text-xs font-bold text-white light:text-zinc-900 uppercase tracking-widest mb-6 border-b border-zinc-800 light:border-zinc-250 pb-3">The Scope</p>
+              <p className="text-xs font-bold text-white light:text-zinc-900 uppercase tracking-widest mb-6 border-b border-zinc-800 light:border-zinc-200 pb-3">The Scope</p>
               <motion.ul 
                 className="space-y-5"
                 variants={{ visible: { transition: { staggerChildren: 0.1, delayChildren: 0.3 } } }}
@@ -177,7 +177,7 @@ export function Packages() {
               className={`w-full py-5 rounded-full text-sm font-bold tracking-widest uppercase text-center transition-all duration-300 relative overflow-hidden group/btn z-10 ${
                 pkg.popular 
                   ? "bg-brand text-white shadow-[0_0_30px_rgba(220,38,38,0.4)] hover:shadow-[0_0_50px_rgba(220,38,38,0.6)]" 
-                  : "bg-transparent border-2 border-zinc-700 text-white hover:border-white hover:bg-white hover:text-black light:border-zinc-300 light:text-zinc-900 hover:light:bg-zinc-900 hover:light:text-white hover:light:border-zinc-900"
+                  : "bg-transparent border-2 border-zinc-700 text-white hover:border-white hover:bg-white hover:text-black light:border-zinc-300 light:text-zinc-900 light:hover:bg-zinc-900 light:hover:text-white light:hover:border-zinc-900"
               }`}
             >
               {pkg.popular && <span className="absolute inset-0 w-full h-full bg-white/20 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000 ease-out" />}

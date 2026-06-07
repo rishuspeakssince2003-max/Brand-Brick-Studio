@@ -255,7 +255,7 @@ export function Hero() {
 
             {/* Subtext */}
             <motion.p
-              className="text-zinc-500 light:text-zinc-650 text-base md:text-lg leading-relaxed mb-8 max-w-lg"
+              className="text-zinc-500 light:text-zinc-600 text-base md:text-lg leading-relaxed mb-8 max-w-lg"
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
@@ -279,7 +279,7 @@ export function Hero() {
                 className="group bg-transparent text-white border border-zinc-800 px-8 py-4 md:px-10 md:py-5 rounded-full text-sm font-bold uppercase tracking-wider hover:border-zinc-600 hover:bg-white/[0.03] transition-all duration-400 text-center inline-flex justify-center items-center gap-2 light:text-zinc-900 light:border-zinc-300 light:hover:bg-zinc-100/50"
               >
                 See What We Do
-                <svg className="w-4 h-4 text-zinc-600 light:text-zinc-400 group-hover:text-white group-hover:light:text-zinc-900 group-hover:translate-x-1 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <svg className="w-4 h-4 text-zinc-600 light:text-zinc-400 group-hover:text-white light:group-hover:text-zinc-900 group-hover:translate-x-1 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </a>
@@ -340,7 +340,7 @@ export function Hero() {
               {Array(2).fill(null).map((_, i) => (
                 <div key={i} className="flex justify-around items-center min-w-full shrink-0">
                   {/* APEX */}
-                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 light:text-zinc-400 hover:text-white hover:light:text-zinc-900 transition-all duration-300">
+                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 light:text-zinc-400 hover:text-white light:hover:text-zinc-900 transition-all duration-300">
                     <svg className="w-6 h-6 text-zinc-600 light:text-zinc-400 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
                       <path d="M12 2L2 22h4l6-12 6 12h4z" />
                     </svg>
@@ -348,7 +348,7 @@ export function Hero() {
                   </div>
                   
                   {/* KRONOS */}
-                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 light:text-zinc-400 hover:text-white hover:light:text-zinc-900 transition-all duration-300">
+                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 light:text-zinc-400 hover:text-white light:hover:text-zinc-900 transition-all duration-300">
                     <svg className="w-6 h-6 text-zinc-600 light:text-zinc-400 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
                       <path d="M12 2v20M12 12l8-8M12 12l8 8M4 4h4v16H4z" />
                     </svg>
@@ -356,7 +356,7 @@ export function Hero() {
                   </div>
                   
                   {/* NEXUS */}
-                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 light:text-zinc-400 hover:text-white hover:light:text-zinc-900 transition-all duration-300">
+                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 light:text-zinc-400 hover:text-white light:hover:text-zinc-900 transition-all duration-300">
                     <svg className="w-6 h-6 text-zinc-600 light:text-zinc-400 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
                       <circle cx="9" cy="12" r="5" />
                       <circle cx="15" cy="12" r="5" />
@@ -365,7 +365,7 @@ export function Hero() {
                   </div>
                   
                   {/* VORTEX */}
-                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 light:text-zinc-400 hover:text-white hover:light:text-zinc-900 transition-all duration-300">
+                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 light:text-zinc-400 hover:text-white light:hover:text-zinc-900 transition-all duration-300">
                     <svg className="w-6 h-6 text-zinc-600 light:text-zinc-400 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
                       <path d="M4 12a8 8 0 018-8v8H4zM20 12a8 8 0 01-8 8v-8h8z" />
                     </svg>
@@ -373,7 +373,7 @@ export function Hero() {
                   </div>
                   
                   {/* ORION */}
-                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 light:text-zinc-400 hover:text-white hover:light:text-zinc-900 transition-all duration-300">
+                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 light:text-zinc-400 hover:text-white light:hover:text-zinc-900 transition-all duration-300">
                     <svg className="w-6 h-6 text-zinc-600 light:text-zinc-400 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
                       <path d="M12 2l2 4 4 1-3 3 1 5-4-2-4 2 1-5-3-3 4-1z" />
                       <circle cx="12" cy="12" r="9" />

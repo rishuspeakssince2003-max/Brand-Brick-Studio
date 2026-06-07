@@ -27,9 +27,9 @@ export function LiquidButton({
   };
 
   const variantClasses = {
-    solid: "bg-transparent border-2 border-brand text-white", 
-    outline: "bg-transparent border-2 border-zinc-800 text-white hover:border-brand/50",
-    glass: "bg-transparent backdrop-blur-sm border-2 border-zinc-700 text-white",
+    solid: "bg-transparent border-2 border-brand text-white light:text-brand light:group-hover:text-white", 
+    outline: "bg-transparent border-2 border-zinc-800 text-white hover:border-brand/50 light:border-zinc-300 light:text-zinc-800 light:group-hover:text-white light:hover:border-brand/50",
+    glass: "bg-transparent backdrop-blur-sm border-2 border-zinc-700 text-white light:border-zinc-300 light:text-zinc-800 light:group-hover:text-white",
   };
 
   const innerContent = (
