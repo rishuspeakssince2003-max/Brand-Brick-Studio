@@ -169,8 +169,8 @@ export function Proof() {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="w-full py-6 md:py-8 my-16 border-y border-zinc-900/60 overflow-hidden relative select-none pointer-events-none"
         >
-          <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-black to-transparent z-10" />
-          <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-black to-transparent z-10" />
+          <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-black to-transparent light:from-[#fafafa] z-10" />
+          <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-black to-transparent light:from-[#fafafa] z-10" />
           <div
             className="whitespace-nowrap text-lg md:text-2xl font-display font-black text-zinc-800/80 light:text-zinc-400 tracking-[0.2em] uppercase flex items-center"
             style={{

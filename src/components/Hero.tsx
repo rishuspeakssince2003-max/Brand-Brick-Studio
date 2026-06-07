@@ -332,8 +332,8 @@ export function Hero() {
           </p>
           <div className="w-full overflow-hidden relative py-4">
             {/* Soft fade masks on left and right edges */}
-            <div className="absolute inset-y-0 left-0 w-20 md:w-32 bg-gradient-to-r from-[#040404] to-transparent z-10 pointer-events-none" />
-            <div className="absolute inset-y-0 right-0 w-20 md:w-32 bg-gradient-to-l from-[#040404] to-transparent z-10 pointer-events-none" />
+            <div className="absolute inset-y-0 left-0 w-20 md:w-32 bg-gradient-to-r from-[#040404] to-transparent light:from-[#fafafa] z-10 pointer-events-none" />
+            <div className="absolute inset-y-0 right-0 w-20 md:w-32 bg-gradient-to-l from-[#040404] to-transparent light:from-[#fafafa] z-10 pointer-events-none" />
             
             <div className="flex w-[200%] animate-marquee gap-16 md:gap-24 whitespace-nowrap">
               {/* Set of logos */}
