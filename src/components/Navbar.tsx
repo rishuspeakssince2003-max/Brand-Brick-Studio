@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Sun, Moon } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { LiquidButton } from "./ui/LiquidButton";
 import { MenuBar } from "./ui/animated-menu-bar";
@@ -11,7 +11,7 @@ const navLinks = [
   { name: "Contact", href: "#contact" },
 ];
 
-export function Navbar() {
+export function Navbar({ theme, toggleTheme }: { theme: "dark" | "light"; toggleTheme: () => void }) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("");
@@ -54,7 +54,7 @@ export function Navbar() {
     <>
       <nav
         className={`fixed top-0 left-0 z-50 transition-all duration-300 w-full ${
-          scrolled ? "bg-[#050505]/80 backdrop-blur-md border-b border-zinc-800 py-3" : "bg-transparent py-5"
+          scrolled ? "bg-[#050505]/80 backdrop-blur-md border-b border-zinc-800 py-3 light:bg-white/80 light:border-zinc-200" : "bg-transparent py-5"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between">
@@ -62,10 +62,10 @@ export function Navbar() {
           <a href="#" className="flex-shrink-0 relative z-50 flex items-center gap-3">
             <img src="/logo.png" alt="Brand Brick Logo" className="w-[34px] md:w-10 h-auto shrink-0" />
             <div className="flex flex-col items-center">
-              <span className="font-sans font-medium text-2xl md:text-[28px] tracking-tight text-white flex items-center leading-none">
+              <span className="font-sans font-medium text-2xl md:text-[28px] tracking-tight text-white light:text-zinc-900 flex items-center leading-none">
                 Brand<span className="font-bold text-brand ml-[2px]">Brick</span>
               </span>
-              <span className="text-[9px] md:text-[10.5px] font-bold tracking-[0.35em] text-zinc-400 uppercase mt-1 ml-1 leading-none font-display">
+              <span className="text-[9px] md:text-[10.5px] font-bold tracking-[0.35em] text-zinc-400 light:text-zinc-500 uppercase mt-1 ml-1 leading-none font-display">
                 Studio
               </span>
             </div>
@@ -78,6 +78,19 @@ export function Navbar() {
 
           {/* CTA Button + Discount Icon */}
           <div className="hidden lg:flex items-center gap-4 flex-shrink-0">
+            <button
+              onClick={toggleTheme}
+              className="relative p-2.5 rounded-full border border-zinc-800 hover:border-zinc-600 bg-zinc-900/50 hover:bg-zinc-800/20 text-zinc-400 hover:text-white transition-all duration-300 group flex items-center justify-center cursor-pointer light:border-zinc-200 light:bg-white/50 light:hover:bg-zinc-100 light:text-zinc-600 light:hover:text-zinc-950"
+              title={theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
+            >
+              <motion.div
+                initial={false}
+                animate={{ rotate: theme === "light" ? 180 : 0 }}
+                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              >
+                {theme === "light" ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+              </motion.div>
+            </button>
             <a 
               href="#industry-discounts"
               onClick={(e) => {
@@ -107,6 +120,13 @@ export function Navbar() {
 
           {/* Mobile Actions Container */}
           <div className="lg:hidden flex items-center gap-3 relative z-50">
+            <button
+              onClick={toggleTheme}
+              className="p-2.5 rounded-full border border-zinc-800 bg-zinc-900/50 text-zinc-400 flex items-center justify-center active:border-zinc-600 cursor-pointer light:border-zinc-200 light:bg-white/50 light:text-zinc-600"
+              title={theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
+            >
+              {theme === "light" ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+            </button>
             <a 
               href="#industry-discounts"
               onClick={(e) => {
@@ -127,7 +147,7 @@ export function Navbar() {
               </svg>
             </a>
             <button
-              className="p-2 -mr-2 text-zinc-300 hover:text-white transition-colors group"
+              className="p-2 -mr-2 text-zinc-300 hover:text-white light:text-zinc-600 light:hover:text-zinc-950 transition-colors group"
               onClick={() => setIsOpen(!isOpen)}
             >
               {isOpen ? <X size={24} className="group-hover:hover-blink-icon" /> : <Menu size={24} className="group-hover:hover-blink-icon" />}
@@ -143,7 +163,7 @@ export function Navbar() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 z-40 bg-[#050505] pt-28 px-6 pb-6 overflow-y-auto"
+            className="fixed inset-0 z-40 bg-[#050505] light:bg-[#fafafa] pt-28 px-6 pb-6 overflow-y-auto"
           >
             <div className="flex flex-col gap-6">
               {navLinks.map((link) => (
@@ -151,7 +171,7 @@ export function Navbar() {
                   key={link.name}
                   href={link.href}
                   onClick={() => setIsOpen(false)}
-                  className="text-2xl font-display font-medium text-zinc-300 hover:text-white transition-colors border-b border-zinc-900 pb-4"
+                  className="text-2xl font-display font-medium text-zinc-300 hover:text-white light:text-zinc-700 light:hover:text-zinc-950 transition-colors border-b border-zinc-900 light:border-zinc-100 pb-4"
                 >
                   {link.name}
                 </a>

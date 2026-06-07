@@ -110,8 +110,8 @@ export function Chatbot() {
             />
 
             {/* Inner solid button */}
-            <div className="absolute inset-[2px] bg-[#050505] rounded-full border border-white/10 flex items-center justify-center overflow-hidden">
-              <MessageCircle size={26} className="text-white group-hover:text-[#dc2626] transition-colors duration-300" />
+            <div className="absolute inset-[2px] bg-[#050505] rounded-full border border-white/10 flex items-center justify-center overflow-hidden light:bg-white light:border-zinc-200">
+              <MessageCircle size={26} className="text-white light:text-zinc-700 group-hover:text-[#dc2626] transition-colors duration-300" />
             </div>
           </motion.button>
         )}
@@ -135,10 +135,10 @@ export function Chatbot() {
               animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
               exit={{ opacity: 0, y: "100%", scale: 0.95, filter: "blur(10px)" }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="fixed bottom-0 right-0 w-full h-[85dvh] rounded-t-[2rem] rounded-b-none md:bottom-8 md:right-8 md:w-[420px] md:h-[650px] md:max-h-[85vh] md:rounded-[2rem] bg-[#050505]/70 backdrop-blur-3xl border-t border-white/10 md:border md:border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.8),inset_0_0_80px_rgba(220,38,38,0.03)] flex flex-col z-[100] overflow-hidden"
+              className="fixed bottom-0 right-0 w-full h-[85dvh] rounded-t-[2rem] rounded-b-none md:bottom-8 md:right-8 md:w-[420px] md:h-[650px] md:max-h-[85vh] md:rounded-[2rem] bg-[#050505]/70 backdrop-blur-3xl border-t border-white/10 md:border md:border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.8),inset_0_0_80px_rgba(220,38,38,0.03)] flex flex-col z-[100] overflow-hidden light:bg-white/95 light:border-zinc-200 light:shadow-[0_0_60px_rgba(0,0,0,0.15)]"
             >
               {/* HEADER */}
-              <div className="relative px-6 py-5 flex items-center justify-between border-b border-white/5 bg-gradient-to-b from-white/5 to-transparent shrink-0">
+              <div className="relative px-6 py-5 flex items-center justify-between border-b border-white/5 bg-gradient-to-b from-white/5 to-transparent shrink-0 light:border-zinc-150 light:from-zinc-50">
                 <div className="flex items-center gap-4">
                   <div className="relative flex items-center justify-center w-10 h-10">
                     <motion.div 
@@ -146,12 +146,12 @@ export function Chatbot() {
                       animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
                       transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                     />
-                    <div className="relative w-8 h-8 rounded-full bg-black border border-white/10 flex items-center justify-center p-1.5">
+                    <div className="relative w-8 h-8 rounded-full bg-black border border-white/10 flex items-center justify-center p-1.5 light:bg-zinc-100 light:border-zinc-200">
                       <img src="/logo.png" alt="BBS" className="w-[16px] h-auto" />
                     </div>
                   </div>
                   <div>
-                    <h3 className="font-display font-bold text-white text-[15px] tracking-wide">BBS Intelligence</h3>
+                    <h3 className="font-display font-bold text-white light:text-zinc-900 text-[15px] tracking-wide">BBS Intelligence</h3>
                     <p className="text-[11px] text-zinc-400 font-medium flex items-center gap-1.5 uppercase tracking-widest mt-0.5">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#dc2626] shadow-[0_0_8px_#dc2626] animate-pulse" /> AI Online
                     </p>
@@ -159,7 +159,7 @@ export function Chatbot() {
                 </div>
                 <button 
                   onClick={() => setIsOpen(false)}
-                  className="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10 border border-white/5 transition-all"
+                  className="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10 border border-white/5 transition-all light:bg-zinc-100 light:text-zinc-650 light:hover:text-zinc-900 light:hover:bg-zinc-200 light:border-zinc-150"
                 >
                   <X size={16} />
                 </button>
@@ -178,12 +178,12 @@ export function Chatbot() {
                       className={`flex items-end gap-3 ${msg.role === "user" ? "flex-row-reverse" : "flex-row"}`}
                     >
                       {msg.role === "model" ? (
-                        <div className="w-6 h-6 rounded-full bg-black/50 border border-white/5 shrink-0 flex items-center justify-center p-1 mb-1 shadow-sm">
+                        <div className="w-6 h-6 rounded-full bg-black/50 border border-white/5 shrink-0 flex items-center justify-center p-1 mb-1 shadow-sm light:bg-zinc-100 light:border-zinc-200">
                           <img src="/logo.png" alt="BBS" className="w-3.5 h-auto" />
                         </div>
                       ) : (
-                        <div className="w-6 h-6 rounded-full bg-black/50 border border-white/5 shrink-0 flex items-center justify-center mb-1 shadow-sm">
-                          <User size={10} className="text-zinc-500" />
+                        <div className="w-6 h-6 rounded-full bg-black/50 border border-white/5 shrink-0 flex items-center justify-center mb-1 shadow-sm light:bg-zinc-100 light:border-zinc-200">
+                          <User size={10} className="text-zinc-500 light:text-zinc-400" />
                         </div>
                       )}
                       
@@ -191,7 +191,7 @@ export function Chatbot() {
                         className={`max-w-[80%] p-4 text-[14px] leading-[1.6] shadow-xl ${
                           msg.role === "user" 
                             ? "bg-gradient-to-br from-[#dc2626] to-[#991b1b] text-white rounded-2xl rounded-br-sm border border-[#dc2626]/50" 
-                            : "bg-white/5 backdrop-blur-md text-zinc-200 rounded-2xl rounded-bl-sm border border-white/10"
+                            : "bg-white/5 backdrop-blur-md text-zinc-200 light:bg-zinc-100 light:text-zinc-800 rounded-2xl rounded-bl-sm border border-white/10 light:border-zinc-200"
                         }`}
                         style={{ whiteSpace: "pre-wrap" }}
                       >
@@ -207,10 +207,10 @@ export function Chatbot() {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       className="flex items-end gap-3"
                     >
-                      <div className="w-6 h-6 rounded-full bg-black/50 border border-white/5 shrink-0 flex items-center justify-center p-1 mb-1">
+                      <div className="w-6 h-6 rounded-full bg-black/50 border border-white/5 shrink-0 flex items-center justify-center p-1 mb-1 light:bg-zinc-100 light:border-zinc-200">
                         <img src="/logo.png" alt="BBS" className="w-3.5 h-auto animate-pulse" />
                       </div>
-                      <div className="bg-white/5 backdrop-blur-md p-4 rounded-2xl rounded-bl-sm border border-white/10 flex items-center gap-1.5 h-12">
+                      <div className="bg-white/5 backdrop-blur-md p-4 rounded-2xl rounded-bl-sm border border-white/10 flex items-center gap-1.5 h-12 light:bg-zinc-100 light:border-zinc-200">
                         <motion.div className="w-1.5 h-1.5 bg-[#dc2626] rounded-full" animate={{ scale: [1, 1.5, 1], opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 1, delay: 0 }} />
                         <motion.div className="w-1.5 h-1.5 bg-[#dc2626] rounded-full" animate={{ scale: [1, 1.5, 1], opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 1, delay: 0.2 }} />
                         <motion.div className="w-1.5 h-1.5 bg-[#dc2626] rounded-full" animate={{ scale: [1, 1.5, 1], opacity: [0.3, 1, 0.3] }} transition={{ repeat: Infinity, duration: 1, delay: 0.4 }} />
@@ -224,7 +224,7 @@ export function Chatbot() {
               {/* INPUT AREA */}
               <div className="p-5 pb-8 md:pb-5 shrink-0 relative">
                 {/* Subtle gradient overlay above input to fade messages */}
-                <div className="absolute top-0 left-0 w-full h-8 -translate-y-full bg-gradient-to-t from-[#050505]/70 to-transparent pointer-events-none" />
+                <div className="absolute top-0 left-0 w-full h-8 -translate-y-full bg-gradient-to-t from-[#050505]/70 to-transparent pointer-events-none light:from-[#fafafa]/70" />
                 
                 <form onSubmit={handleSendMessage} className="relative flex items-center">
                   <input 
@@ -232,7 +232,7 @@ export function Chatbot() {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Type a message..."
-                    className="w-full bg-black/60 backdrop-blur-xl border border-white/10 text-white rounded-full pl-6 pr-14 py-4 text-[14px] focus:outline-none focus:border-[#dc2626]/50 focus:bg-black/80 transition-all placeholder:text-zinc-600 shadow-inner"
+                    className="w-full bg-black/60 backdrop-blur-xl border border-white/10 text-white rounded-full pl-6 pr-14 py-4 text-[14px] focus:outline-none focus:border-[#dc2626]/50 focus:bg-black/80 transition-all placeholder:text-zinc-600 shadow-inner light:bg-zinc-50 light:border-zinc-200 light:text-zinc-900 focus:light:border-[#dc2626]/50 focus:light:bg-white placeholder:light:text-zinc-400"
                   />
                   <button 
                     type="submit"

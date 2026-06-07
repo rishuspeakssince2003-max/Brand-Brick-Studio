@@ -142,17 +142,17 @@ export function Stack() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
         >
-          <span className="inline-block px-4 py-1.5 rounded-full border border-zinc-800 bg-zinc-900/50 text-zinc-400 text-xs font-bold tracking-[0.2em] uppercase mb-6 backdrop-blur-md">
+          <span className="inline-block px-4 py-1.5 rounded-full border border-zinc-800 bg-zinc-900/50 text-zinc-400 text-xs font-bold tracking-[0.2em] uppercase mb-6 backdrop-blur-md light:border-zinc-200 light:bg-white/50 light:text-zinc-500">
             Our Growth Engine
           </span>
-          <h2 className="text-4xl md:text-6xl font-display font-bold text-white tracking-tight">
+          <h2 className="text-4xl md:text-6xl font-display font-bold text-white light:text-zinc-900 tracking-tight">
             The architecture of <span className="text-[#dc2626] italic">scale.</span>
           </h2>
         </motion.div>
 
         {/* The Stage */}
         <motion.div 
-          className="relative w-full max-w-4xl min-h-[460px] md:min-h-0 md:aspect-[21/9] rounded-3xl border-solid border-[1px] bg-[#050505]/80 backdrop-blur-3xl overflow-hidden flex flex-col md:flex-row items-center justify-between p-8 md:p-12"
+          className="relative w-full max-w-4xl min-h-[460px] md:min-h-0 md:aspect-[21/9] rounded-3xl border-solid border-[1px] bg-[#050505]/80 backdrop-blur-3xl overflow-hidden flex flex-col md:flex-row items-center justify-between p-8 md:p-12 light:bg-white/50 light:border-zinc-200 light:shadow-sm"
           initial={{ opacity: 0, scale: 0.95, borderColor: "rgba(220,38,38,0.1)", boxShadow: "0 20px 60px -15px rgba(0,0,0,0.8), 0 0 0px 0px rgba(220,38,38,0)" }}
           animate={isInView ? { 
             opacity: 1, 
@@ -184,10 +184,10 @@ export function Stack() {
                   {displayTool.icon}
                 </div>
               </div>
-              <h3 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">
+              <h3 className="text-3xl md:text-4xl font-display font-bold text-white light:text-zinc-900 mb-4">
                 {displayTool.title}
               </h3>
-              <p className="text-zinc-400 text-lg md:text-xl leading-relaxed mb-8">
+              <p className="text-zinc-400 light:text-zinc-600 text-lg md:text-xl leading-relaxed mb-8">
                 {displayTool.desc}
               </p>
               
@@ -237,7 +237,7 @@ export function Stack() {
           transition={{ duration: 0.8, delay: 0.4 }}
         >
           {/* Scrollable container for mobile */}
-          <div className="flex items-center gap-6 md:gap-10 px-8 py-6 md:px-12 md:py-8 rounded-[2.5rem] border border-zinc-800/50 bg-[#050505]/40 backdrop-blur-2xl shadow-2xl overflow-x-auto hide-scrollbar w-full max-w-full">
+          <div className="flex items-center gap-6 md:gap-10 px-8 py-6 md:px-12 md:py-8 rounded-[2.5rem] border border-zinc-800/50 bg-[#050505]/40 backdrop-blur-2xl shadow-2xl overflow-x-auto hide-scrollbar w-full max-w-full light:bg-white/60 light:border-zinc-200">
             {tools.map((tool) => {
               const isHovered = hoveredTool === tool.id;
               const isActive = activeTool.id === tool.id && !hoveredTool;

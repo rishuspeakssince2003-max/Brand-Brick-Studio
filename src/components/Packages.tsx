@@ -92,7 +92,7 @@ export function Packages() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6 tracking-tight"
+          className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white light:text-zinc-900 mb-6 tracking-tight"
         >
           Tailored execution for elite scaling.
         </motion.h3>
@@ -101,7 +101,7 @@ export function Packages() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="text-xl text-zinc-400 font-light"
+          className="text-xl text-zinc-400 light:text-zinc-600 font-light"
         >
           No generic templates. No rigid plans. We design every project around your specific growth needs.
         </motion.p>
@@ -120,8 +120,8 @@ export function Packages() {
             variants={cardVariants}
             className={`relative flex flex-col p-8 md:p-10 rounded-[2rem] backdrop-blur-md transition-all duration-500 group ${
               pkg.popular 
-                ? "bg-[#050505]/90 shadow-[0_0_60px_rgba(220,38,38,0.15)] lg:-translate-y-4 hover:shadow-[0_0_80px_rgba(220,38,38,0.25)] z-10" 
-                : "bg-black/40 border border-zinc-800/40 hover:border-transparent hover:bg-[#050505]/75"
+                ? "bg-[#050505]/90 shadow-[0_0_60px_rgba(220,38,38,0.15)] lg:-translate-y-4 hover:shadow-[0_0_80px_rgba(220,38,38,0.25)] z-10 light:bg-white/95 light:shadow-[0_0_40px_rgba(220,38,38,0.08)]" 
+                : "bg-black/40 border border-zinc-800/40 hover:border-transparent hover:bg-[#050505]/75 light:bg-white/50 light:border-zinc-200/80 hover:light:bg-white/85"
             }`}
           >
             {/* Animated Conic Border Trace */}
@@ -137,7 +137,7 @@ export function Packages() {
                   animation: "card-border-spin 4s linear infinite",
                 }}
               />
-              <div className="absolute inset-[1.5px] rounded-[calc(2rem-1.5px)] bg-[#050505]" />
+              <div className="absolute inset-[1.5px] rounded-[calc(2rem-1.5px)] bg-[#050505] light:bg-white" />
             </div>
 
             {pkg.popular && (
@@ -147,23 +147,23 @@ export function Packages() {
             )}
             
             <div className="mb-8 relative z-10">
-              <h4 className={`text-xl font-display font-bold uppercase tracking-wider mb-2 ${pkg.popular ? "text-brand" : "text-white"}`}>{pkg.name}</h4>
+              <h4 className={`text-xl font-display font-bold uppercase tracking-wider mb-2 ${pkg.popular ? "text-brand" : "text-white light:text-zinc-900"}`}>{pkg.name}</h4>
               <div className="flex flex-col mb-4">
-                <span className="text-3xl sm:text-4xl font-display font-bold text-white tracking-tight leading-none">{pkg.price}</span>
+                <span className="text-3xl sm:text-4xl font-display font-bold text-white light:text-zinc-900 tracking-tight leading-none">{pkg.price}</span>
                 <span className="text-zinc-500 text-[10px] font-bold uppercase tracking-[0.15em] mt-2">{pkg.period}</span>
               </div>
-              <p className="text-sm text-zinc-400 h-16 leading-relaxed font-light">{pkg.desc}</p>
+              <p className="text-sm text-zinc-400 light:text-zinc-650 h-16 leading-relaxed font-light">{pkg.desc}</p>
             </div>
             
             <div className="flex-grow mb-10 line-clamp-none relative z-10">
-              <p className="text-xs font-bold text-white uppercase tracking-widest mb-6 border-b border-zinc-800 pb-3">The Scope</p>
+              <p className="text-xs font-bold text-white light:text-zinc-900 uppercase tracking-widest mb-6 border-b border-zinc-800 light:border-zinc-250 pb-3">The Scope</p>
               <motion.ul 
                 className="space-y-5"
                 variants={{ visible: { transition: { staggerChildren: 0.1, delayChildren: 0.3 } } }}
               >
                 {pkg.features.map((feature, idx) => (
-                  <motion.li key={idx} variants={featureVariants} className="flex items-start gap-4 text-sm text-zinc-300">
-                    <div className={`mt-0.5 rounded-full p-1 ${pkg.popular ? "bg-brand/20 text-brand" : "bg-zinc-800 text-zinc-400"}`}>
+                  <motion.li key={idx} variants={featureVariants} className="flex items-start gap-4 text-sm text-zinc-300 light:text-zinc-700">
+                    <div className={`mt-0.5 rounded-full p-1 ${pkg.popular ? "bg-brand/20 text-brand" : "bg-zinc-800 text-zinc-400 light:bg-zinc-100 light:text-zinc-500"}`}>
                       <Check size={12} strokeWidth={3} className={pkg.popular ? "drop-shadow-[0_0_8px_rgba(220,38,38,0.8)]" : ""} />
                     </div>
                     <span className="leading-tight font-medium">{feature}</span>
@@ -177,7 +177,7 @@ export function Packages() {
               className={`w-full py-5 rounded-full text-sm font-bold tracking-widest uppercase text-center transition-all duration-300 relative overflow-hidden group/btn z-10 ${
                 pkg.popular 
                   ? "bg-brand text-white shadow-[0_0_30px_rgba(220,38,38,0.4)] hover:shadow-[0_0_50px_rgba(220,38,38,0.6)]" 
-                  : "bg-transparent border-2 border-zinc-700 text-white hover:border-white hover:bg-white hover:text-black"
+                  : "bg-transparent border-2 border-zinc-700 text-white hover:border-white hover:bg-white hover:text-black light:border-zinc-300 light:text-zinc-900 hover:light:bg-zinc-900 hover:light:text-white hover:light:border-zinc-900"
               }`}
             >
               {pkg.popular && <span className="absolute inset-0 w-full h-full bg-white/20 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000 ease-out" />}
@@ -196,10 +196,10 @@ export function Packages() {
         transition={{ duration: 0.8, delay: 0.2 }}
         className="mt-16 mb-8 max-w-4xl mx-auto relative z-10 scroll-mt-24 md:scroll-mt-28"
       >
-        <div className="relative p-6 md:p-8 rounded-3xl bg-zinc-950/60 border border-zinc-800/40 backdrop-blur-md hover:border-amber-500/30 transition-all duration-500 group/promo overflow-hidden">
+        <div className="relative p-6 md:p-8 rounded-3xl bg-zinc-950/60 border border-zinc-800/40 backdrop-blur-md hover:border-amber-500/30 transition-all duration-500 group/promo overflow-hidden light:bg-amber-50/50 light:border-amber-200/40">
           {/* Golden ticket cut-out notches on sides */}
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-8 bg-[#050505] rounded-r-full border-r border-y border-zinc-800/40 transition-colors duration-500 group-hover/promo:border-amber-500/30 -ml-[1px] z-10" />
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-8 bg-[#050505] rounded-l-full border-l border-y border-zinc-800/40 transition-colors duration-500 group-hover/promo:border-amber-500/30 -mr-[1px] z-10" />
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-8 bg-[#050505] light:bg-[#fafafa] rounded-r-full border-r border-y border-zinc-800/40 light:border-amber-200/40 transition-colors duration-500 group-hover/promo:border-amber-500/30 -ml-[1px] z-10" />
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-8 bg-[#050505] light:bg-[#fafafa] rounded-l-full border-l border-y border-zinc-800/40 light:border-amber-200/40 transition-colors duration-500 group-hover/promo:border-amber-500/30 -mr-[1px] z-10" />
           
           {/* Subtle golden lighting corner glow */}
           <div className="absolute -right-24 -top-24 w-48 h-48 bg-amber-500/5 blur-[80px] rounded-full pointer-events-none transition-all duration-500 group-hover/promo:bg-amber-500/15" />
@@ -207,7 +207,7 @@ export function Packages() {
           
           <div className="flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
             <div className="flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
-              <div className="flex gap-4 p-4 rounded-2xl bg-zinc-900/40 border border-zinc-800/50 shrink-0">
+              <div className="flex gap-4 p-4 rounded-2xl bg-zinc-900/40 border border-zinc-800/50 shrink-0 light:bg-white/80 light:border-zinc-200/60">
                 {/* Real Estate Icon */}
                 <div className="relative flex flex-col items-center">
                   <Home className="w-8 h-8 text-amber-400 drop-shadow-[0_0_4px_rgba(245,158,11,0.3)]" strokeWidth={1.5} />
@@ -230,9 +230,9 @@ export function Packages() {
                     Special Partner Offer
                   </span>
                 </div>
-                <h4 className="text-lg md:text-xl font-display font-bold text-white mt-2 group-hover/promo:text-amber-300 transition-colors duration-300">Special Discount for Real Estate & Cafe/Restaurants</h4>
-                <p className="text-zinc-400 text-sm mt-1.5 leading-relaxed font-light">
-                  Enjoy a special <span className="text-amber-400 font-bold font-mono">15% discount</span> on monthly retainers & project scopes. Engineered to scale listing leads and foot-traffic.
+                <h4 className="text-lg md:text-xl font-display font-bold text-white light:text-zinc-900 mt-2 group-hover/promo:text-amber-300 transition-colors duration-300">Special Discount for Real Estate & Cafe/Restaurants</h4>
+                <p className="text-zinc-400 light:text-zinc-600 text-sm mt-1.5 leading-relaxed font-light">
+                  Enjoy a special <span className="text-amber-500 font-bold font-mono">15% discount</span> on monthly retainers & project scopes. Engineered to scale listing leads and foot-traffic.
                 </p>
               </div>
             </div>

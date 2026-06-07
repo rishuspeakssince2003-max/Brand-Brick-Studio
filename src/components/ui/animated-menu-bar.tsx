@@ -50,7 +50,7 @@ const IconButton: React.FC<IconButtonProps> = ({ icon, label, active, href }) =>
       className={`flex items-center rounded-xl border transition-all duration-300 focus:outline-none relative overflow-visible
         ${active 
           ? 'border-[#dc2626] bg-[#dc2626] text-white font-semibold shadow-[0_0_15px_rgba(220,38,38,0.4)]' 
-          : 'border-transparent text-zinc-400 hover:text-white hover:bg-[#dc2626]/10 hover:border-[#dc2626]/30'
+          : 'border-transparent text-zinc-400 hover:text-white hover:bg-[#dc2626]/10 hover:border-[#dc2626]/30 light:text-zinc-600 light:hover:text-zinc-900 light:hover:bg-red-50 light:hover:border-red-200'
         }
         w-10 sm:w-auto
         px-0 sm:px-3.5
@@ -93,7 +93,7 @@ const IconButton: React.FC<IconButtonProps> = ({ icon, label, active, href }) =>
 
 export const MenuBar = ({ activeSection }: MenuBarProps) => {
   return (
-    <nav className="flex items-center gap-1 bg-[#0a0a0a]/60 backdrop-blur-md p-1 rounded-2xl border border-zinc-800/80 w-fit mx-auto transition-all duration-300">
+    <nav className="flex items-center gap-1 bg-[#0a0a0a]/60 backdrop-blur-md p-1 rounded-2xl border border-zinc-800/80 w-fit mx-auto transition-all duration-300 light:bg-white/60 light:border-zinc-200">
       <IconButton icon={icons.services} label="Services" active={activeSection === 'services'} href="#services" />
       <IconButton icon={icons["why-us"]} label="Why Us" active={activeSection === 'why-us'} href="#why-us" />
       <IconButton icon={icons.stack} label="Our Tools" active={activeSection === 'stack'} href="#stack" />

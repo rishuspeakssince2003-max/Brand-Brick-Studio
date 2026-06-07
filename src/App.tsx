@@ -16,6 +16,26 @@ import { PremiumTechBackground } from "./components/PremiumTechBackground";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
+  const [theme, setTheme] = useState<"dark" | "light">(() => {
+    if (typeof window !== "undefined") {
+      return (localStorage.getItem("theme") as "dark" | "light") || "dark";
+    }
+    return "dark";
+  });
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === "light") {
+      root.classList.add("light");
+    } else {
+      root.classList.remove("light");
+    }
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  };
 
   // 1. Lenis Smooth Inertial Scroll
   useEffect(() => {
@@ -61,7 +81,7 @@ export default function App() {
         {loading && <Loader onComplete={() => setLoading(false)} />}
       </AnimatePresence>
       <CustomCursor />
-      <Navbar />
+      <Navbar theme={theme} toggleTheme={toggleTheme} />
       <main>
         <Hero />
         <Services />

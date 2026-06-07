@@ -139,17 +139,17 @@ function ServiceCard({ service, index }: { service: typeof services[number]; ind
           }}
         />
         {/* Static border */}
-        <div className="absolute inset-px rounded-[calc(1.75rem-1px)] bg-[#0a0a0a] transition-colors duration-500" />
+        <div className="absolute inset-px rounded-[calc(1.75rem-1px)] bg-[#0a0a0a] transition-colors duration-500 light:bg-white" />
       </div>
 
       {/* ── Card inner ── */}
-      <div className="relative z-10 h-full flex flex-col justify-between p-7 md:p-8 rounded-[1.75rem] border border-zinc-800/60 group-hover:border-transparent transition-colors duration-500 overflow-hidden">
+      <div className="relative z-10 h-full flex flex-col justify-between p-7 md:p-8 rounded-[1.75rem] border border-zinc-800/60 light:border-zinc-200 group-hover:border-transparent transition-colors duration-500 overflow-hidden">
 
         {/* Hover gradient wash */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#dc2626]/[0.07] via-transparent to-[#dc2626]/[0.03] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
         {/* Watermark Number */}
-        <span className="absolute -right-2 -top-4 text-[7rem] md:text-[8rem] font-display font-bold leading-none text-white/[0.02] group-hover:text-[#dc2626]/[0.06] transition-colors duration-700 select-none pointer-events-none tracking-tighter">
+        <span className="absolute -right-2 -top-4 text-[7rem] md:text-[8rem] font-display font-bold leading-none text-white/[0.02] light:text-zinc-900/[0.02] group-hover:text-[#dc2626]/[0.06] transition-colors duration-700 select-none pointer-events-none tracking-tighter">
           {num}
         </span>
 
@@ -161,7 +161,7 @@ function ServiceCard({ service, index }: { service: typeof services[number]; ind
             <div className="absolute inset-0 rounded-2xl bg-[#dc2626]/20 blur-xl scale-0 group-hover:scale-150 transition-transform duration-700 pointer-events-none" />
             <div className="relative h-14 w-14 rounded-2xl bg-zinc-900/80 border border-zinc-800/80 flex items-center justify-center
               group-hover:bg-[#dc2626]/10 group-hover:border-[#dc2626]/40 group-hover:shadow-[0_0_25px_rgba(220,38,38,0.25)]
-              transition-all duration-500 service-icon-box">
+              transition-all duration-500 service-icon-box light:bg-zinc-50 light:border-zinc-200">
               <div className="text-zinc-500 group-hover:text-[#dc2626] transition-colors duration-400 stroke-current">
                 {svgIcons[service.icon]}
               </div>
@@ -176,10 +176,10 @@ function ServiceCard({ service, index }: { service: typeof services[number]; ind
 
         {/* Bottom: Title + Description */}
         <div className="relative z-10 mt-auto">
-          <h4 className="text-xl md:text-[1.35rem] font-display font-bold text-white mb-2.5 leading-tight group-hover:text-[#dc2626] transition-colors duration-400">
+          <h4 className="text-xl md:text-[1.35rem] font-display font-bold text-white light:text-zinc-900 mb-2.5 leading-tight group-hover:text-[#dc2626] transition-colors duration-400">
             {service.title}
           </h4>
-          <p className="text-zinc-500 text-[13px] md:text-sm leading-relaxed group-hover:text-zinc-400 transition-colors duration-400 max-w-md">
+          <p className="text-zinc-500 light:text-zinc-500 text-[13px] md:text-sm leading-relaxed group-hover:text-zinc-400 light:group-hover:text-zinc-700 transition-colors duration-400 max-w-md">
             {service.desc}
           </p>
 
@@ -274,7 +274,7 @@ export function Services() {
               initial={{ y: 80, opacity: 0 }}
               animate={isInView ? { y: 0, opacity: 1 } : {}}
               transition={{ duration: 1, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="text-4xl md:text-6xl lg:text-7xl font-display font-bold text-white tracking-tight leading-[1.05] mb-6"
+              className="text-4xl md:text-6xl lg:text-7xl font-display font-bold text-white light:text-zinc-900 tracking-tight leading-[1.05] mb-6"
             >
               One Team For{" "}
               <span className="relative inline-block">
@@ -308,7 +308,7 @@ export function Services() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-lg md:text-xl text-zinc-400 font-light leading-relaxed max-w-2xl"
+            className="text-lg md:text-xl text-zinc-400 light:text-zinc-600 font-light leading-relaxed max-w-2xl"
           >
             12 core services under one roof, creative, content, digital, and
             technical execution built for brands that refuse to blend in.
@@ -323,10 +323,10 @@ export function Services() {
           transition={{ duration: 0.8, delay: 0.5 }}
         >
           <div className="flex items-baseline gap-2">
-            <span className="text-5xl md:text-6xl font-display font-bold text-white tracking-tighter">12</span>
+            <span className="text-5xl md:text-6xl font-display font-bold text-white light:text-zinc-900 tracking-tighter">12</span>
             <span className="text-sm text-zinc-500 font-bold uppercase tracking-widest">Services</span>
           </div>
-          <div className="flex-1 h-px bg-gradient-to-r from-zinc-800 via-zinc-800/50 to-transparent" />
+          <div className="flex-1 h-px bg-gradient-to-r from-zinc-800 via-zinc-800/50 to-transparent light:from-zinc-200 light:via-zinc-200/50" />
         </motion.div>
 
         {/* ── Bento Grid ── */}

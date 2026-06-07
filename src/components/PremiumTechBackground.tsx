@@ -137,8 +137,10 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
     let time = 0;
 
     const render = () => {
+      const isLight = document.documentElement.classList.contains("light");
+
       if (!activeRef.current) {
-        ctx.fillStyle = "#040404";
+        ctx.fillStyle = isLight ? "#fafafa" : "#040404";
         ctx.fillRect(0, 0, width, height);
         animationFrameId = requestAnimationFrame(render);
         return;
@@ -150,11 +152,11 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
       mouse.x += (targetMouse.x - mouse.x) * 0.08;
       mouse.y += (targetMouse.y - mouse.y) * 0.08;
 
-      // 1. Draw base deep dark background (Pitch Black matte color)
-      ctx.fillStyle = "#040404";
+      // 1. Draw base deep background
+      ctx.fillStyle = isLight ? "#fafafa" : "#040404";
       ctx.fillRect(0, 0, width, height);
 
-      // 2. Draw subtle dark red radial background vignette
+      // 2. Draw subtle radial background vignette
       const centerGlow = ctx.createRadialGradient(
         width / 2,
         height / 2,
@@ -163,9 +165,15 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
         height / 2,
         Math.max(width, height) * 0.8
       );
-      centerGlow.addColorStop(0, "rgba(24, 4, 4, 1)");
-      centerGlow.addColorStop(0.5, "rgba(8, 2, 2, 1)");
-      centerGlow.addColorStop(1, "rgba(4, 4, 4, 1)");
+      if (isLight) {
+        centerGlow.addColorStop(0, "rgba(220, 38, 38, 0.03)");
+        centerGlow.addColorStop(0.5, "rgba(244, 244, 245, 0.9)");
+        centerGlow.addColorStop(1, "rgba(250, 250, 250, 1)");
+      } else {
+        centerGlow.addColorStop(0, "rgba(24, 4, 4, 1)");
+        centerGlow.addColorStop(0.5, "rgba(8, 2, 2, 1)");
+        centerGlow.addColorStop(1, "rgba(4, 4, 4, 1)");
+      }
       ctx.fillStyle = centerGlow;
       ctx.fillRect(0, 0, width, height);
 
@@ -198,8 +206,13 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
         // Fill with linear gradient fading to bottom
         const grad = ctx.createLinearGradient(0, wave.y - wave.amplitude, 0, height);
         grad.addColorStop(0, wave.color);
-        grad.addColorStop(0.6, "rgba(10, 2, 2, 0.0)");
-        grad.addColorStop(1, "rgba(4, 4, 4, 0)");
+        if (isLight) {
+          grad.addColorStop(0.6, "rgba(250, 250, 250, 0.0)");
+          grad.addColorStop(1, "rgba(250, 250, 250, 0)");
+        } else {
+          grad.addColorStop(0.6, "rgba(10, 2, 2, 0.0)");
+          grad.addColorStop(1, "rgba(4, 4, 4, 0)");
+        }
         ctx.fillStyle = grad;
         ctx.fill();
       });
@@ -245,19 +258,19 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
 
             if (intensity > 0) {
               // Activated red glowing dot
-              ctx.fillStyle = `rgba(220, 38, 38, ${0.05 + intensity * 0.35})`;
+              ctx.fillStyle = `rgba(220, 38, 38, ${0.05 + intensity * (isLight ? 0.45 : 0.35)})`;
               ctx.fill();
               
               // Add a tiny secondary bloom ring around very close dots
               if (intensity > 0.75) {
                 ctx.beginPath();
                 ctx.arc(gridX, gridY, dotRadius * 3, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(220, 38, 38, ${(intensity - 0.75) * 0.15})`;
+                ctx.fillStyle = `rgba(220, 38, 38, ${(intensity - 0.75) * (isLight ? 0.25 : 0.15)})`;
                 ctx.fill();
               }
             } else {
               // Dormant gray/white grid dot
-              ctx.fillStyle = "rgba(100, 100, 100, 0.05)";
+              ctx.fillStyle = isLight ? "rgba(100, 100, 100, 0.08)" : "rgba(100, 100, 100, 0.05)";
               ctx.fill();
             }
           }
@@ -268,13 +281,13 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
       if (!isMobileDevice && mouse.active) {
         ctx.beginPath();
         ctx.arc(mouse.x, mouse.y, 8, 0, Math.PI * 2);
-        ctx.strokeStyle = "rgba(220, 38, 38, 0.12)";
+        ctx.strokeStyle = isLight ? "rgba(220, 38, 38, 0.2)" : "rgba(220, 38, 38, 0.12)";
         ctx.lineWidth = 1;
         ctx.stroke();
 
         ctx.beginPath();
         ctx.arc(mouse.x, mouse.y, 25, 0, Math.PI * 2);
-        ctx.strokeStyle = "rgba(220, 38, 38, 0.05)";
+        ctx.strokeStyle = isLight ? "rgba(220, 38, 38, 0.1)" : "rgba(220, 38, 38, 0.05)";
         ctx.lineWidth = 1;
         ctx.stroke();
       }
@@ -318,7 +331,7 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
           // Hardware-accelerated simple circles on mobile to avoid radial gradients
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.radius * 2, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(220, 38, 38, ${p.alpha * 0.75})`;
+          ctx.fillStyle = `rgba(220, 38, 38, ${p.alpha * (isLight ? 0.85 : 0.75)})`;
           ctx.fill();
         } else {
           const glowGrad = ctx.createRadialGradient(
@@ -329,7 +342,7 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
             p.y,
             p.radius * 3
           );
-          glowGrad.addColorStop(0, `rgba(220, 38, 38, ${p.alpha})`);
+          glowGrad.addColorStop(0, `rgba(220, 38, 38, ${p.alpha * (isLight ? 0.9 : 1.0)})`);
           glowGrad.addColorStop(0.3, `rgba(220, 38, 38, ${p.alpha * 0.4})`);
           glowGrad.addColorStop(1, "rgba(220, 38, 38, 0)");
 
@@ -356,7 +369,7 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 w-full h-full z-[-50] pointer-events-none overflow-hidden select-none bg-[#040404]"
+      className="fixed inset-0 w-full h-full z-[-50] pointer-events-none overflow-hidden select-none bg-[#040404] light:bg-[#fafafa]"
       style={{ transform: "translateZ(0)" }}
     >
       {/* Dynamic Canvas */}
@@ -364,7 +377,7 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
 
       {/* Premium film grain overlay */}
       <div
-        className="absolute inset-0 opacity-[0.035] pointer-events-none"
+        className="absolute inset-0 opacity-[0.035] light:opacity-[0.015] pointer-events-none"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
           willChange: "transform",
@@ -373,7 +386,7 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
       />
 
       {/* Vignette styling for a deep, cinematic contrast */}
-      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_30%,rgba(0,0,0,0.85)_95%)]" />
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_30%,rgba(0,0,0,0.85)_95%)] light:bg-[radial-gradient(circle_at_center,transparent_40%,rgba(255,255,255,0.75)_95%)]" />
     </div>
   );
 }

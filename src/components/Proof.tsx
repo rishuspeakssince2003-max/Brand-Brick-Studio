@@ -139,7 +139,7 @@ export function Proof() {
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="text-4xl md:text-6xl lg:text-7xl font-display font-bold text-white tracking-tight leading-[1.05] max-w-4xl"
+            className="text-4xl md:text-6xl lg:text-7xl font-display font-bold text-white light:text-zinc-900 tracking-tight leading-[1.05] max-w-4xl"
           >
             Why the best brands
             <br />
@@ -172,7 +172,7 @@ export function Proof() {
           <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-black to-transparent z-10" />
           <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-black to-transparent z-10" />
           <div
-            className="whitespace-nowrap text-lg md:text-2xl font-display font-black text-zinc-800/80 tracking-[0.2em] uppercase flex items-center"
+            className="whitespace-nowrap text-lg md:text-2xl font-display font-black text-zinc-800/80 light:text-zinc-400 tracking-[0.2em] uppercase flex items-center"
             style={{
               animation: "proof-marquee 25s linear infinite",
               width: "max-content",
@@ -206,7 +206,7 @@ export function Proof() {
           transition={{ duration: 1.2, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
           style={{ originX: 0 }}
         >
-          <div className="h-full w-full bg-gradient-to-r from-[#dc2626]/60 via-zinc-800 to-transparent" />
+          <div className="h-full w-full bg-gradient-to-r from-[#dc2626]/60 via-zinc-800 to-transparent light:via-zinc-200" />
         </motion.div>
 
         {/* ──── Reasons ──── */}
@@ -228,10 +228,10 @@ export function Proof() {
         <div className="mt-28 pt-20 border-t border-zinc-900/60 w-full">
           <div className="mb-12 text-center md:text-left">
             <span className="text-[#dc2626] text-xs font-mono font-bold uppercase tracking-[0.2em]">Client Success</span>
-            <h3 className="text-2xl md:text-3xl font-display font-bold text-white mt-2">What founders say about us.</h3>
+            <h3 className="text-2xl md:text-3xl font-display font-bold text-white light:text-zinc-900 mt-2">What founders say about us.</h3>
           </div>
           
-          <div className="flex flex-col items-center gap-10 py-10 md:py-16 bg-zinc-950/20 border border-zinc-900/60 rounded-[2.5rem] px-6 md:px-12 backdrop-blur-md relative overflow-hidden">
+          <div className="flex flex-col items-center gap-10 py-10 md:py-16 bg-zinc-950/20 border border-zinc-900/60 rounded-[2.5rem] px-6 md:px-12 backdrop-blur-md relative overflow-hidden light:bg-white/40 light:border-zinc-200">
             {/* Glowing spot in the middle */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-[#dc2626]/5 blur-[80px] rounded-full pointer-events-none" />
 
@@ -243,7 +243,7 @@ export function Proof() {
 
               <p
                 className={cn(
-                  "text-base sm:text-lg md:text-xl lg:text-2xl font-light text-zinc-200 text-center max-w-2xl leading-relaxed transition-all duration-400 ease-out",
+                  "text-base sm:text-lg md:text-xl lg:text-2xl font-light text-zinc-200 light:text-zinc-800 text-center max-w-2xl leading-relaxed transition-all duration-400 ease-out",
                   isAnimating ? "opacity-0 blur-sm scale-[0.98]" : "opacity-100 blur-0 scale-100",
                 )}
               >
@@ -266,8 +266,8 @@ export function Proof() {
                 <p className="text-xs text-zinc-500 tracking-[0.2em] uppercase font-semibold">
                   {displayedRole}
                 </p>
-                <span className="hidden sm:inline text-zinc-800">•</span>
-                <span className="text-[10px] font-mono font-bold text-[#dc2626] bg-[#dc2626]/10 border border-[#dc2626]/20 px-2.5 py-1 rounded-md shrink-0">
+                <span className="hidden sm:inline text-zinc-800 light:text-zinc-200">•</span>
+                <span className="text-[10px] font-mono font-bold text-[#dc2626] bg-[#dc2626]/10 border border-[#dc2626]/20 px-2.5 py-1 rounded-md shrink-0 light:bg-red-50 light:border-red-100">
                   {displayedMetric}
                 </span>
               </div>
@@ -290,7 +290,7 @@ export function Proof() {
                         "relative flex items-center rounded-full cursor-pointer transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] border border-transparent shadow-md shrink-0",
                         isActive 
                           ? "bg-[#dc2626] border-[#dc2626]/50 text-white shadow-[0_0_20px_rgba(220,38,38,0.3)] pr-4 pl-1.5 py-1.5" 
-                          : "bg-zinc-900/40 hover:bg-zinc-900/80 border-zinc-850 text-zinc-400 hover:text-zinc-200 p-1.5",
+                          : "bg-zinc-900/40 hover:bg-zinc-900/80 border-zinc-850 text-zinc-400 hover:text-zinc-200 p-1.5 light:bg-zinc-100 light:border-zinc-200 light:text-zinc-600 light:hover:bg-zinc-200 light:hover:text-zinc-900",
                         showName && !isActive ? "pr-4 pl-1.5 py-1.5" : ""
                       )}
                     >
@@ -300,7 +300,7 @@ export function Proof() {
                           "w-8 h-8 rounded-full flex items-center justify-center text-xs font-black tracking-wider relative flex-shrink-0 transition-all duration-300",
                           isActive 
                             ? "bg-white text-[#dc2626] shadow-sm" 
-                            : "bg-zinc-800 text-zinc-400 group-hover:text-zinc-200 group-hover:bg-zinc-700/80"
+                            : "bg-zinc-800 text-zinc-400 group-hover:text-zinc-200 group-hover:bg-zinc-700/80 light:bg-zinc-200 light:text-zinc-500"
                         )}
                       >
                         {testimonial.author.split(' ').map(n => n[0]).join('')}
@@ -317,7 +317,7 @@ export function Proof() {
                             className={cn(
                               "text-xs font-bold whitespace-nowrap block tracking-wide",
                               "transition-colors duration-300",
-                              isActive ? "text-white" : "text-zinc-300",
+                              isActive ? "text-white" : "text-zinc-300 light:text-zinc-800",
                             )}
                           >
                             {testimonial.author}
@@ -375,7 +375,7 @@ function StatCard({
       className={`group relative rounded-3xl p-6 md:p-8 border overflow-hidden cursor-default transition-all duration-500
         ${stat.accent
           ? "bg-gradient-to-br from-[#dc2626] to-[#991b1b] border-[#dc2626]/50 shadow-[0_0_40px_rgba(220,38,38,0.15)]"
-          : "bg-zinc-900/50 border-zinc-800/60 hover:border-[#dc2626]/40 hover:shadow-[0_0_30px_rgba(220,38,38,0.1)]"
+          : "bg-zinc-900/50 border-zinc-800/60 hover:border-[#dc2626]/40 hover:shadow-[0_0_30px_rgba(220,38,38,0.1)] light:bg-white/50 light:border-zinc-200"
         }`}
     >
       {/* Hover glow */}
@@ -387,7 +387,7 @@ function StatCard({
         <div className="flex items-baseline gap-1 mb-4">
           <span
             className={`text-5xl md:text-6xl lg:text-7xl font-display font-bold tracking-tighter leading-none tabular-nums
-              ${stat.accent ? "text-white" : "text-white"}`}
+              ${stat.accent ? "text-white" : "text-white light:text-zinc-900"}`}
           >
             {count}
           </span>
@@ -402,7 +402,7 @@ function StatCard({
         </div>
         <span
           className={`text-xs md:text-sm font-bold uppercase tracking-[0.15em] whitespace-pre-line leading-snug
-            ${stat.accent ? "text-white/70" : "text-zinc-500 group-hover:text-zinc-400 transition-colors duration-300"}`}
+            ${stat.accent ? "text-white/70" : "text-zinc-500 light:text-zinc-500 group-hover:text-zinc-400 transition-colors duration-300"}`}
         >
           {stat.label}
         </span>
@@ -411,7 +411,7 @@ function StatCard({
       {/* Decorative corner index */}
       <span
         className={`absolute bottom-3 right-4 text-[10px] font-mono font-bold tracking-wider
-          ${stat.accent ? "text-white/20" : "text-zinc-800 group-hover:text-zinc-700 transition-colors duration-300"}`}
+          ${stat.accent ? "text-white/20" : "text-zinc-800 light:text-zinc-350 group-hover:text-zinc-700 transition-colors duration-300"}`}
       >
         0{index + 1}
       </span>
@@ -436,16 +436,16 @@ function ReasonCard({ reason }: { reason: (typeof reasons)[number]; key?: any })
       {/* Animated vertical accent bar */}
       <div className="relative flex flex-col items-center shrink-0">
         <span className="text-[#dc2626] text-sm font-mono font-bold mb-3">{reason.num}</span>
-        <div className="w-px flex-1 bg-zinc-800 relative overflow-hidden rounded-full">
+        <div className="w-px flex-1 bg-zinc-800 light:bg-zinc-200 relative overflow-hidden rounded-full">
           <div className="absolute inset-0 w-full bg-gradient-to-b from-[#dc2626] to-[#dc2626]/30 scale-y-0 group-hover:scale-y-100 transition-transform duration-700 origin-top rounded-full" />
         </div>
       </div>
 
       <div className="pt-0.5">
-        <h3 className="text-xl md:text-2xl font-display font-bold text-white mb-3 group-hover:text-[#dc2626] transition-colors duration-300">
+        <h3 className="text-xl md:text-2xl font-display font-bold text-white light:text-zinc-900 mb-3 group-hover:text-[#dc2626] transition-colors duration-300">
           {reason.title}
         </h3>
-        <p className="text-zinc-400 text-sm md:text-base leading-relaxed max-w-md group-hover:text-zinc-300 transition-colors duration-300">
+        <p className="text-zinc-400 light:text-zinc-600 text-sm md:text-base leading-relaxed max-w-md group-hover:text-zinc-300 transition-colors duration-300">
           {reason.desc}
         </p>
       </div>

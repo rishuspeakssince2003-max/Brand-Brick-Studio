@@ -263,7 +263,7 @@ export function Contact() {
     }
   };
 
-  const inputClasses = "w-full bg-transparent border-b border-zinc-800 text-white md:text-xl lg:text-2xl px-0 py-4 focus:outline-none focus:border-[#dc2626] transition-colors duration-500 placeholder:text-zinc-800 font-display shadow-none rounded-none";
+  const inputClasses = "w-full bg-transparent border-b border-zinc-800 text-white md:text-xl lg:text-2xl px-0 py-4 focus:outline-none focus:border-[#dc2626] transition-colors duration-500 placeholder:text-zinc-800 font-display shadow-none rounded-none light:border-zinc-200 light:text-zinc-900 focus:light:border-[#dc2626] placeholder:light:text-zinc-450";
   const labelClasses = "text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-500 group-focus-within:text-[#dc2626] transition-colors duration-500";
 
   return (
@@ -285,15 +285,15 @@ export function Contact() {
             viewport={{ once: true }}
             transition={{ duration: 1 }}
           >
-            <span className="inline-block px-4 py-1.5 rounded-full border border-zinc-800 bg-zinc-900/50 text-zinc-400 text-xs font-bold tracking-[0.2em] uppercase mb-8 backdrop-blur-md">
+            <span className="inline-block px-4 py-1.5 rounded-full border border-zinc-800 bg-zinc-900/50 text-zinc-400 text-xs font-bold tracking-[0.2em] uppercase mb-8 backdrop-blur-md light:border-zinc-200 light:bg-white/50 light:text-zinc-500">
               Exclusive Access
             </span>
-            <h2 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold text-white tracking-tighter leading-[0.9] mb-8">
+            <h2 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold text-white light:text-zinc-900 tracking-tighter leading-[0.9] mb-8">
               Let's build
               <br />
               <span className="text-[#dc2626] italic">an empire.</span>
             </h2>
-            <p className="text-xl md:text-2xl text-zinc-400 font-light max-w-md leading-relaxed">
+            <p className="text-xl md:text-2xl text-zinc-400 light:text-zinc-600 font-light max-w-md leading-relaxed">
               We partner with brands ready to dominate their market. Submit your details below to initiate contact.
             </p>
           </motion.div>
@@ -309,7 +309,7 @@ export function Contact() {
         >
           {/* Glassmorphic Panel */}
           <motion.div 
-            className="bg-[#030303]/60 backdrop-blur-3xl border-solid border-[1px] p-8 md:p-12 lg:p-16 rounded-[2.5rem] relative overflow-hidden"
+            className="bg-[#030303]/60 backdrop-blur-3xl border-solid border-[1px] p-8 md:p-12 lg:p-16 rounded-[2.5rem] relative overflow-hidden light:bg-white/50 light:border-zinc-200 light:shadow-sm"
             initial={{ borderColor: "rgba(220,38,38,0.1)", boxShadow: "0 0 60px -15px rgba(220,38,38,0.15)" }}
             animate={{ 
               boxShadow: [
@@ -346,14 +346,14 @@ export function Contact() {
                 <div className="group space-y-2 relative">
                   <label htmlFor="country" className={labelClasses}>Country</label>
                   <select id="country" name="country" required value={formData.country} onChange={handleChange} className={`${inputClasses} appearance-none cursor-pointer relative z-10`}>
-                    <option value="" disabled className="bg-[#050505] text-zinc-500">Select country</option>
+                    <option value="" disabled className="bg-[#050505] text-zinc-500 light:bg-white light:text-zinc-400">Select country</option>
                     {countries.map(c => (
-                      <option key={c.name} value={c.name} className="bg-[#050505] text-white">
+                      <option key={c.name} value={c.name} className="bg-[#050505] text-white light:bg-white light:text-zinc-900">
                         {c.flag} &nbsp; {c.name}
                       </option>
                     ))}
                   </select>
-                  <div className="absolute right-0 bottom-4 text-zinc-600 pointer-events-none">▼</div>
+                  <div className="absolute right-0 bottom-4 text-zinc-600 light:text-zinc-400 pointer-events-none">▼</div>
                 </div>
 
                 <div className="group space-y-2">

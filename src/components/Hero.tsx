@@ -104,7 +104,7 @@ function FloatingServiceDeck() {
               boxShadow: isHovered ? "0 0 40px rgba(220,38,38,0.15)" : "0 0 50px rgba(0,0,0,0.5)"
             }}
             transition={{ type: "spring", stiffness: isHovered ? 300 : 120, damping: isHovered ? 25 : 18 }}
-            className="absolute w-[200px] h-[280px] sm:w-[240px] sm:h-[340px] md:w-[260px] md:h-[360px] rounded-[2rem] flex flex-col items-center justify-center gap-6 p-6 group"
+            className="absolute w-[200px] h-[280px] sm:w-[240px] sm:h-[340px] md:w-[260px] md:h-[360px] rounded-[2rem] flex flex-col items-center justify-center gap-6 p-6 group light:shadow-sm"
             style={{
               transformOrigin: "bottom center",
             }}
@@ -122,7 +122,7 @@ function FloatingServiceDeck() {
             </div>
             
             {/* Inner Solid Layer (makes the card opaque, masking the spinning gradient in the center) */}
-            <div className="absolute inset-[1.5px] rounded-[calc(2rem-1.5px)] bg-[#050505] border border-zinc-800/40 -z-10 transition-colors duration-500" />
+            <div className="absolute inset-[1.5px] rounded-[calc(2rem-1.5px)] bg-[#050505] border border-zinc-800/40 -z-10 transition-colors duration-500 light:bg-white/80 light:border-zinc-200" />
             
             {/* Ambient inner glow that activates on hover */}
             <div className="absolute inset-[1.5px] bg-gradient-to-br from-[#dc2626]/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[calc(2rem-1.5px)] pointer-events-none -z-10" />
@@ -131,11 +131,11 @@ function FloatingServiceDeck() {
               <Icon className="w-8 h-8 text-zinc-400 group-hover:text-[#dc2626] transition-colors duration-300" />
             </div>
             
-            <h3 className="font-display font-bold text-lg md:text-xl text-white relative z-10 text-center leading-tight">
+            <h3 className="font-display font-bold text-lg md:text-xl text-white light:text-zinc-900 relative z-10 text-center leading-tight">
               {service.title}
             </h3>
             
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-8 h-1 rounded-full bg-zinc-800 group-hover:bg-[#dc2626]/80 group-hover:w-12 transition-all duration-300" />
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-8 h-1 rounded-full bg-zinc-800 light:bg-zinc-200 group-hover:bg-[#dc2626]/80 group-hover:w-12 transition-all duration-300" />
           </motion.div>
         );
       })}
@@ -227,7 +227,7 @@ export function Hero() {
               transition={{ duration: 0.6 }}
               className="mb-8"
             >
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-zinc-800/80 bg-zinc-900/50 backdrop-blur-sm">
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-zinc-800/80 bg-zinc-900/50 backdrop-blur-sm light:border-zinc-200 light:bg-white/50">
                 <span className="relative flex h-1.5 w-1.5">
                   <span className="absolute inline-flex h-full w-full rounded-full bg-[#dc2626] opacity-75 animate-ping" />
                   <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#dc2626]" />
@@ -245,7 +245,7 @@ export function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             >
-              <span className="block text-[1.9rem] sm:text-5xl md:text-[3.5rem] lg:text-[4rem] text-white mb-2">
+              <span className="block text-[1.9rem] sm:text-5xl md:text-[3.5rem] lg:text-[4rem] text-white light:text-zinc-900 mb-2">
                 We make brands
               </span>
               <span className="block text-[1.9rem] sm:text-5xl md:text-[3.5rem] lg:text-[4rem] whitespace-nowrap">
@@ -255,7 +255,7 @@ export function Hero() {
 
             {/* Subtext */}
             <motion.p
-              className="text-zinc-500 text-base md:text-lg leading-relaxed mb-8 max-w-lg"
+              className="text-zinc-500 light:text-zinc-650 text-base md:text-lg leading-relaxed mb-8 max-w-lg"
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
@@ -276,10 +276,10 @@ export function Hero() {
               </LiquidButton>
               <a
                 href="#services"
-                className="group bg-transparent text-white border border-zinc-800 px-8 py-4 md:px-10 md:py-5 rounded-full text-sm font-bold uppercase tracking-wider hover:border-zinc-600 hover:bg-white/[0.03] transition-all duration-400 text-center inline-flex justify-center items-center gap-2"
+                className="group bg-transparent text-white border border-zinc-800 px-8 py-4 md:px-10 md:py-5 rounded-full text-sm font-bold uppercase tracking-wider hover:border-zinc-600 hover:bg-white/[0.03] transition-all duration-400 text-center inline-flex justify-center items-center gap-2 light:text-zinc-900 light:border-zinc-300 light:hover:bg-zinc-100/50"
               >
                 See What We Do
-                <svg className="w-4 h-4 text-zinc-600 group-hover:text-white group-hover:translate-x-1 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <svg className="w-4 h-4 text-zinc-600 light:text-zinc-400 group-hover:text-white group-hover:light:text-zinc-900 group-hover:translate-x-1 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </a>
@@ -298,7 +298,7 @@ export function Hero() {
                   <div key={i} className="flex items-center gap-6 md:gap-10">
                     <div className="flex flex-col">
                       <div className="flex items-baseline gap-0.5">
-                        <span className="text-2xl md:text-3xl font-display font-bold text-white tracking-tighter tabular-nums">
+                        <span className="text-2xl md:text-3xl font-display font-bold text-white light:text-zinc-900 tracking-tighter tabular-nums">
                           {count}
                         </span>
                         {s.suffix && <span className="text-lg font-display font-bold text-[#dc2626]">{s.suffix}</span>}
@@ -306,7 +306,7 @@ export function Hero() {
                       <span className="text-[9px] md:text-[10px] text-zinc-600 font-bold uppercase tracking-[0.2em]">{s.label}</span>
                     </div>
                     {i < stats.length - 1 && (
-                      <div className="w-px h-6 bg-zinc-900 hidden sm:block" />
+                      <div className="w-px h-6 bg-zinc-900 light:bg-zinc-200 hidden sm:block" />
                     )}
                   </div>
                 );
@@ -340,45 +340,45 @@ export function Hero() {
               {Array(2).fill(null).map((_, i) => (
                 <div key={i} className="flex justify-around items-center min-w-full shrink-0">
                   {/* APEX */}
-                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 hover:text-white transition-all duration-300">
-                    <svg className="w-6 h-6 text-zinc-600 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
+                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 light:text-zinc-400 hover:text-white hover:light:text-zinc-900 transition-all duration-300">
+                    <svg className="w-6 h-6 text-zinc-600 light:text-zinc-400 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
                       <path d="M12 2L2 22h4l6-12 6 12h4z" />
                     </svg>
-                    <span className="font-display font-bold text-xs md:text-sm tracking-[0.2em] group-hover:text-white transition-colors duration-300">APEX.LABS</span>
+                    <span className="font-display font-bold text-xs md:text-sm tracking-[0.2em] group-hover:text-white light:group-hover:text-zinc-900 transition-colors duration-300">APEX.LABS</span>
                   </div>
                   
                   {/* KRONOS */}
-                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 hover:text-white transition-all duration-300">
-                    <svg className="w-6 h-6 text-zinc-600 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
+                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 light:text-zinc-400 hover:text-white hover:light:text-zinc-900 transition-all duration-300">
+                    <svg className="w-6 h-6 text-zinc-600 light:text-zinc-400 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
                       <path d="M12 2v20M12 12l8-8M12 12l8 8M4 4h4v16H4z" />
                     </svg>
-                    <span className="font-display font-bold text-xs md:text-sm tracking-[0.2em] group-hover:text-white transition-colors duration-300">KRONOS</span>
+                    <span className="font-display font-bold text-xs md:text-sm tracking-[0.2em] group-hover:text-white light:group-hover:text-zinc-900 transition-colors duration-300">KRONOS</span>
                   </div>
                   
                   {/* NEXUS */}
-                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 hover:text-white transition-all duration-300">
-                    <svg className="w-6 h-6 text-zinc-600 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
+                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 light:text-zinc-400 hover:text-white hover:light:text-zinc-900 transition-all duration-300">
+                    <svg className="w-6 h-6 text-zinc-600 light:text-zinc-400 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
                       <circle cx="9" cy="12" r="5" />
                       <circle cx="15" cy="12" r="5" />
                     </svg>
-                    <span className="font-display font-bold text-xs md:text-sm tracking-[0.2em] group-hover:text-white transition-colors duration-300">NEXUS.DIGITAL</span>
+                    <span className="font-display font-bold text-xs md:text-sm tracking-[0.2em] group-hover:text-white light:group-hover:text-zinc-900 transition-colors duration-300">NEXUS.DIGITAL</span>
                   </div>
                   
                   {/* VORTEX */}
-                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 hover:text-white transition-all duration-300">
-                    <svg className="w-6 h-6 text-zinc-600 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
+                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 light:text-zinc-400 hover:text-white hover:light:text-zinc-900 transition-all duration-300">
+                    <svg className="w-6 h-6 text-zinc-600 light:text-zinc-400 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
                       <path d="M4 12a8 8 0 018-8v8H4zM20 12a8 8 0 01-8 8v-8h8z" />
                     </svg>
-                    <span className="font-display font-bold text-xs md:text-sm tracking-[0.2em] group-hover:text-white transition-colors duration-300">VORTEX.MEDIA</span>
+                    <span className="font-display font-bold text-xs md:text-sm tracking-[0.2em] group-hover:text-white light:group-hover:text-zinc-900 transition-colors duration-300">VORTEX.MEDIA</span>
                   </div>
                   
                   {/* ORION */}
-                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 hover:text-white transition-all duration-300">
-                    <svg className="w-6 h-6 text-zinc-600 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
+                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 light:text-zinc-400 hover:text-white hover:light:text-zinc-900 transition-all duration-300">
+                    <svg className="w-6 h-6 text-zinc-600 light:text-zinc-400 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
                       <path d="M12 2l2 4 4 1-3 3 1 5-4-2-4 2 1-5-3-3 4-1z" />
                       <circle cx="12" cy="12" r="9" />
                     </svg>
-                    <span className="font-display font-bold text-xs md:text-sm tracking-[0.2em] group-hover:text-white transition-colors duration-300">ORION</span>
+                    <span className="font-display font-bold text-xs md:text-sm tracking-[0.2em] group-hover:text-white light:group-hover:text-zinc-900 transition-colors duration-300">ORION</span>
                   </div>
                 </div>
               ))}
