@@ -6,6 +6,7 @@ import { MenuBar } from "./ui/animated-menu-bar";
 
 const navLinks = [
   { name: "Services", href: "#services" },
+  { name: "Showcase", href: "#showcase" },
   { name: "Why Us", href: "#why-us" },
   { name: "Our Tools", href: "#stack" },
   { name: "Contact", href: "#contact" },
@@ -21,7 +22,7 @@ export function Navbar({ theme, toggleTheme }: { theme: "dark" | "light"; toggle
       setScrolled(window.scrollY > 20);
 
       // Simple active section detection
-      const sections = ["services", "why-us", "stack", "contact"];
+      const sections = ["services", "showcase", "why-us", "stack", "contact"];
       const scrollPosition = window.scrollY + window.innerHeight / 3;
       let currentSection = "";
 

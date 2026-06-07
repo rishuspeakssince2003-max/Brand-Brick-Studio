@@ -5,6 +5,7 @@ import { Loader } from "./components/Loader";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
 import { Services } from "./components/Services";
+import { Showcase } from "./components/Showcase";
 import { Proof } from "./components/Proof";
 import { Stack } from "./components/Stack";
 import { Packages } from "./components/Packages";
@@ -85,6 +86,7 @@ export default function App() {
       <main>
         <Hero />
         <Services />
+        <Showcase />
         <Proof />
         <Packages />
         <Stack />
