@@ -248,7 +248,7 @@ export function Hero() {
               <span className="block text-[1.9rem] sm:text-5xl md:text-[3.5rem] lg:text-[4rem] text-white light:text-zinc-900 mb-2">
                 We make brands
               </span>
-              <span className="block text-[1.9rem] sm:text-5xl md:text-[3.5rem] lg:text-[4rem] whitespace-nowrap">
+              <span className="block text-[1.9rem] sm:text-5xl md:text-[3.5rem] lg:text-[4rem] text-white light:text-zinc-900 whitespace-nowrap">
                 impossible to <RotatingWord />
               </span>
             </motion.h1>

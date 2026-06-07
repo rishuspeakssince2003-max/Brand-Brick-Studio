@@ -69,7 +69,7 @@ export default function App() {
   });
 
   return (
-    <div className="min-h-screen bg-transparent text-zinc-50 font-sans selection:bg-brand selection:text-white relative">
+    <div className="min-h-screen bg-transparent text-zinc-50 light:text-zinc-900 font-sans selection:bg-brand selection:text-white relative">
       {/* Top Scroll Progress Bar */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-[#dc2626] origin-left z-[100]"
