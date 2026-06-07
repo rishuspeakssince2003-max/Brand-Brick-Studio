@@ -122,7 +122,7 @@ function FloatingServiceDeck() {
             </div>
             
             {/* Inner Solid Layer (makes the card opaque, masking the spinning gradient in the center) */}
-            <div className="absolute inset-[1.5px] rounded-[calc(2rem-1.5px)] bg-[#050505] border border-zinc-800/40 -z-10 transition-colors duration-500 light:bg-white/80 light:border-zinc-200" />
+            <div className="absolute inset-[1.5px] rounded-[calc(2rem-1.5px)] bg-[#050505] border border-zinc-800/40 -z-10 transition-colors duration-500 light:bg-white light:border-zinc-200" />
             
             {/* Ambient inner glow that activates on hover */}
             <div className="absolute inset-[1.5px] bg-gradient-to-br from-[#dc2626]/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[calc(2rem-1.5px)] pointer-events-none -z-10" />
