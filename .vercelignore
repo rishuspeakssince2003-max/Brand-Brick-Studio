@@ -1,0 +1,9 @@
+node_modules
+.git
+.vercel
+.antigravity
+dist
+build
+.DS_Store
+*.log
+.env*
