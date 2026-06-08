@@ -63,7 +63,7 @@ export function Footer() {
               {/* Card 1: Email */}
               <a 
                 href="mailto:brandbrickstudio@gmail.com"
-                className="group relative flex items-center gap-6 p-6 md:p-7 rounded-[2rem] bg-zinc-950/40 backdrop-blur-md border border-zinc-800/40 hover:border-brand/40 hover:bg-zinc-950/80 transition-all duration-300 overflow-hidden shadow-lg light:bg-white/40 light:border-zinc-200"
+                className="group relative flex items-center gap-6 p-6 md:p-7 rounded-[2rem] bg-zinc-950/40 backdrop-blur-md border border-zinc-800/40 hover:border-brand/40 hover:bg-zinc-950/80 transition-all duration-300 overflow-hidden shadow-lg light:bg-white/40 light:border-zinc-200 light:hover:bg-red-50 light:hover:border-red-200"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-brand/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="relative w-12 h-12 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center shrink-0 group-hover:bg-brand/15 group-hover:border-brand/40 group-hover:shadow-[0_0_15px_rgba(220,38,38,0.2)] transition-all duration-300 light:bg-zinc-100 light:border-zinc-200">
@@ -83,7 +83,7 @@ export function Footer() {
                 href="https://instagram.com/brandbrickstudio"
                 target="_blank"
                 rel="noreferrer"
-                className="group relative flex items-center gap-6 p-6 md:p-7 rounded-[2rem] bg-zinc-950/40 backdrop-blur-md border border-zinc-800/40 hover:border-brand/40 hover:bg-zinc-950/80 transition-all duration-300 overflow-hidden shadow-lg light:bg-white/40 light:border-zinc-200"
+                className="group relative flex items-center gap-6 p-6 md:p-7 rounded-[2rem] bg-zinc-950/40 backdrop-blur-md border border-zinc-800/40 hover:border-brand/40 hover:bg-zinc-950/80 transition-all duration-300 overflow-hidden shadow-lg light:bg-white/40 light:border-zinc-200 light:hover:bg-red-50 light:hover:border-red-200"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-brand/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="relative w-12 h-12 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center shrink-0 group-hover:bg-brand/15 group-hover:border-brand/40 group-hover:shadow-[0_0_15px_rgba(220,38,38,0.2)] transition-all duration-300 light:bg-zinc-100 light:border-zinc-200">
@@ -100,7 +100,7 @@ export function Footer() {
 
               {/* Card 3: Location */}
               <div 
-                className="group relative flex items-center gap-6 p-6 md:p-7 rounded-[2rem] bg-zinc-950/40 backdrop-blur-md border border-zinc-800/40 hover:border-brand/40 hover:bg-zinc-950/80 transition-all duration-300 overflow-hidden shadow-lg light:bg-white/40 light:border-zinc-200"
+                className="group relative flex items-center gap-6 p-6 md:p-7 rounded-[2rem] bg-zinc-950/40 backdrop-blur-md border border-zinc-800/40 hover:border-brand/40 hover:bg-zinc-950/80 transition-all duration-300 overflow-hidden shadow-lg light:bg-white/40 light:border-zinc-200 light:hover:bg-red-50 light:hover:border-red-200"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-brand/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="relative w-12 h-12 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center shrink-0 group-hover:bg-brand/15 group-hover:border-brand/40 group-hover:shadow-[0_0_15px_rgba(220,38,38,0.2)] transition-all duration-300 light:bg-zinc-100 light:border-zinc-200">
