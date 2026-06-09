@@ -24,7 +24,7 @@ export function Footer() {
               Let’s build a brand people <span className="text-[#dc2626] italic">remember</span>
             </h2>
             <p className="text-lg text-zinc-400 light:text-zinc-600 leading-relaxed max-w-md mb-10">
-              If your brand needs better content, stronger visuals, smarter digital execution, or a complete growth ready system, Brand Brick Studio is ready to build with you.
+              If your brand needs better content, stronger visuals, smarter digital execution, or a complete growth-ready system, Brand Brick Studio is ready to build with you.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <LiquidButton href="mailto:brandbrickstudio@gmail.com" variant="solid">

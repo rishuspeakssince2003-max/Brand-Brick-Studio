@@ -322,23 +322,6 @@ export function Hero() {
             </svg>
           </a>
         </motion.div>
-
-        {/* Animated Scroll Indicator */}
-        <motion.div 
-          className="absolute bottom-4 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.6 }}
-          transition={{ delay: 1, duration: 0.8 }}
-        >
-          <div className="w-5 h-8 rounded-full border-2 border-zinc-700 flex justify-center p-1 relative">
-            <motion.div 
-              className="w-1 h-1.5 rounded-full bg-[#dc2626]" 
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-            />
-          </div>
-          <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-zinc-600">Scroll</span>
-        </motion.div>
       </div>
 
       {/* ── Bottom Section: Stats & Logo Marquee ── */}
@@ -374,7 +357,7 @@ export function Hero() {
 
           {/* Micro Marquee statement */}
           <p className="text-[10px] md:text-[11px] font-bold text-zinc-500 light:text-zinc-500 uppercase tracking-[0.25em] text-center md:text-right max-w-xs leading-relaxed">
-            Crafting raw digital growth fromSilvassa to the world.
+            Crafting raw digital growth from Silvassa to the world.
           </p>
         </div>
 
