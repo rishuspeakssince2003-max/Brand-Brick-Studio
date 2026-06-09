@@ -5,14 +5,30 @@ import { Loader } from "./components/Loader";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
 import { Services } from "./components/Services";
+import { CaseStudies } from "./components/CaseStudies";
+import { BeforeAfter } from "./components/BeforeAfter";
+import { WhyChooseUs } from "./components/WhyChooseUs";
+import { Process } from "./components/Process";
 import { Proof } from "./components/Proof";
 import { Stack } from "./components/Stack";
 import { Packages } from "./components/Packages";
+import { Team } from "./components/Team";
+import { Instagram } from "./components/Instagram";
+import { FAQ } from "./components/FAQ";
 import { Contact } from "./components/Contact";
 import { Footer } from "./components/Footer";
-import { CustomCursor } from "./components/CustomCursor";
 import { Chatbot } from "./components/Chatbot";
 import { PremiumTechBackground } from "./components/PremiumTechBackground";
+import { CustomCursor } from "./components/CustomCursor";
+import { SeoLandingPage } from "./components/SeoLandingPage";
+
+const seoRoutes = [
+  "/branding-agency-surat",
+  "/creative-agency-surat",
+  "/website-design-company-surat",
+  "/social-media-marketing-agency-surat",
+  "/branding-agency-gujarat"
+];
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -22,6 +38,54 @@ export default function App() {
     }
     return "dark";
   });
+
+  const [path, setPath] = useState(() => (typeof window !== "undefined" ? window.location.pathname.replace(/\/$/, "") : "/"));
+
+  useEffect(() => {
+    const handleLocationChange = () => {
+      setPath(window.location.pathname.replace(/\/$/, ""));
+    };
+    
+    // Intercept clicks on links that are local routes to provide a smooth SPA transition
+    const handleLinkClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const anchor = target.closest("a");
+      if (anchor && anchor.href) {
+        try {
+          const url = new URL(anchor.href);
+          if (url.origin === window.location.origin) {
+            const cleanPath = url.pathname.replace(/\/$/, "");
+            const isSeoRoute = seoRoutes.includes(cleanPath);
+            if (cleanPath === "" || cleanPath === "/" || isSeoRoute) {
+              e.preventDefault();
+              window.history.pushState(null, "", url.href);
+              setPath(cleanPath || "/");
+              
+              if (url.hash) {
+                setTimeout(() => {
+                  const targetEl = document.querySelector(url.hash);
+                  if (targetEl) {
+                    targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }
+                }, 100);
+              } else {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }
+            }
+          }
+        } catch (err) {
+          // Ignored
+        }
+      }
+    };
+
+    window.addEventListener("popstate", handleLocationChange);
+    document.addEventListener("click", handleLinkClick);
+    return () => {
+      window.removeEventListener("popstate", handleLocationChange);
+      document.removeEventListener("click", handleLinkClick);
+    };
+  }, []);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -68,6 +132,8 @@ export default function App() {
     restDelta: 0.001
   });
 
+  const isSeoPage = seoRoutes.includes(path);
+
   return (
     <div className="min-h-screen bg-transparent text-zinc-50 light:text-zinc-900 font-sans selection:bg-brand selection:text-white relative">
       {/* Top Scroll Progress Bar */}
@@ -81,15 +147,30 @@ export default function App() {
         {loading && <Loader onComplete={() => setLoading(false)} />}
       </AnimatePresence>
       <CustomCursor />
-      <Navbar theme={theme} toggleTheme={toggleTheme} />
+      <Navbar theme={theme} toggleTheme={toggleTheme} currentPath={path} />
+      
       <main>
-        <Hero />
-        <Services />
-        <Proof />
-        <Packages />
-        <Stack />
-        <Contact />
+        {isSeoPage ? (
+          <SeoLandingPage path={path} />
+        ) : (
+          <>
+            <Hero />
+            <Services />
+            <CaseStudies />
+            <BeforeAfter />
+            <WhyChooseUs />
+            <Process />
+            <Proof />
+            <Packages />
+            <Stack />
+            <Team />
+            <Instagram />
+            <FAQ />
+            <Contact />
+          </>
+        )}
       </main>
+
       <Footer />
       <Chatbot />
     </div>

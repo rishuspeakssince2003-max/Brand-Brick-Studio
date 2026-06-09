@@ -5,13 +5,13 @@ import { LiquidButton } from "./ui/LiquidButton";
 import { MenuBar } from "./ui/animated-menu-bar";
 
 const navLinks = [
-  { name: "Services", href: "#services" },
-  { name: "Why Us", href: "#why-us" },
-  { name: "Our Tools", href: "#stack" },
-  { name: "Contact", href: "#contact" },
+  { name: "Services", href: "/#services" },
+  { name: "Why Us", href: "/#why-us" },
+  { name: "Our Tools", href: "/#stack" },
+  { name: "Contact", href: "/#contact" },
 ];
 
-export function Navbar({ theme, toggleTheme }: { theme: "dark" | "light"; toggleTheme: () => void }) {
+export function Navbar({ theme, toggleTheme, currentPath }: { theme: "dark" | "light"; toggleTheme: () => void; currentPath: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("");
@@ -59,7 +59,7 @@ export function Navbar({ theme, toggleTheme }: { theme: "dark" | "light"; toggle
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between">
           {/* Logo */}
-          <a href="#" className="flex-shrink-0 relative z-50 flex items-center gap-3">
+          <a href="/" className="flex-shrink-0 relative z-50 flex items-center gap-3">
             <img src="/logo.png" alt="Brand Brick Logo" className="w-[34px] md:w-10 h-auto shrink-0" />
             <div className="flex flex-col items-center">
               <span className="font-sans font-medium text-2xl md:text-[28px] tracking-tight text-white light:text-zinc-900 flex items-center leading-none">
@@ -113,7 +113,7 @@ export function Navbar({ theme, toggleTheme }: { theme: "dark" | "light"; toggle
                 <circle cx="17.5" cy="17.5" r="2.5" fill="currentColor" />
               </svg>
             </a>
-            <LiquidButton href="#contact" variant="solid" size="default">
+            <LiquidButton href="/#contact" variant="solid" size="default">
               Book a Call
             </LiquidButton>
           </div>
@@ -177,7 +177,7 @@ export function Navbar({ theme, toggleTheme }: { theme: "dark" | "light"; toggle
                 </a>
               ))}
               <LiquidButton
-                href="#contact"
+                href="/#contact"
                 onClick={() => setIsOpen(false)}
                 className="mt-4 self-start w-full"
               >

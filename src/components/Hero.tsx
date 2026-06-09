@@ -267,22 +267,22 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
         >
-          <span className="block text-[2.8rem] sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-white light:text-zinc-900 uppercase font-extrabold">
-            Engineered
+          <span className="block text-[2.6rem] sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl text-white light:text-zinc-900 uppercase font-extrabold">
+            We Build Brands
           </span>
-          <span className="block text-[2.8rem] sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-[#dc2626] italic uppercase font-extrabold">
-            For Growth.
+          <span className="block text-[2.6rem] sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl text-[#dc2626] italic uppercase font-extrabold">
+            That Command Attention.
           </span>
         </motion.h1>
 
         {/* Subtitle */}
         <motion.p
-          className="text-zinc-400 light:text-zinc-500 text-base sm:text-lg md:text-xl leading-relaxed mb-12 max-w-xl font-light font-display"
+          className="text-zinc-400 light:text-zinc-500 text-base sm:text-lg md:text-xl leading-relaxed mb-12 max-w-2xl font-light font-display"
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
         >
-          One team, twelve services, zero excuses.
+          Branding, Websites, Content & Marketing that transform businesses into unforgettable brands.
         </motion.p>
 
         {/* Tactile Switch CTA Button */}
@@ -309,18 +309,35 @@ export function Hero() {
             }}
             transition={{ type: "spring", stiffness: 600, damping: 15 }}
           >
-            Book a Call
+            Start Your Project
           </motion.a>
 
           <a
-            href="#services"
+            href="#work"
             className="group bg-transparent text-zinc-300 border border-zinc-800 hover:border-zinc-600 px-9 py-5 rounded-2xl text-sm font-bold uppercase tracking-wider hover:bg-white/[0.03] transition-all duration-400 text-center inline-flex justify-center items-center gap-2 light:text-zinc-850 light:border-zinc-300 light:hover:bg-zinc-100/50"
           >
-            See What We Do
+            View Our Work
             <svg className="w-4 h-4 text-zinc-500 group-hover:text-white light:group-hover:text-zinc-900 group-hover:translate-x-1 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
           </a>
+        </motion.div>
+
+        {/* Animated Scroll Indicator */}
+        <motion.div 
+          className="absolute bottom-4 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.6 }}
+          transition={{ delay: 1, duration: 0.8 }}
+        >
+          <div className="w-5 h-8 rounded-full border-2 border-zinc-700 flex justify-center p-1 relative">
+            <motion.div 
+              className="w-1 h-1.5 rounded-full bg-[#dc2626]" 
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </div>
+          <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-zinc-600">Scroll</span>
         </motion.div>
       </div>
 

@@ -3,10 +3,10 @@ import { ArrowUpRight, Mail, Instagram, MapPin } from "lucide-react";
 import { LiquidButton } from "./ui/LiquidButton";
 
 const links = [
-  { name: "Services", href: "#services" },
-  { name: "Why Us", href: "#why-us" },
-  { name: "Our Tools", href: "#stack" },
-  { name: "Contact", href: "#contact" }
+  { name: "Services", href: "/#services" },
+  { name: "Why Us", href: "/#why-us" },
+  { name: "Our Tools", href: "/#stack" },
+  { name: "Contact", href: "/#contact" }
 ];
 
 export function Footer() {
@@ -147,6 +147,22 @@ export function Footer() {
             </svg>
             <span className="text-[10px] font-bold uppercase tracking-widest">Shopify Expert</span>
           </div>
+        </div>
+
+        {/* Regional SEO Presence */}
+        <div className="py-6 border-t border-zinc-900/60 flex flex-wrap items-center gap-x-6 gap-y-3 justify-center lg:justify-start light:border-zinc-200 text-xs">
+          <span className="text-zinc-650 text-[10px] font-bold uppercase tracking-[0.25em] w-full lg:w-auto text-center lg:text-left">
+            Regional Presence:
+          </span>
+          <a href="/branding-agency-surat" className="text-zinc-500 hover:text-[#dc2626] font-medium transition-colors">Branding Surat</a>
+          <span className="text-zinc-800 light:text-zinc-300 hidden lg:inline">•</span>
+          <a href="/creative-agency-surat" className="text-zinc-500 hover:text-[#dc2626] font-medium transition-colors">Creative Agency Surat</a>
+          <span className="text-zinc-800 light:text-zinc-300 hidden lg:inline">•</span>
+          <a href="/website-design-company-surat" className="text-zinc-500 hover:text-[#dc2626] font-medium transition-colors">Web Design Surat</a>
+          <span className="text-zinc-800 light:text-zinc-300 hidden lg:inline">•</span>
+          <a href="/social-media-marketing-agency-surat" className="text-zinc-500 hover:text-[#dc2626] font-medium transition-colors">Social Marketing Surat</a>
+          <span className="text-zinc-800 light:text-zinc-300 hidden lg:inline">•</span>
+          <a href="/branding-agency-gujarat" className="text-zinc-500 hover:text-[#dc2626] font-medium transition-colors">Branding Gujarat</a>
         </div>
 
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 border-t border-zinc-900 pt-8 light:border-zinc-200">

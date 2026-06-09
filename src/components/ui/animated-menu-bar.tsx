@@ -94,10 +94,10 @@ const IconButton: React.FC<IconButtonProps> = ({ icon, label, active, href }) =>
 export const MenuBar = ({ activeSection }: MenuBarProps) => {
   return (
     <nav className="flex items-center gap-1 bg-[#0a0a0a]/60 backdrop-blur-md p-1 rounded-2xl border border-zinc-800/80 w-fit mx-auto transition-all duration-300 light:bg-white/60 light:border-zinc-200">
-      <IconButton icon={icons.services} label="Services" active={activeSection === 'services'} href="#services" />
-      <IconButton icon={icons["why-us"]} label="Why Us" active={activeSection === 'why-us'} href="#why-us" />
-      <IconButton icon={icons.stack} label="Our Tools" active={activeSection === 'stack'} href="#stack" />
-      <IconButton icon={icons.contact} label="Contact" active={activeSection === 'contact'} href="#contact" />
+      <IconButton icon={icons.services} label="Services" active={activeSection === 'services'} href="/#services" />
+      <IconButton icon={icons["why-us"]} label="Why Us" active={activeSection === 'why-us'} href="/#why-us" />
+      <IconButton icon={icons.stack} label="Our Tools" active={activeSection === 'stack'} href="/#stack" />
+      <IconButton icon={icons.contact} label="Contact" active={activeSection === 'contact'} href="/#contact" />
     </nav>
   );
 };
