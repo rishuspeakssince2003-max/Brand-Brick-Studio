@@ -81,7 +81,7 @@ function RotatingWord() {
   }, []);
 
   return (
-    <span className="relative inline-flex overflow-hidden h-[1.1em] align-bottom select-none">
+    <span className="relative inline-flex overflow-hidden h-[1.25em] align-bottom select-none">
       <AnimatePresence mode="wait">
         <motion.span
           key={rotatingWords[idx]}
@@ -262,16 +262,18 @@ export function Hero() {
 
         {/* Kinetic Massive Headline */}
         <motion.h1
-          className="font-display font-black tracking-tighter leading-[0.9] mb-6 max-w-5xl text-center flex flex-col items-center justify-center"
+          className="font-display font-black tracking-tighter leading-[0.95] mb-8 max-w-5xl text-center"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
         >
-          <span className="block text-[2.6rem] sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl text-white light:text-zinc-900 uppercase font-extrabold">
+          <span className="block text-[2.6rem] sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl text-white light:text-zinc-900 uppercase font-extrabold mb-3">
             We Build Brands
           </span>
-          <span className="block text-[2.6rem] sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl text-[#dc2626] italic uppercase font-extrabold flex flex-wrap items-center justify-center gap-x-4">
-            <span>That Command</span>
+          <span className="block text-[2.2rem] sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl text-white light:text-zinc-900 uppercase font-bold mb-4">
+            That Command
+          </span>
+          <span className="block text-[2.8rem] sm:text-6xl md:text-8xl lg:text-9xl xl:text-[9.5rem] text-[#dc2626] italic uppercase font-extrabold">
             <RotatingWord />
           </span>
         </motion.h1>
