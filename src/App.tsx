@@ -150,25 +150,41 @@ export default function App() {
       <Navbar theme={theme} toggleTheme={toggleTheme} currentPath={path} />
       
       <main>
-        {isSeoPage ? (
-          <SeoLandingPage path={path} />
-        ) : (
-          <>
-            <Hero />
-            <Services />
-            <CaseStudies />
-            <BeforeAfter />
-            <WhyChooseUs />
-            <Process />
-            <Proof />
-            <Packages />
-            <Stack />
-            <Team />
-            <Instagram />
-            <FAQ />
-            <Contact />
-          </>
-        )}
+        <AnimatePresence mode="wait">
+          {isSeoPage ? (
+            <motion.div
+              key={path}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <SeoLandingPage path={path} />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="homepage"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <Hero />
+              <Services />
+              <CaseStudies />
+              <BeforeAfter />
+              <WhyChooseUs />
+              <Process />
+              <Proof />
+              <Packages />
+              <Stack />
+              <Team />
+              <Instagram />
+              <FAQ />
+              <Contact />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
 
       <Footer />

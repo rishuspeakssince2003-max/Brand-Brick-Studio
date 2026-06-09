@@ -78,27 +78,60 @@ export function SeoLandingPage({ path }: { path: string }) {
   }, [config]);
 
   return (
-    <div className="pt-24 md:pt-32 relative overflow-hidden">
+    <div key={path} className="pt-24 md:pt-32 relative overflow-hidden">
       
       {/* Background spotlights */}
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-[#dc2626]/5 rounded-full blur-[120px] pointer-events-none" />
+      <motion.div
+        animate={{
+          scale: [1, 1.15, 1],
+          opacity: [0.8, 1, 0.8],
+          x: [0, 30, 0],
+          y: [0, -20, 0],
+        }}
+        transition={{
+          duration: 15,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+        className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-[#dc2626]/5 rounded-full blur-[120px] pointer-events-none"
+      />
       
       {/* SEO Hero Section */}
       <section className="py-20 md:py-32 px-4 md:px-6 max-w-7xl mx-auto relative z-10">
         <div className="max-w-4xl">
-          <span className="inline-block px-4 py-1.5 rounded-full border border-zinc-800 bg-zinc-900/50 text-[#dc2626] text-xs font-bold tracking-[0.2em] uppercase mb-6 backdrop-blur-md light:border-zinc-200 light:bg-white/50">
+          <motion.span
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="inline-block px-4 py-1.5 rounded-full border border-zinc-800 bg-zinc-900/50 text-[#dc2626] text-xs font-bold tracking-[0.2em] uppercase mb-6 backdrop-blur-md light:border-zinc-200 light:bg-white/50"
+          >
             Regional Partner / {config.targetService}
-          </span>
+          </motion.span>
           
-          <h1 className="text-5xl md:text-8xl font-display font-bold text-white light:text-zinc-900 tracking-tight leading-[0.9] mb-8">
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            className="text-5xl md:text-8xl font-display font-bold text-white light:text-zinc-900 tracking-tight leading-[0.9] mb-8"
+          >
             {config.headline}
-          </h1>
+          </motion.h1>
           
-          <p className="text-xl md:text-2xl text-zinc-400 light:text-zinc-650 font-light leading-relaxed mb-10 max-w-2xl">
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="text-xl md:text-2xl text-zinc-400 light:text-zinc-650 font-light leading-relaxed mb-10 max-w-2xl"
+          >
             {config.subtitle}
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4">
+          </motion.p>
+ 
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-col sm:flex-row gap-4"
+          >
             <a
               href="#contact"
               className="group relative bg-[#dc2626] text-white px-8 py-4 rounded-full text-sm font-bold uppercase tracking-wider hover:bg-[#b91c1c] transition-all duration-300 text-center inline-flex justify-center items-center gap-2 shadow-[0_0_20px_rgba(220,38,38,0.25)]"
@@ -112,39 +145,66 @@ export function SeoLandingPage({ path }: { path: string }) {
             >
               View Services
             </a>
-          </div>
+          </motion.div>
         </div>
       </section>
-
+ 
       {/* Main contextual description card */}
-      <section className="py-12 px-4 md:px-6 max-w-7xl mx-auto">
+      <motion.section
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={{
+          hidden: { opacity: 0 },
+          visible: {
+            opacity: 1,
+            transition: {
+              staggerChildren: 0.15,
+              delayChildren: 0.1
+            }
+          }
+        }}
+        className="py-12 px-4 md:px-6 max-w-7xl mx-auto"
+      >
         <div className="bg-zinc-950/40 border border-zinc-850 p-8 md:p-12 lg:p-16 rounded-[2.5rem] backdrop-blur-md light:bg-white/50 light:border-zinc-200">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
-            <div className="lg:col-span-2">
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+              }}
+              className="lg:col-span-2"
+            >
               <span className="text-[10px] font-bold text-[#dc2626] uppercase tracking-[0.2em] block mb-2">Locally Engineered. Globally Scaled.</span>
               <h2 className="text-3xl md:text-4xl font-display font-bold text-white light:text-zinc-900 tracking-tight leading-none mb-6">
                 Premium visual execution for Surat and Gujarat's leading enterprises.
               </h2>
-              <p className="text-zinc-400 light:text-zinc-600 leading-relaxed">
+              <p className="text-zinc-400 light:text-zinc-650 leading-relaxed">
                 {config.description}
               </p>
-            </div>
+            </motion.div>
             
-            <div className="p-8 rounded-[2rem] bg-zinc-900/60 border border-zinc-850 flex flex-col gap-6 light:bg-zinc-100 light:border-zinc-200">
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+              }}
+              className="p-8 rounded-[2rem] bg-zinc-900/60 border border-zinc-850 flex flex-col gap-6 light:bg-zinc-100 light:border-zinc-200"
+            >
               <div className="flex items-center gap-3">
                 <MapPin size={18} className="text-[#dc2626]" />
                 <span className="text-sm font-bold text-white light:text-zinc-900 uppercase tracking-widest">Surat / Gujarat Operations</span>
               </div>
-              <p className="text-xs text-zinc-400 light:text-zinc-600 leading-relaxed">
+              <p className="text-xs text-zinc-400 light:text-zinc-650 leading-relaxed">
                 We set up digital and physical content operations directly matching the compliance standards, accounting requirements, and brand standards of businesses in Gujarat.
               </p>
               <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#dc2626]">
                 <ShieldCheck size={14} /> Full Liability Indemnity
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Reusable Core Sections */}
       <div id="services">

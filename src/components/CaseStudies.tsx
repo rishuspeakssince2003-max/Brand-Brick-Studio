@@ -49,14 +49,20 @@ const projects = [
 export function CaseStudies() {
   return (
     <section className="py-24 md:py-40 px-4 md:px-6 max-w-7xl mx-auto scroll-mt-24 md:scroll-mt-28" id="work">
-      <div className="mb-16 md:mb-24">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="mb-16 md:mb-24"
+      >
         <span className="inline-block px-4 py-1.5 rounded-full border border-zinc-800 bg-zinc-900/50 text-[#dc2626] text-xs font-bold tracking-[0.2em] uppercase mb-6 backdrop-blur-md light:border-zinc-200 light:bg-white/50">
           Featured Work
         </span>
         <h2 className="text-4xl md:text-6xl font-display font-bold text-white light:text-zinc-900 tracking-tight leading-none">
           Projects That Shaped Brands.
         </h2>
-      </div>
+      </motion.div>
 
       <div className="space-y-24 md:space-y-36">
         {projects.map((project, idx) => (
