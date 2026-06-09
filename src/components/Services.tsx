@@ -123,89 +123,65 @@ const cardLayouts = [
    ANIMATED SERVICE CARD
    ══════════════════════════════════════════════════════════ */
 function ServiceCard({ service, index }: { service: typeof services[number]; index: number; key?: any }) {
-  const [hovered, setHovered] = useState(false);
   const num = String(index + 1).padStart(2, "0");
 
   return (
     <motion.div
       variants={{
-        hidden: { opacity: 0, y: 50, scale: 0.92 },
+        hidden: { opacity: 0, y: 35 },
         visible: {
           opacity: 1,
           y: 0,
-          scale: 1,
-          transition: { type: "spring", stiffness: 70, damping: 16 },
+          transition: { duration: 0.6, ease: [0.25, 1, 0.5, 1] },
         },
       }}
       whileHover={{ 
-        y: -8,
-        rotateX: 2,
-        rotateY: -2,
-        transition: { type: "spring", stiffness: 400, damping: 30 }
+        y: -6,
+        scale: 1.015,
+        transition: { duration: 0.4, ease: [0.25, 1, 0.5, 1] }
       }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className={`group relative rounded-[2rem] overflow-hidden cursor-default ${cardLayouts[index] || "md:col-span-1"}`}
-      style={{ minHeight: 240, zIndex: hovered ? 20 : 1 }}
+      className={`group relative rounded-[2rem] overflow-hidden cursor-default border border-zinc-900 bg-[#050505]/45 backdrop-blur-md transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-[#dc2626]/30 hover:bg-[#070707]/75 hover:shadow-[0_20px_50px_rgba(0,0,0,0.55)] light:bg-white/40 light:border-zinc-200 light:hover:bg-white/75 light:hover:border-[#dc2626]/30 ${cardLayouts[index] || "md:col-span-1"}`}
+      style={{ minHeight: 240 }}
     >
-      {/* ── Animated Border Trace ── */}
-      <div className="absolute inset-0 rounded-[2rem] p-px overflow-hidden">
-        <div
-          className="absolute inset-[-200%] transition-opacity duration-500"
-          style={{
-            opacity: hovered ? 1 : 0,
-            background: "conic-gradient(from 0deg, transparent 0%, #dc2626 10%, transparent 20%, transparent 100%)",
-            animation: hovered ? "border-spin 3s linear infinite" : "none",
-          }}
-        />
-        {/* Frosted glass container with subtle white borders at 10% opacity */}
-        <div className="absolute inset-px rounded-[calc(2rem-1px)] bg-[#050505]/45 border border-white/10 backdrop-blur-md transition-colors duration-500 light:bg-white/45 light:border-zinc-200" />
-      </div>
+      {/* Subtle hover radial spotlight in background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#dc2626]/[0.04] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
-      {/* ── Card inner with electric blue or neon purple glows ── */}
-      <div className="relative z-10 h-full flex flex-col justify-between p-7 md:p-8 rounded-[2rem] border border-transparent transition-all duration-500 overflow-hidden shadow-[inset_0_0_20px_rgba(59,130,246,0.03)] hover:shadow-[inset_0_0_25px_rgba(168,85,247,0.15),0_15px_30px_rgba(0,0,0,0.5)]">
+      {/* Watermark Index Number */}
+      <span className="absolute -right-2 -top-4 text-[7rem] md:text-[8rem] font-display font-bold leading-none text-white/[0.01] light:text-zinc-900/[0.01] group-hover:text-[#dc2626]/[0.04] transition-colors duration-700 select-none pointer-events-none tracking-tighter">
+        {num}
+      </span>
 
-        {/* Hover gradient wash */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#dc2626]/[0.07] via-transparent to-[#dc2626]/[0.03] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-
-        {/* Watermark Number */}
-        <span className="absolute -right-2 -top-4 text-[7rem] md:text-[8rem] font-display font-bold leading-none text-white/[0.02] light:text-zinc-900/[0.02] group-hover:text-[#dc2626]/[0.06] transition-colors duration-700 select-none pointer-events-none tracking-tighter">
-          {num}
-        </span>
-
-        {/* Top row: Icon + Number */}
-        <div className="relative z-10 flex items-start justify-between mb-8">
-          {/* Animated Icon Container */}
-          <div className="relative">
-            {/* Pulsing glow behind icon on hover */}
-            <div className="absolute inset-0 rounded-2xl bg-[#dc2626]/20 blur-xl scale-0 group-hover:scale-150 transition-transform duration-700 pointer-events-none" />
-            <div className="relative h-14 w-14 rounded-2xl bg-zinc-900/80 border border-zinc-800/80 flex items-center justify-center
-              group-hover:bg-[#dc2626]/10 group-hover:border-[#dc2626]/40 group-hover:shadow-[0_0_25px_rgba(220,38,38,0.25)]
-              transition-all duration-500 service-icon-box light:bg-zinc-50 light:border-zinc-200">
-              <div className="text-zinc-500 group-hover:text-[#dc2626] transition-colors duration-400 stroke-current">
-                {svgIcons[service.icon]}
-              </div>
+      {/* Card Content container */}
+      <div className="relative z-10 h-full flex flex-col justify-between p-7 md:p-8">
+        
+        {/* Top row: Icon + Index */}
+        <div className="flex items-start justify-between mb-8">
+          {/* Icon Box */}
+          <div className="relative h-14 w-14 rounded-2xl bg-zinc-900/80 border border-zinc-800/80 flex items-center justify-center
+            group-hover:bg-[#dc2626]/8 group-hover:border-[#dc2626]/20 transition-all duration-500 light:bg-zinc-50 light:border-zinc-200">
+            <div className="text-zinc-500 group-hover:text-[#dc2626] transition-colors duration-400 stroke-current">
+              {svgIcons[service.icon]}
             </div>
           </div>
 
           {/* Small index pill */}
-          <span className="text-[11px] font-mono font-bold text-zinc-700 group-hover:text-[#dc2626]/60 transition-colors duration-500 tracking-wider mt-1">
+          <span className="text-[10px] font-mono font-bold text-zinc-700 group-hover:text-[#dc2626]/60 transition-colors duration-500 tracking-wider mt-1">
             {num}
           </span>
         </div>
 
         {/* Bottom: Title + Description */}
-        <div className="relative z-10 mt-auto">
-          <h4 className="text-xl md:text-[1.35rem] font-display font-bold text-white light:text-zinc-900 mb-2.5 leading-tight group-hover:text-[#dc2626] transition-colors duration-400">
+        <div className="mt-auto">
+          <h4 className="text-xl md:text-[1.3rem] font-display font-bold text-white light:text-zinc-900 mb-2 leading-tight group-hover:text-[#dc2626] transition-colors duration-400">
             {service.title}
           </h4>
-          <p className="text-zinc-500 light:text-zinc-500 text-[13px] md:text-sm leading-relaxed group-hover:text-zinc-400 light:group-hover:text-zinc-700 transition-colors duration-400 max-w-md">
+          <p className="text-zinc-500 light:text-zinc-500 text-[13px] md:text-sm leading-relaxed group-hover:text-zinc-400 light:group-hover:text-zinc-750 transition-colors duration-400 max-w-md">
             {service.desc}
           </p>
 
-          {/* Animated underline on hover */}
-          <div className="mt-4 h-px w-full overflow-hidden">
-            <div className="h-full w-full bg-gradient-to-r from-[#dc2626] to-transparent scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]" />
+          {/* Animated underline indicator */}
+          <div className="mt-4 h-[1.5px] w-full overflow-hidden">
+            <div className="h-full w-full bg-gradient-to-r from-[#dc2626] to-transparent scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]" />
           </div>
         </div>
       </div>
