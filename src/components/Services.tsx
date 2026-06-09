@@ -124,6 +124,8 @@ const cardLayouts = [
    ══════════════════════════════════════════════════════════ */
 function ServiceCard({ service, index }: { service: typeof services[number]; index: number; key?: any }) {
   const num = String(index + 1).padStart(2, "0");
+  const duration = 12 + (index % 4) * 2; // 12s, 14s, 16s, 18s
+  const delay = -(index * 1.8);
 
   return (
     <motion.div
@@ -140,11 +142,18 @@ function ServiceCard({ service, index }: { service: typeof services[number]; ind
         scale: 1.015,
         transition: { duration: 0.4, ease: [0.25, 1, 0.5, 1] }
       }}
-      className={`group relative rounded-[2rem] overflow-hidden cursor-default border border-zinc-900 bg-[#050505]/45 backdrop-blur-md transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-[#dc2626]/30 hover:bg-[#070707]/75 hover:shadow-[0_20px_50px_rgba(0,0,0,0.55)] light:bg-white/40 light:border-zinc-200 light:hover:bg-white/75 light:hover:border-[#dc2626]/30 ${cardLayouts[index] || "md:col-span-1"}`}
-      style={{ minHeight: 240 }}
+      className={`group relative overflow-hidden cursor-default border border-zinc-900 bg-[#050505]/45 backdrop-blur-md transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-[#dc2626]/30 hover:bg-[#070707]/75 hover:shadow-[0_20px_50px_rgba(0,0,0,0.55)] light:bg-white/40 light:border-zinc-200 light:hover:bg-white/75 light:hover:border-[#dc2626]/30 ameba-card ${cardLayouts[index] || "md:col-span-1"}`}
+      style={{
+        minHeight: 240,
+        animationName: "ameba-liquid",
+        animationDuration: `${duration}s`,
+        animationDelay: `${delay}s`,
+        animationIterationCount: "infinite",
+        animationTimingFunction: "ease-in-out"
+      }}
     >
       {/* Subtle hover radial spotlight in background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#dc2626]/[0.04] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#dc2626]/[0.08] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
       {/* Watermark Index Number */}
       <span className="absolute -right-2 -top-4 text-[7rem] md:text-[8rem] font-display font-bold leading-none text-white/[0.01] light:text-zinc-900/[0.01] group-hover:text-[#dc2626]/[0.04] transition-colors duration-700 select-none pointer-events-none tracking-tighter">
@@ -347,6 +356,30 @@ export function Services() {
         @keyframes border-spin {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
+        }
+
+        @keyframes ameba-liquid {
+          0% {
+            border-radius: 42% 58% 45% 55% / 55% 48% 52% 45%;
+          }
+          33% {
+            border-radius: 58% 42% 52% 48% / 45% 55% 40% 60%;
+          }
+          66% {
+            border-radius: 48% 52% 40% 60% / 58% 42% 55% 45%;
+          }
+          100% {
+            border-radius: 42% 58% 45% 55% / 55% 48% 52% 45%;
+          }
+        }
+
+        .ameba-card {
+          border-radius: 42% 58% 45% 55% / 55% 48% 52% 45%;
+          transition: border-color 0.5s ease, background-color 0.5s ease, box-shadow 0.5s ease, transform 0.5s ease;
+        }
+
+        .ameba-card:hover {
+          animation-duration: 6s !important;
         }
 
         .service-icon-svg {
