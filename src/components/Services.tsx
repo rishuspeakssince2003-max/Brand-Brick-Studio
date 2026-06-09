@@ -1,5 +1,6 @@
-import React, { useRef, useState } from "react";
-import { motion, useInView } from "motion/react";
+import React, { useRef, useState, useEffect } from "react";
+import { motion, useInView, useMotionValue, useTransform } from "motion/react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 /* ══════════════════════════════════════════════════════════
    CUSTOM SVG ICONS — Animated stroke-draw on hover
@@ -87,70 +88,172 @@ const svgIcons: Record<string, React.ReactNode> = {
    SERVICE DATA
    ══════════════════════════════════════════════════════════ */
 const services = [
-  { title: "Video Editing", desc: "Cinematic, high-retention editing that turns raw footage into viral gold.", icon: "videoEdit" },
-  { title: "Video Shoot", desc: "Premium on-site production with expert direction and cinematic quality.", icon: "videoShoot" },
-  { title: "Reels Creation", desc: "Short-form vertical content engineered for maximum virality and engagement.", icon: "reels" },
-  { title: "Thumbnail Design", desc: "Bold visual hooks designed to break scroll patterns and steal clicks.", icon: "thumbnail" },
-  { title: "Graphic Design", desc: "Sleek, memorable visual identity systems that position you as premium.", icon: "graphic" },
-  { title: "Website Development", desc: "Lightning-fast, conversion-optimized digital experiences built to dominate.", icon: "website" },
-  { title: "3D Design", desc: "Photorealistic modeling, renders, and spatial visuals that wow audiences.", icon: "threeD" },
-  { title: "Software Development", desc: "Custom tech solutions, digital workflows, and automation at scale.", icon: "software" },
-  { title: "SEO Optimization", desc: "Data-driven strategies to own search results and drive organic revenue.", icon: "seo" },
-  { title: "Social Media Management", desc: "Community building, brand authority, and undeniable social presence.", icon: "social" },
-  { title: "Content Strategy", desc: "Master plans aligning brand voice, audience psychology, and business goals.", icon: "content" },
-  { title: "Ad Creatives", desc: "Scroll-stopping ads rigorously designed for high ROAS on Meta & Google.", icon: "ads" },
+  {
+    title: "Video Editing",
+    desc: "Cinematic, high-retention editing that turns raw footage into viral gold.",
+    icon: "videoEdit",
+    bullets: ["Cinematic Cuts", "Sound Design", "Color Grading"]
+  },
+  {
+    title: "Video Shoot",
+    desc: "Premium on-site production with expert direction and cinematic quality.",
+    icon: "videoShoot",
+    bullets: ["4K Volumetric", "Professional Lighting", "Expert Direction"]
+  },
+  {
+    title: "Reels Creation",
+    desc: "Short-form vertical content engineered for maximum virality and engagement.",
+    icon: "reels",
+    bullets: ["Viral Hook Formulation", "Subtitles & SFX", "Daily Workflow Allocation"]
+  },
+  {
+    title: "Thumbnail Design",
+    desc: "Bold visual hooks designed to break scroll patterns and steal clicks.",
+    icon: "thumbnail",
+    bullets: ["Break Scroll Patterns", "High CTR Hooks", "A/B Testing Strategy"]
+  },
+  {
+    title: "Graphic Design",
+    desc: "Sleek, memorable visual identity systems that position you as premium.",
+    icon: "graphic",
+    bullets: ["Sleek Identity Systems", "Brand Guidelines", "Premium Visual Systems"]
+  },
+  {
+    title: "Website Development",
+    desc: "Lightning-fast, conversion-optimized digital experiences built to dominate.",
+    icon: "website",
+    bullets: ["Speed Under 200ms", "WebGL Particles", "Lenis Smooth Scroll"]
+  },
+  {
+    title: "3D Design",
+    desc: "Photorealistic modeling, renders, and spatial visuals that wow audiences.",
+    icon: "threeD",
+    bullets: ["Photorealistic Modeling", "Premium Renders", "Spatial Animation"]
+  },
+  {
+    title: "Software Development",
+    desc: "Custom tech solutions, digital workflows, and automation at scale.",
+    icon: "software",
+    bullets: ["Custom WebApps", "Workflow Automations", "API Integration"]
+  },
+  {
+    title: "SEO Optimization",
+    desc: "Data-driven strategies to own search results and drive organic revenue.",
+    icon: "seo",
+    bullets: ["Rank #1 Strategies", "High Intent Keywords", "Authority Boost"]
+  },
+  {
+    title: "Social Media Management",
+    desc: "Community building, brand authority, and undeniable social presence.",
+    icon: "social",
+    bullets: ["Daily Post Scheduling", "Community Growth", "Meta Ad Blueprint"]
+  },
+  {
+    title: "Content Strategy",
+    desc: "Master plans aligning brand voice, audience psychology, and business goals.",
+    icon: "content",
+    bullets: ["Audience Psychology", "Positioning Blueprint", "ROI Focus"]
+  },
+  {
+    title: "Ad Creatives",
+    desc: "Scroll-stopping ads rigorously designed for high ROAS on Meta & Google.",
+    icon: "ads",
+    bullets: ["High ROAS Templates", "Creative Testing", "Meta/Google Compliant"]
+  }
 ];
 
-/* ══════════════════════════════════════════════════════════
-   BENTO LAYOUTS DEFINITIONS
-   ══════════════════════════════════════════════════════════ */
-const cardLayouts = [
-  "md:col-span-2 md:row-span-1", // Card 0: Horizontal wide (col 1-2, row 1)
-  "md:col-span-1 md:row-span-2", // Card 1: Vertical tall (col 3, row 1-2)
-  "md:col-span-1 md:row-span-1", // Card 2: Standard (col 1, row 2)
-  "md:col-span-1 md:row-span-1", // Card 3: Standard (col 2, row 2)
-  "md:col-span-1 md:row-span-2", // Card 4: Vertical tall (col 1, row 3-4)
-  "md:col-span-2 md:row-span-1", // Card 5: Horizontal wide (col 2-3, row 3)
-  "md:col-span-1 md:row-span-1", // Card 6: Standard (col 2, row 4)
-  "md:col-span-1 md:row-span-1", // Card 7: Standard (col 3, row 4)
-  "md:col-span-2 md:row-span-1", // Card 8: Horizontal wide (col 1-2, row 5)
-  "md:col-span-1 md:row-span-1", // Card 9: Standard (col 3, row 5)
-  "md:col-span-1 md:row-span-1", // Card 10: Standard (col 1, row 6)
-  "md:col-span-2 md:row-span-1", // Card 11: Horizontal wide (col 2-3, row 6)
-];
 
 /* ══════════════════════════════════════════════════════════
-   ANIMATED SERVICE CARD
+   ANIMATED SERVICE CARD (Stacked playing cards deck)
    ══════════════════════════════════════════════════════════ */
-function ServiceCard({ service, index }: { service: typeof services[number]; index: number; key?: any }) {
+function ServiceCard({
+  service,
+  index,
+  activeIndex,
+  setActiveIndex
+}: {
+  service: typeof services[number];
+  index: number;
+  activeIndex: number;
+  setActiveIndex: React.Dispatch<React.SetStateAction<number>>;
+  key?: any;
+}) {
   const num = String(index + 1).padStart(2, "0");
-  const duration = 12 + (index % 4) * 2; // 12s, 14s, 16s, 18s
-  const delay = -(index * 1.8);
+  const relativeIndex = (index - activeIndex + 12) % 12;
+  const isActive = relativeIndex === 0;
+
+  const x = useMotionValue(0);
+  const rotateTransform = useTransform(x, [-150, 150], [-15, 15]);
+  const opacityTransform = useTransform(x, [-150, -100, 0, 100, 150], [0, 1, 1, 1, 0]);
+
+  const handleDragEnd = (event: any, info: any) => {
+    if (info.offset.x > 100) {
+      // Swiped right -> Go to previous card
+      setActiveIndex((prev) => (prev + 11) % 12);
+    } else if (info.offset.x < -100) {
+      // Swiped left -> Go to next card
+      setActiveIndex((prev) => (prev + 1) % 12);
+    }
+  };
+
+  // Stack properties
+  let xVal = 0;
+  let yVal = 0;
+  let scaleVal = 1;
+  let rotateVal = 0;
+  let opacityVal = 1;
+  const zIndex = 12 - relativeIndex;
+
+  if (relativeIndex === 0) {
+    xVal = 0;
+    yVal = 0;
+    scaleVal = 1;
+    rotateVal = 0;
+    opacityVal = 1;
+  } else if (relativeIndex === 1) {
+    xVal = 0;
+    yVal = 16;
+    scaleVal = 0.95;
+    rotateVal = -1.5;
+    opacityVal = 0.85;
+  } else if (relativeIndex === 2) {
+    xVal = 0;
+    yVal = 32;
+    scaleVal = 0.9;
+    rotateVal = 1.5;
+    opacityVal = 0.6;
+  } else if (relativeIndex === 11) {
+    // Exit state of card swiped out
+    xVal = index % 2 === 0 ? -320 : 320;
+    yVal = -10;
+    scaleVal = 0.95;
+    rotateVal = index % 2 === 0 ? -12 : 12;
+    opacityVal = 0;
+  } else {
+    // Hidden at the back of the deck
+    xVal = 0;
+    yVal = 48;
+    scaleVal = 0.85;
+    rotateVal = 0;
+    opacityVal = 0;
+  }
 
   return (
     <motion.div
-      variants={{
-        hidden: { opacity: 0, y: 35 },
-        visible: {
-          opacity: 1,
-          y: 0,
-          transition: { duration: 0.6, ease: [0.25, 1, 0.5, 1] },
-        },
-      }}
-      whileHover={{ 
-        y: -6,
-        scale: 1.015,
-        transition: { duration: 0.4, ease: [0.25, 1, 0.5, 1] }
-      }}
-      className={`group relative overflow-hidden cursor-default border border-zinc-900 bg-[#050505]/45 backdrop-blur-md transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] hover:border-[#dc2626]/30 hover:bg-[#070707]/75 hover:shadow-[0_20px_50px_rgba(0,0,0,0.55)] light:bg-white/40 light:border-zinc-200 light:hover:bg-white/75 light:hover:border-[#dc2626]/30 ameba-card ${cardLayouts[index] || "md:col-span-1"}`}
+      drag={isActive ? "x" : false}
+      dragConstraints={{ left: 0, right: 0 }}
+      onDragEnd={handleDragEnd}
       style={{
-        minHeight: 240,
-        animationName: "ameba-liquid",
-        animationDuration: `${duration}s`,
-        animationDelay: `${delay}s`,
-        animationIterationCount: "infinite",
-        animationTimingFunction: "ease-in-out"
+        x: isActive ? x : xVal,
+        rotate: isActive ? rotateTransform : rotateVal,
+        opacity: isActive ? opacityTransform : opacityVal,
+        zIndex,
+        pointerEvents: isActive ? "auto" : "none",
+        transformOrigin: "bottom center"
       }}
+      animate={isActive ? { y: 0, scale: 1 } : { x: xVal, y: yVal, scale: scaleVal, rotate: rotateVal, opacity: opacityVal }}
+      transition={{ type: "spring", stiffness: 300, damping: 25 }}
+      className="absolute inset-0 rounded-[2.5rem] border border-zinc-850 bg-zinc-950/70 backdrop-blur-xl p-8 flex flex-col justify-between group cursor-grab active:cursor-grabbing light:bg-white/90 light:border-zinc-200 light:shadow-lg"
     >
       {/* Subtle hover radial spotlight in background */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#dc2626]/[0.08] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
@@ -161,13 +264,13 @@ function ServiceCard({ service, index }: { service: typeof services[number]; ind
       </span>
 
       {/* Card Content container */}
-      <div className="relative z-10 h-full flex flex-col justify-between p-7 md:p-8">
+      <div className="relative z-10 h-full flex flex-col justify-between">
         
         {/* Top row: Icon + Index */}
-        <div className="flex items-start justify-between mb-8">
+        <div className="flex items-start justify-between">
           {/* Icon Box */}
           <div className="relative h-14 w-14 rounded-2xl bg-zinc-900/80 border border-zinc-800/80 flex items-center justify-center
-            group-hover:bg-[#dc2626]/8 group-hover:border-[#dc2626]/20 transition-all duration-500 light:bg-zinc-50 light:border-zinc-200">
+            group-hover:bg-[#dc2626]/8 group-hover:border-[#dc2626]/25 transition-all duration-500 light:bg-zinc-50 light:border-zinc-200">
             <div className="text-zinc-500 group-hover:text-[#dc2626] transition-colors duration-400 stroke-current">
               {svgIcons[service.icon]}
             </div>
@@ -179,17 +282,28 @@ function ServiceCard({ service, index }: { service: typeof services[number]; ind
           </span>
         </div>
 
-        {/* Bottom: Title + Description */}
-        <div className="mt-auto">
-          <h4 className="text-xl md:text-[1.3rem] font-display font-bold text-white light:text-zinc-900 mb-2 leading-tight group-hover:text-[#dc2626] transition-colors duration-400">
+        {/* Bottom: Title + Description + Bullets */}
+        <div className="mt-8">
+          <h4 className="text-2xl font-display font-bold text-white light:text-zinc-900 mb-2 leading-tight group-hover:text-[#dc2626] transition-colors duration-400">
             {service.title}
           </h4>
-          <p className="text-zinc-500 light:text-zinc-500 text-[13px] md:text-sm leading-relaxed group-hover:text-zinc-400 light:group-hover:text-zinc-750 transition-colors duration-400 max-w-md">
+          <p className="text-zinc-400 light:text-zinc-650 text-sm leading-relaxed max-w-md">
             {service.desc}
           </p>
 
+          {/* Bullets */}
+          {service.bullets && (
+            <div className="flex flex-wrap gap-2 mt-5">
+              {service.bullets.map((bullet, bIdx) => (
+                <span key={bIdx} className="px-3 py-1 rounded-full border border-zinc-850 bg-zinc-900/40 text-zinc-400 text-[11px] font-medium light:border-zinc-250 light:bg-zinc-100 light:text-zinc-700">
+                  {bullet}
+                </span>
+              ))}
+            </div>
+          )}
+
           {/* Animated underline indicator */}
-          <div className="mt-4 h-[1.5px] w-full overflow-hidden">
+          <div className="mt-6 h-[1.5px] w-full overflow-hidden">
             <div className="h-full w-full bg-gradient-to-r from-[#dc2626] to-transparent scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]" />
           </div>
         </div>
@@ -232,8 +346,26 @@ function FloatingOrb({ size, x, y, delay }: { size: number; x: string; y: string
    MAIN SERVICES SECTION
    ══════════════════════════════════════════════════════════ */
 export function Services() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
+
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev + 1) % 12);
+  };
+
+  const handlePrev = () => {
+    setActiveIndex((prev) => (prev + 11) % 12);
+  };
+
+  useEffect(() => {
+    if (isPaused) return;
+    const interval = setInterval(() => {
+      handleNext();
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [activeIndex, isPaused]);
 
   return (
     <section
@@ -264,7 +396,7 @@ export function Services() {
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       >
         {/* ── Section Header ── */}
-        <div className="mb-20 md:mb-28 max-w-4xl">
+        <div className="mb-16 md:mb-24 max-w-4xl">
           <motion.span
             initial={{ opacity: 0, y: 15 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -320,35 +452,65 @@ export function Services() {
           </motion.p>
         </div>
 
-        {/* ── Service Count Bar ── */}
-        <motion.div
-          className="flex items-center gap-4 mb-12"
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.8, delay: 0.5 }}
-        >
-          <div className="flex items-baseline gap-2">
-            <span className="text-5xl md:text-6xl font-display font-bold text-white light:text-zinc-900 tracking-tighter">12</span>
-            <span className="text-sm text-zinc-500 font-bold uppercase tracking-widest">Services</span>
-          </div>
-          <div className="flex-1 h-px bg-gradient-to-r from-zinc-800 via-zinc-800/50 to-transparent light:from-zinc-200 light:via-zinc-200/50" />
-        </motion.div>
-
-        {/* ── Bento Grid ── */}
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 auto-rows-[minmax(240px,auto)]"
-          style={{ perspective: 1200 }}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          variants={{
-            hidden: {},
-            visible: { transition: { staggerChildren: 0.06, delayChildren: 0.6 } },
-          }}
+        {/* ── Stacked Cards Deck Area ── */}
+        <div 
+          className="relative w-full max-w-[480px] h-[380px] sm:h-[420px] md:h-[400px] mx-auto mt-16 z-10"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
         >
           {services.map((service, i) => (
-            <ServiceCard key={i} service={service} index={i} />
+            <ServiceCard 
+              key={i} 
+              service={service} 
+              index={i} 
+              activeIndex={activeIndex}
+              setActiveIndex={setActiveIndex}
+            />
           ))}
-        </motion.div>
+        </div>
+
+        {/* ── Deck Controls ── */}
+        <div className="flex flex-col items-center gap-4 mt-12 relative z-20">
+          {/* Navigation row */}
+          <div className="flex items-center gap-6">
+            <button
+              onClick={handlePrev}
+              className="w-12 h-12 rounded-full border border-zinc-850 bg-zinc-950/60 flex items-center justify-center text-zinc-400 hover:text-white hover:border-[#dc2626] hover:bg-[#dc2626]/5 transition-all duration-300 light:border-zinc-200 light:bg-white light:text-zinc-600 light:hover:text-[#dc2626] cursor-pointer"
+              aria-label="Previous Service"
+            >
+              <ArrowLeft size={18} />
+            </button>
+            
+            <span className="text-sm font-mono font-bold text-zinc-500 tracking-wider select-none">
+              {String(activeIndex + 1).padStart(2, "0")} <span className="text-zinc-800 light:text-zinc-300">/</span> 12
+            </span>
+            
+            <button
+              onClick={handleNext}
+              className="w-12 h-12 rounded-full border border-zinc-850 bg-zinc-950/60 flex items-center justify-center text-zinc-400 hover:text-white hover:border-[#dc2626] hover:bg-[#dc2626]/5 transition-all duration-300 light:border-zinc-200 light:bg-white light:text-zinc-600 light:hover:text-[#dc2626] cursor-pointer"
+              aria-label="Next Service"
+            >
+              <ArrowRight size={18} />
+            </button>
+          </div>
+          
+          {/* Progress Bar */}
+          <div className="w-full max-w-[280px] h-[3px] bg-zinc-900 rounded-full overflow-hidden light:bg-zinc-200">
+            <motion.div
+              key={activeIndex + (isPaused ? "-paused" : "-active")}
+              initial={{ width: "0%" }}
+              animate={isPaused ? { width: "0%" } : { width: "100%" }}
+              transition={{ duration: 3, ease: "linear" }}
+              className="h-full bg-[#dc2626] shadow-[0_0_8px_#dc2626]"
+            />
+          </div>
+          
+          {isPaused && (
+            <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest animate-pulse mt-1 select-none">
+              Auto-cycle Paused (Hovering)
+            </span>
+          )}
+        </div>
       </motion.div>
 
       {/* ── CSS Animations ── */}
@@ -356,30 +518,6 @@ export function Services() {
         @keyframes border-spin {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
-        }
-
-        @keyframes ameba-liquid {
-          0% {
-            border-radius: 42% 58% 45% 55% / 55% 48% 52% 45%;
-          }
-          33% {
-            border-radius: 58% 42% 52% 48% / 45% 55% 40% 60%;
-          }
-          66% {
-            border-radius: 48% 52% 40% 60% / 58% 42% 55% 45%;
-          }
-          100% {
-            border-radius: 42% 58% 45% 55% / 55% 48% 52% 45%;
-          }
-        }
-
-        .ameba-card {
-          border-radius: 42% 58% 45% 55% / 55% 48% 52% 45%;
-          transition: border-color 0.5s ease, background-color 0.5s ease, box-shadow 0.5s ease, transform 0.5s ease;
-        }
-
-        .ameba-card:hover {
-          animation-duration: 6s !important;
         }
 
         .service-icon-svg {
