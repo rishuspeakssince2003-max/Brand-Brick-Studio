@@ -69,27 +69,27 @@ function useCounter(target: number, dur: number, go: boolean) {
 }
 
 /* ══════════════════════════════════════════════════════════
-   ROTATING WORD
+   ROTATING WORD (Visual Hook)
    ══════════════════════════════════════════════════════════ */
-const rotatingWords = ["ignore.", "forget.", "outgrow.", "replace."];
+const rotatingWords = ["ATTENTION.", "REVENUE.", "AUTHORITY.", "VIRALITY.", "DOMINANCE."];
 
 function RotatingWord() {
   const [idx, setIdx] = useState(0);
   useEffect(() => {
-    const t = setInterval(() => setIdx((p) => (p + 1) % rotatingWords.length), 2800);
+    const t = setInterval(() => setIdx((p) => (p + 1) % rotatingWords.length), 2000);
     return () => clearInterval(t);
   }, []);
 
   return (
-    <span className="relative inline-flex overflow-hidden align-bottom whitespace-nowrap" style={{ minWidth: "5.2em" }}>
+    <span className="relative inline-flex overflow-hidden h-[1.1em] align-bottom select-none">
       <AnimatePresence mode="wait">
         <motion.span
           key={rotatingWords[idx]}
-          className="inline-block text-[#dc2626] whitespace-nowrap"
-          initial={{ y: "110%", rotateX: -80, opacity: 0 }}
+          className="inline-block text-[#dc2626] drop-shadow-[0_0_20px_rgba(220,38,38,0.25)] whitespace-nowrap"
+          initial={{ y: "100%", rotateX: -60, opacity: 0 }}
           animate={{ y: "0%", rotateX: 0, opacity: 1 }}
-          exit={{ y: "-110%", rotateX: 80, opacity: 0 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          exit={{ y: "-100%", rotateX: 60, opacity: 0 }}
+          transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
         >
           {rotatingWords[idx]}
         </motion.span>
@@ -262,7 +262,7 @@ export function Hero() {
 
         {/* Kinetic Massive Headline */}
         <motion.h1
-          className="font-display font-black tracking-tighter leading-[0.9] mb-6 max-w-5xl text-center"
+          className="font-display font-black tracking-tighter leading-[0.9] mb-6 max-w-5xl text-center flex flex-col items-center justify-center"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
@@ -270,8 +270,9 @@ export function Hero() {
           <span className="block text-[2.6rem] sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl text-white light:text-zinc-900 uppercase font-extrabold">
             We Build Brands
           </span>
-          <span className="block text-[2.6rem] sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl text-[#dc2626] italic uppercase font-extrabold">
-            That Command Attention.
+          <span className="block text-[2.6rem] sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl text-[#dc2626] italic uppercase font-extrabold flex flex-wrap items-center justify-center gap-x-4">
+            <span>That Command</span>
+            <RotatingWord />
           </span>
         </motion.h1>
 
