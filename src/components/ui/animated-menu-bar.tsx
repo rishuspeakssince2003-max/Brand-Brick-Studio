@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layers, ThumbsUp, Cpu, Mail } from 'lucide-react';
+import { Layers, Compass, ThumbsUp, User, Mail } from 'lucide-react';
 
 interface MenuBarProps {
   activeSection: string;
@@ -7,8 +7,9 @@ interface MenuBarProps {
 
 const icons = {
   services: <Layers size={18} className="shrink-0" />,
+  process: <Compass size={18} className="shrink-0" />,
   "why-us": <ThumbsUp size={18} className="shrink-0" />,
-  stack: <Cpu size={18} className="shrink-0" />,
+  founder: <User size={18} className="shrink-0" />,
   contact: <Mail size={18} className="shrink-0" />,
 };
 
@@ -95,8 +96,9 @@ export const MenuBar = ({ activeSection }: MenuBarProps) => {
   return (
     <nav className="flex items-center gap-1 bg-[#0a0a0a]/60 backdrop-blur-md p-1 rounded-2xl border border-zinc-800/80 w-fit mx-auto transition-all duration-300 light:bg-white/60 light:border-zinc-200">
       <IconButton icon={icons.services} label="Services" active={activeSection === 'services'} href="/#services" />
+      <IconButton icon={icons.process} label="Process" active={activeSection === 'process'} href="/#process" />
       <IconButton icon={icons["why-us"]} label="Why Us" active={activeSection === 'why-us'} href="/#why-us" />
-      <IconButton icon={icons.stack} label="Our Tools" active={activeSection === 'stack'} href="/#stack" />
+      <IconButton icon={icons.founder} label="Founder" active={activeSection === 'founder'} href="/#founder" />
       <IconButton icon={icons.contact} label="Contact" active={activeSection === 'contact'} href="/#contact" />
     </nav>
   );

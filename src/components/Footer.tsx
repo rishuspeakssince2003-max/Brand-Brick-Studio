@@ -4,14 +4,15 @@ import { LiquidButton } from "./ui/LiquidButton";
 
 const links = [
   { name: "Services", href: "/#services" },
+  { name: "Process", href: "/#process" },
   { name: "Why Us", href: "/#why-us" },
-  { name: "Our Tools", href: "/#stack" },
+  { name: "Founder", href: "/#founder" },
   { name: "Contact", href: "/#contact" }
 ];
 
 export function Footer() {
   return (
-    <footer className="bg-transparent pt-16 md:pt-24 pb-8 px-4 md:px-6 border-t border-zinc-900 relative" id="contact">
+    <footer className="bg-transparent pt-12 md:pt-16 pb-8 px-4 md:px-6 border-t border-zinc-900 relative" id="contact">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-px bg-gradient-to-r from-transparent via-brand/50 to-transparent"></div>
       
       <div className="max-w-7xl mx-auto">
@@ -20,26 +21,93 @@ export function Footer() {
             <span className="inline-block px-4 py-1.5 rounded-full border border-zinc-800 bg-zinc-900/50 text-brand text-xs font-bold tracking-widest uppercase mb-8 light:border-zinc-200 light:bg-white/50">
               Start Your Project
             </span>
-            <h2 className="text-5xl md:text-7xl font-display font-bold text-white light:text-zinc-900 mb-6 leading-tight max-w-lg">
-              Let’s build a brand people <span className="text-[#dc2626] italic">remember</span>
-            </h2>
-            <p className="text-lg text-zinc-400 light:text-zinc-600 leading-relaxed max-w-md mb-10">
+            <motion.h2 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-80px" }}
+              variants={{
+                hidden: {},
+                visible: {
+                  transition: {
+                    staggerChildren: 0.08
+                  }
+                }
+              }}
+              className="text-5xl md:text-7xl font-display font-bold text-white light:text-zinc-900 mb-6 leading-tight max-w-lg"
+            >
+              {["Let’s", "build", "a", "brand", "people"].map((w, idx) => (
+                <motion.span
+                  key={idx}
+                  variants={{
+                    hidden: { y: 30, opacity: 0, filter: "blur(6px)" },
+                    visible: { y: 0, opacity: 1, filter: "blur(0px)", transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+                  }}
+                  className="inline-block mr-[0.25em]"
+                >
+                  {w}
+                </motion.span>
+              ))}
+              
+              <span className="relative inline-block">
+                <motion.span
+                  variants={{
+                    hidden: { y: 30, opacity: 0, scale: 0.95, filter: "blur(6px)" },
+                    visible: { y: 0, opacity: 1, scale: 1, filter: "blur(0px)", transition: { duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] } }
+                  }}
+                  className="text-[#dc2626] italic inline-block"
+                >
+                  remember
+                </motion.span>
+                
+                {/* Underline swoosh drawing itself */}
+                <motion.svg
+                  viewBox="0 0 200 12"
+                  className="absolute -bottom-2 left-0 w-full h-3"
+                  variants={{
+                    hidden: { pathLength: 0, opacity: 0 },
+                    visible: { pathLength: 1, opacity: 1, transition: { duration: 0.8, delay: 0.8, ease: "easeOut" } }
+                  }}
+                >
+                  <path
+                    d="M2 8 C40 2, 80 2, 100 6 S160 12, 198 4"
+                    fill="none"
+                    stroke="#dc2626"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                  />
+                </motion.svg>
+              </span>
+            </motion.h2>
+            
+            <motion.p 
+              initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
+              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="text-lg text-zinc-400 light:text-zinc-600 leading-relaxed max-w-md mb-10"
+            >
               If your brand needs better content, stronger visuals, smarter digital execution, or a complete growth-ready system, Brand Brick Studio is ready to build with you.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <LiquidButton href="mailto:brandbrickstudio@gmail.com" variant="solid">
-                Book a Free Call
+            </motion.p>
+            
+            <motion.div 
+              initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
+              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="flex flex-col sm:flex-row gap-4"
+            >
+              <LiquidButton href="https://wa.me/917383386318" target="_blank" rel="noreferrer" variant="solid">
+                Chat on WhatsApp
               </LiquidButton>
-              <a 
-                href="https://wa.me/917383386318" 
-                target="_blank"
-                rel="noreferrer"
-                className="group relative bg-transparent border border-zinc-800 hover:border-brand/40 text-white px-8 py-4 rounded-full text-sm font-bold uppercase tracking-wider hover:bg-white/[0.02] hover:shadow-[0_0_20px_rgba(220,38,38,0.15)] transition-all duration-300 text-center inline-flex justify-center items-center gap-2 light:text-zinc-900 light:border-zinc-300 light:hover:bg-zinc-100/50"
+              <LiquidButton 
+                href="mailto:brandbrickstudio@gmail.com" 
+                variant="outline"
+                className="inline-flex gap-2 items-center text-sm"
               >
-                Message Us on WhatsApp
+                Email Our Team
                 <ArrowUpRight size={14} className="text-zinc-500 group-hover:text-white light:group-hover:text-zinc-900 transition-colors duration-300" />
-              </a>
-            </div>
+              </LiquidButton>
+            </motion.div>
           </div>
           
           <div className="flex flex-col lg:items-end gap-14">
@@ -116,53 +184,6 @@ export function Footer() {
 
             </div>
           </div>
-        </div>
-
-        {/* Certified Credentials */}
-        <div className="flex flex-wrap items-center gap-8 md:gap-12 py-8 border-t border-zinc-900/60 mb-8 mt-12 justify-center lg:justify-start light:border-zinc-200">
-          <span className="text-zinc-600 text-[10px] font-bold uppercase tracking-[0.25em] w-full lg:w-auto text-center lg:text-left mb-2 lg:mb-0">
-            Certified Studio Partner:
-          </span>
-          
-          {/* Google Partner */}
-          <div className="flex items-center gap-2 group cursor-default text-zinc-500 hover:text-white transition-all duration-300">
-            <svg className="w-4 h-4 text-zinc-500 group-hover:text-[#dc2626] group-hover:drop-shadow-[0_0_8px_#dc2626] transition-all duration-300 fill-current" viewBox="0 0 24 24">
-              <path d="M12.24 10.285V13.4h6.887c-.275 1.565-1.88 4.604-6.887 4.604-4.33 0-7.866-3.577-7.866-8s3.536-8 7.866-8c2.46 0 4.105 1.025 5.047 1.926l2.427-2.334C17.955 2.192 15.34 1 12.24 1 5.92 1 12s4.92 11 11.24 11c6.59 0 11-4.64 11-11.2 0-.75-.08-1.33-.18-1.8H12.24z" />
-            </svg>
-            <span className="text-[10px] font-bold uppercase tracking-widest">Google Partner</span>
-          </div>
-
-          {/* Meta Partner */}
-          <div className="flex items-center gap-2 group cursor-default text-zinc-500 hover:text-white transition-all duration-300">
-            <svg className="w-4 h-4 text-zinc-500 group-hover:text-[#dc2626] group-hover:drop-shadow-[0_0_8px_#dc2626] transition-all duration-300 fill-current" viewBox="0 0 24 24">
-              <path d="M12.5 13.5c-.8 0-1.5-.3-2.1-.9L7.5 9.7C6.9 9.1 6.1 8.8 5.2 8.8 3.4 8.8 2 10.2 2 12s1.4 3.2 3.2 3.2c.9 0 1.7-.3 2.3-.9l2.9-2.9c.6-.6 1.4-.9 2.2-.9.8 0 1.5.3 2.1.9l2.9 2.9c.6.6 1.4.9 2.3.9 1.8 0 3.2-1.4 3.2-3.2s-1.4-3.2-3.2-3.2c-.9 0-1.7.3-2.3.9l-2.9 2.9c-.6.6-1.4.9-2.2.9z" />
-            </svg>
-            <span className="text-[10px] font-bold uppercase tracking-widest">Meta Partner</span>
-          </div>
-
-          {/* Shopify Expert */}
-          <div className="flex items-center gap-2 group cursor-default text-zinc-500 hover:text-white transition-all duration-300">
-            <svg className="w-4 h-4 text-zinc-500 group-hover:text-[#dc2626] group-hover:drop-shadow-[0_0_8px_#dc2626] transition-all duration-300 fill-current" viewBox="0 0 24 24">
-              <path d="M19 6.5h-3v-1c0-1.4-1.1-2.5-2.5-2.5h-3C9.1 3 8 4.1 8 5.5v1H5c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-11c0-1.1-.9-2-2-2zm-9-1c0-.3.2-.5.5-.5h3c.3 0 .5.2.5.5v1h-4v-1zm10 13c0 .3-.2.5-.5.5H5.5c-.3 0-.5-.2-.5-.5v-7.5h15v7.5zm0-9H4V8.5c0-.3.2-.5.5-.5h15c.3 0 .5.2.5.5v1.5z" />
-            </svg>
-            <span className="text-[10px] font-bold uppercase tracking-widest">Shopify Expert</span>
-          </div>
-        </div>
-
-        {/* Regional SEO Presence */}
-        <div className="py-6 border-t border-zinc-900/60 flex flex-wrap items-center gap-x-6 gap-y-3 justify-center lg:justify-start light:border-zinc-200 text-xs">
-          <span className="text-zinc-650 text-[10px] font-bold uppercase tracking-[0.25em] w-full lg:w-auto text-center lg:text-left">
-            Regional Presence:
-          </span>
-          <a href="/branding-agency-surat" className="text-zinc-500 hover:text-[#dc2626] font-medium transition-colors">Branding Surat</a>
-          <span className="text-zinc-800 light:text-zinc-300 hidden lg:inline">•</span>
-          <a href="/creative-agency-surat" className="text-zinc-500 hover:text-[#dc2626] font-medium transition-colors">Creative Agency Surat</a>
-          <span className="text-zinc-800 light:text-zinc-300 hidden lg:inline">•</span>
-          <a href="/website-design-company-surat" className="text-zinc-500 hover:text-[#dc2626] font-medium transition-colors">Web Design Surat</a>
-          <span className="text-zinc-800 light:text-zinc-300 hidden lg:inline">•</span>
-          <a href="/social-media-marketing-agency-surat" className="text-zinc-500 hover:text-[#dc2626] font-medium transition-colors">Social Marketing Surat</a>
-          <span className="text-zinc-800 light:text-zinc-300 hidden lg:inline">•</span>
-          <a href="/branding-agency-gujarat" className="text-zinc-500 hover:text-[#dc2626] font-medium transition-colors">Branding Gujarat</a>
         </div>
 
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 border-t border-zinc-900 pt-8 light:border-zinc-200">

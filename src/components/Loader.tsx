@@ -104,9 +104,10 @@ export function Loader({ onComplete }: LoaderProps) {
 
   // Fullscreen overlay slide-up exit
   const overlayVariants = {
-    initial: { y: 0 },
+    initial: { y: 0, filter: "blur(0px)" },
     exit: {
       y: "-100%",
+      filter: "blur(20px)",
       transition: {
         duration: 0.55,
         ease: [0.16, 1, 0.3, 1], // Fast, smooth exponential ease-out

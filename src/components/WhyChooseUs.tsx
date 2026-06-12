@@ -1,133 +1,216 @@
-import React, { useEffect, useState, useRef } from "react";
-import { motion, useInView } from "motion/react";
+import React, { useState, useRef } from "react";
+import { motion, useMotionValue, useMotionTemplate } from "motion/react";
+import { Compass, Layers, MapPin, Award, UserCheck, BarChart3 } from "lucide-react";
 
-interface StatItemProps {
-  label: string;
-  target: number;
-  suffix: string;
-  desc: string;
-}
+const pillars = [
+  {
+    title: "Strategy-First Approach",
+    desc: "We don't just push pixels or run cookie-cutter templates. We dissect your business model and engineer strategic brand assets.",
+    icon: Compass
+  },
+  {
+    title: "One-Stop Solution",
+    desc: "We deliver everything from naming blueprints and premium brand identities to custom Next.js software setups and high-yield acquisition funnels.",
+    icon: Layers
+  },
+  {
+    title: "Local Market Understanding",
+    desc: "We maintain a deep understanding of regional business dynamics, customer psychographics, and local competitive densities.",
+    icon: MapPin
+  },
+  {
+    title: "Global Creative Standards",
+    desc: "We produce world-class campaign aesthetics inspired by global design hubs to attract international clients.",
+    icon: Award
+  },
+  {
+    title: "Founder-Led Execution",
+    desc: "You will coordinate and plan strategy directly with founder Rishu Tripathi, ensuring zero account managers and pure alignment.",
+    icon: UserCheck
+  },
+  {
+    title: "Business-Focused Thinking",
+    desc: "We put creativity in service of commercial growth, designing visual experiences specifically configured to drive revenue.",
+    icon: BarChart3
+  }
+];
 
-const StatCard: React.FC<StatItemProps> = ({ label, target, suffix, desc }) => {
-  const [count, setCount] = useState(0);
-  const cardRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(cardRef, { once: true, margin: "-100px" });
+const PillarCard: React.FC<{
+  pillar: typeof pillars[number];
+  index: number;
+}> = ({
+  pillar,
+  index
+}) => {
+  const Icon = pillar.icon;
+  const [isHovered, setIsHovered] = useState(false);
+  const rectRef = useRef<DOMRect | null>(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
 
-  useEffect(() => {
-    if (!isInView) return;
+  function handleMouseMove(e: React.MouseEvent) {
+    if (!rectRef.current) {
+      rectRef.current = e.currentTarget.getBoundingClientRect();
+    }
+    mouseX.set(e.clientX - rectRef.current.left);
+    mouseY.set(e.clientY - rectRef.current.top);
+  }
 
-    let start = 0;
-    const duration = 2000; // 2 seconds
-    const increment = target / (duration / 16); // ~60fps
-    let timer: number;
-
-    const updateCount = () => {
-      start += increment;
-      if (start >= target) {
-        setCount(target);
-      } else {
-        setCount(Math.floor(start));
-        timer = requestAnimationFrame(updateCount);
-      }
-    };
-
-    timer = requestAnimationFrame(updateCount);
-    return () => cancelAnimationFrame(timer);
-  }, [isInView, target]);
+  const num = String(index + 1).padStart(2, "0");
 
   return (
     <motion.div
-      ref={cardRef}
-      initial={{ opacity: 0, y: 35 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 40, scale: 0.95 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      whileHover={{
+        y: -8,
+        scale: 1.02,
+        borderColor: "rgba(220, 38, 38, 0.25)",
+        boxShadow: "0 20px 40px rgba(220, 38, 38, 0.05)"
+      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        rectRef.current = null;
+      }}
+      onMouseMove={handleMouseMove}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className="group relative p-8 md:p-10 rounded-[2.5rem] bg-zinc-950/40 border border-zinc-850 backdrop-blur-md overflow-hidden hover:border-[#dc2626]/20 transition-all duration-300 shadow-lg text-center light:bg-white/50 light:border-zinc-200"
+      transition={{ duration: 0.8, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+      className="group relative p-8 md:p-10 rounded-[2.5rem] bg-zinc-950/40 border border-zinc-850 backdrop-blur-md overflow-hidden hover:bg-zinc-950/60 transition-colors duration-500 cursor-pointer light:bg-white/50 light:border-zinc-200 light:hover:bg-zinc-100/50"
     >
-      <div className="absolute -bottom-16 -left-16 w-32 h-32 bg-[#dc2626]/5 rounded-full blur-2xl group-hover:bg-[#dc2626]/10 transition-all duration-500" />
-      
-      <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-[0.2em] block mb-4">
-        {label}
-      </span>
-      
-      <div className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white light:text-zinc-900 tracking-tight leading-none mb-4 group-hover:scale-105 transition-transform duration-300">
-        {count}
-        <span className="text-[#dc2626]">{suffix}</span>
-      </div>
+      {/* Interactive Cursor Spotlight */}
+      <motion.div
+        className="pointer-events-none absolute -inset-px rounded-[2.5rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"
+        style={{
+          background: useMotionTemplate`
+            radial-gradient(
+              350px circle at ${mouseX}px ${mouseY}px,
+              rgba(220, 38, 38, 0.12),
+              rgba(220, 38, 38, 0.02) 40%,
+              transparent 80%
+            )
+          `,
+        }}
+      />
 
-      <p className="text-sm text-zinc-400 light:text-zinc-650 leading-relaxed max-w-[240px] mx-auto">
-        {desc}
-      </p>
+      {/* Watermark Index Number */}
+      <span className="absolute -right-2 -top-4 text-[6rem] font-display font-bold leading-none text-white/[0.01] light:text-zinc-900/[0.01] group-hover:text-[#dc2626]/[0.03] transition-all duration-500 select-none pointer-events-none tracking-tighter group-hover:scale-110 group-hover:-translate-x-2 group-hover:translate-y-2">
+        {num}
+      </span>
+
+      <div className="relative z-10 flex flex-col h-full justify-between">
+        <div>
+          <div className="flex items-start justify-between mb-8">
+            <div className="w-12 h-12 rounded-2xl bg-zinc-900/80 border border-zinc-800 flex items-center justify-center text-zinc-400 group-hover:text-[#dc2626] group-hover:border-[#dc2626]/20 group-hover:-translate-y-1.5 group-hover:scale-105 group-hover:rotate-3 transition-all duration-500 light:bg-zinc-50 light:border-zinc-200">
+              <Icon size={22} />
+            </div>
+            <span className="px-2.5 py-0.5 rounded-md border border-zinc-850 bg-zinc-900/40 text-zinc-450 text-[10px] font-mono font-bold uppercase tracking-wider transition-all duration-300 group-hover:border-[#dc2626]/20 group-hover:bg-[#dc2626]/5 group-hover:text-[#dc2626] light:border-zinc-200 light:bg-zinc-50 light:text-zinc-500">
+              Pillar {num}
+            </span>
+          </div>
+
+          <h3 className="text-xl font-display font-bold text-white light:text-zinc-900 mb-3 group-hover:text-[#dc2626] group-hover:translate-x-1.5 transition-all duration-400">
+            {pillar.title}
+          </h3>
+          
+          <p className="text-sm text-zinc-400 light:text-zinc-650 leading-relaxed group-hover:text-zinc-300 light:group-hover:text-zinc-800 transition-colors duration-300">
+            {pillar.desc}
+          </p>
+        </div>
+      </div>
     </motion.div>
   );
 };
-
 export function WhyChooseUs() {
-  const stats = [
-    {
-      label: "Active Scaling",
-      target: 50,
-      suffix: "+",
-      desc: "Brands partnered and successfully scaled in their respective sectors."
-    },
-    {
-      label: "Engineered Scope",
-      target: 250,
-      suffix: "+",
-      desc: "High-performance digital products and premium projects delivered."
-    },
-    {
-      label: "Organic Reach",
-      target: 50,
-      suffix: "M+",
-      desc: "Video views and digital impressions generated across campaigns."
-    },
-    {
-      label: "Trust Verified",
-      target: 99,
-      suffix: "%",
-      desc: "Client satisfaction rate driven by transparency and elite execution."
-    }
-  ];
-
   return (
-    <section className="py-24 md:py-36 px-4 md:px-6 max-w-7xl mx-auto scroll-mt-24 md:scroll-mt-28">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center mb-16 md:mb-24">
+    <section className="py-16 md:py-24 px-4 md:px-6 max-w-7xl mx-auto scroll-mt-24 md:scroll-mt-28" id="why-us">
+      {/* Header with Strategic Leverage 3D Render Asset */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-center mb-16 md:mb-24">
         <motion.div
           initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="lg:col-span-1"
         >
           <span className="inline-block px-4 py-1.5 rounded-full border border-zinc-800 bg-zinc-900/50 text-[#dc2626] text-xs font-bold tracking-[0.2em] uppercase mb-6 backdrop-blur-md light:border-zinc-200 light:bg-white/50">
-            Why Partner With Us
+            Why Brand Brick Studio
           </span>
-          <h2 className="text-4xl md:text-6xl font-display font-bold text-white light:text-zinc-900 tracking-tight leading-none">
-            Metrics That Matter.
-          </h2>
+          <motion.h2 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={{
+              hidden: {},
+              visible: {
+                transition: {
+                  staggerChildren: 0.08
+                }
+              }
+            }}
+            className="text-4xl md:text-6xl font-display font-bold text-white light:text-zinc-900 tracking-tight leading-none"
+          >
+            {["Strategic", "Leverage."].map((w, idx) => (
+              <motion.span
+                key={idx}
+                variants={{
+                  hidden: { y: 30, opacity: 0, filter: "blur(6px)" },
+                  visible: { y: 0, opacity: 1, filter: "blur(0px)", transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+                }}
+                className="inline-block mr-[0.25em]"
+              >
+                {w}
+              </motion.span>
+            ))}
+          </motion.h2>
         </motion.div>
         
         <motion.p
-          initial={{ opacity: 0, x: 30 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="text-lg text-zinc-400 light:text-zinc-600 leading-relaxed"
+          className="text-base md:text-lg text-zinc-400 light:text-zinc-650 leading-relaxed font-light lg:col-span-1"
         >
-          We don't sell layouts, animations, or edits. We design strategic leverage. Every decision, line of code, and visual cut is engineered to command attention and scale conversions.
+          "We don't just create designs. We create brand experiences that help businesses grow." We align strategy, creativity, and business focus under one unified execution team.
         </motion.p>
+
+        {/* Premium Volumetric 3D Abstract Visualization Box */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          whileHover={{ y: -5, scale: 1.02 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, delay: 0.2, type: "spring", stiffness: 200 }}
+          className="lg:col-span-1 relative aspect-video rounded-3xl overflow-hidden border border-zinc-850 bg-zinc-950/40 backdrop-blur-md shadow-[0_0_50px_rgba(220,38,38,0.02)] group/leverage cursor-pointer light:border-zinc-200 light:bg-white/50"
+        >
+          {/* Ambient red pulsing glow ring */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[#dc2626]/20 via-transparent to-transparent opacity-0 group-hover/leverage:opacity-100 transition-opacity duration-500 rounded-3xl pointer-events-none -z-10" />
+          
+          <img 
+            src="/strategic_leverage.png" 
+            alt="Strategic Leverage 3D visualization" 
+            className="w-full h-full object-cover opacity-90 group-hover/leverage:opacity-100 group-hover/leverage:scale-105 transition-all duration-700 ease-[0.16, 1, 0.3, 1]" 
+          />
+          
+          {/* Dark gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/70 via-transparent to-transparent pointer-events-none" />
+          
+          <div className="absolute bottom-4 left-5 right-5 flex items-center justify-between z-10">
+            <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest group-hover/leverage:text-white transition-colors duration-300">
+              Interactive Scaling System
+            </span>
+            <span className="text-[10px] font-mono text-[#dc2626] font-bold uppercase tracking-wider bg-[#dc2626]/10 px-2 py-0.5 rounded border border-[#dc2626]/20">
+              Leverage Node
+            </span>
+          </div>
+        </motion.div>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat, idx) => (
-          <StatCard
-            key={idx}
-            label={stat.label}
-            target={stat.target}
-            suffix={stat.suffix}
-            desc={stat.desc}
-          />
+      {/* Pillars Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {pillars.map((pillar, idx) => (
+          <PillarCard key={idx} pillar={pillar} index={idx} />
         ))}
       </div>
     </section>

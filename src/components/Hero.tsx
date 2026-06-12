@@ -202,6 +202,40 @@ export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true });
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.15
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 25, filter: "blur(8px)" },
+    visible: {
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      transition: {
+        duration: 0.95,
+        ease: [0.16, 1, 0.3, 1]
+      }
+    }
+  };
+
+  const lineVariants = {
+    hidden: { y: "115%", rotate: 1.2, filter: "blur(4px)" },
+    visible: {
+      y: 0,
+      rotate: 0,
+      filter: "blur(0px)",
+      transition: { duration: 1.1, ease: [0.16, 1, 0.3, 1] }
+    }
+  };
+
   return (
     <section
       ref={ref}
@@ -221,7 +255,7 @@ export function Hero() {
       </video>
 
       {/* 60% Dark Overlay over video */}
-      <div className="absolute inset-0 bg-[#050505]/65 light:bg-[#fafafa]/85 -z-20 pointer-events-none" />
+      <div className="absolute inset-0 bg-[#050505]/65 light:bg-[#ffffff]/85 -z-20 pointer-events-none" />
 
       {/* Subtle WebGL fluid / lava container backdrop glow fallbacks */}
       <motion.div
@@ -241,13 +275,16 @@ export function Hero() {
       />
 
       {/* ── Main Content Container ── */}
-      <div className="max-w-7xl mx-auto w-full flex-grow flex flex-col items-center justify-center relative z-10 text-center py-12">
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="max-w-7xl mx-auto w-full flex-grow flex flex-col items-center justify-center relative z-10 text-center py-12"
+      >
         {/* Top Badge */}
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-8"
+          variants={itemVariants}
+          className="mb-6"
         >
           <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-zinc-800/80 bg-zinc-900/40 backdrop-blur-md light:border-zinc-200 light:bg-white/50">
             <span className="relative flex h-1.5 w-1.5">
@@ -255,77 +292,58 @@ export function Hero() {
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#dc2626]" />
             </span>
             <span className="text-[10px] md:text-[11px] font-bold text-zinc-500 uppercase tracking-[0.2em] font-mono">
-              Silvassa's #1 Creative Studio
+              Global Strategy-First Creative Agency
             </span>
           </span>
         </motion.div>
 
         {/* Kinetic Massive Headline */}
-        <motion.h1
-          className="font-display font-black tracking-tighter leading-[0.95] mb-8 max-w-5xl text-center"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <span className="block text-[2.6rem] sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl text-white light:text-zinc-900 uppercase font-extrabold mb-3">
-            We Build Brands
+        <div className="font-display font-extrabold tracking-tighter leading-[0.95] mb-6 max-w-4xl text-center text-white light:text-zinc-900 uppercase text-[2.1rem] sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl flex flex-col items-center select-none">
+          <span className="block overflow-hidden py-1 sm:py-2">
+            <motion.span variants={lineVariants} className="block">Building Brands</motion.span>
           </span>
-          <span className="block text-[2.2rem] sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl text-white light:text-zinc-900 uppercase font-bold mb-4">
-            That Command
+          <span className="block overflow-hidden py-1 sm:py-2">
+            <motion.span variants={lineVariants} className="block">That Command</motion.span>
           </span>
-          <span className="block text-[2.8rem] sm:text-6xl md:text-8xl lg:text-9xl xl:text-[9.5rem] text-[#dc2626] italic uppercase font-extrabold">
-            <RotatingWord />
+          <span className="block overflow-hidden py-1 sm:py-2">
+            <motion.span 
+              variants={lineVariants} 
+              className="block italic font-black text-[#dc2626]"
+            >
+              <RotatingWord />
+            </motion.span>
           </span>
-        </motion.h1>
+        </div>
 
         {/* Subtitle */}
         <motion.p
-          className="text-zinc-400 light:text-zinc-500 text-base sm:text-lg md:text-xl leading-relaxed mb-12 max-w-2xl font-light font-display"
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          variants={itemVariants}
+          className="text-zinc-400 light:text-zinc-500 text-sm sm:text-base md:text-lg leading-relaxed mb-8 max-w-xl font-light font-display"
         >
-          Branding, Websites, Content & Marketing that transform businesses into unforgettable brands.
+          Strategy, Branding, Websites, and Content designed to help ambitious businesses stand out and grow.
         </motion.p>
 
-        {/* Tactile Switch CTA Button */}
+        {/* CTAs */}
         <motion.div
-          className="flex flex-col sm:flex-row items-center gap-6 justify-center"
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          variants={itemVariants}
+          className="flex flex-col sm:flex-row items-center gap-6 justify-center relative"
         >
-          <motion.a
-            href="#contact"
-            className="relative px-10 py-5 rounded-2xl font-display font-bold uppercase tracking-wider text-white bg-[#dc2626] border border-white/20 select-none cursor-pointer flex items-center justify-center text-sm md:text-base"
-            style={{
-              boxShadow: "0 6px 0 #991b1b, 0 12px 25px rgba(220,38,38,0.35)",
-              textShadow: "0 1px 2px rgba(0,0,0,0.5)"
-            }}
-            whileHover={{
-              y: 2,
-              boxShadow: "0 4px 0 #991b1b, 0 8px 30px rgba(220,38,38,0.65)",
-            }}
-            whileTap={{
-              y: 6,
-              boxShadow: "0 0px 0 #991b1b, 0 2px 10px rgba(220,38,38,0.4)",
-            }}
-            transition={{ type: "spring", stiffness: 600, damping: 15 }}
-          >
-            Start Your Project
-          </motion.a>
-
-          <a
-            href="#work"
-            className="group bg-transparent text-zinc-300 border border-zinc-800 hover:border-zinc-600 px-9 py-5 rounded-2xl text-sm font-bold uppercase tracking-wider hover:bg-white/[0.03] transition-all duration-400 text-center inline-flex justify-center items-center gap-2 light:text-zinc-850 light:border-zinc-300 light:hover:bg-zinc-100/50"
-          >
-            View Our Work
-            <svg className="w-4 h-4 text-zinc-500 group-hover:text-white light:group-hover:text-zinc-900 group-hover:translate-x-1 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </a>
+          <div className="relative group">
+            {/* Ambient Pulsing Glow behind button */}
+            <div className="absolute inset-0 bg-[#dc2626]/40 blur-xl rounded-2xl opacity-40 group-hover:opacity-75 transition-opacity duration-500 scale-95 group-hover:scale-105 animate-[pulse_3s_infinite]" />
+            <LiquidButton
+              href="https://wa.me/917383386318"
+              target="_blank"
+              rel="noreferrer"
+              variant="solid"
+              size="lg"
+              className="relative z-10"
+            >
+              Chat on WhatsApp
+            </LiquidButton>
+          </div>
         </motion.div>
-      </div>
+      </motion.div>
 
       {/* ── Bottom Section: Stats & Logo Marquee ── */}
       <div className="max-w-7xl mx-auto w-full relative z-10 pt-8 border-t border-zinc-900/60 light:border-zinc-200">
@@ -333,35 +351,69 @@ export function Hero() {
           {/* Centered Stats Grid */}
           <motion.div
             className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 md:gap-12"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.7, duration: 0.8 }}
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: {
+                  staggerChildren: 0.1,
+                  delayChildren: 0.5
+                }
+              }
+            }}
           >
             {stats.map((s, i) => {
-              const count = useCounter(s.value, 2, inView);
+              const count = useCounter(s.value, 2.5, inView);
               return (
-                <div key={i} className="flex items-center gap-8 md:gap-12">
+                <motion.div
+                  key={i}
+                  variants={{
+                    hidden: { opacity: 0, y: 15 },
+                    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                  className="flex items-center gap-8 md:gap-12 group cursor-pointer"
+                >
                   <div className="flex flex-col items-center md:items-start">
                     <div className="flex items-baseline gap-0.5">
-                      <span className="text-3xl md:text-4xl font-display font-black text-white light:text-zinc-900 tracking-tighter tabular-nums">
+                      <span className="text-3xl md:text-4xl font-display font-black text-white light:text-zinc-900 tracking-tighter tabular-nums group-hover:text-[#dc2626] transition-colors duration-300">
                         {count}
                       </span>
-                      {s.suffix && <span className="text-xl font-display font-bold text-[#dc2626]">{s.suffix}</span>}
+                      {s.suffix && (
+                        <span className="text-xl font-display font-bold text-[#dc2626] group-hover:animate-pulse">
+                          {s.suffix}
+                        </span>
+                      )}
                     </div>
-                    <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-[0.25em] mt-1">{s.label}</span>
+                    <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-[0.25em] mt-1 group-hover:text-zinc-400 transition-colors duration-300">
+                      {s.label}
+                    </span>
                   </div>
                   {i < stats.length - 1 && (
                     <div className="w-px h-8 bg-zinc-850 light:bg-zinc-200 hidden sm:block" />
                   )}
-                </div>
+                </motion.div>
               );
             })}
           </motion.div>
 
-          {/* Micro Marquee statement */}
-          <p className="text-[10px] md:text-[11px] font-bold text-zinc-500 light:text-zinc-500 uppercase tracking-[0.25em] text-center md:text-right max-w-xs leading-relaxed">
-            Crafting raw digital growth from Silvassa to the world.
-          </p>
+          {/* Micro statement with glowing pulse indicator */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.9, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="flex items-center justify-center md:justify-end gap-3 max-w-xs md:max-w-none w-full md:w-auto"
+          >
+            <p className="text-[10px] md:text-[11px] font-bold text-zinc-500 light:text-zinc-500 uppercase tracking-[0.25em] text-center md:text-right leading-relaxed">
+              Crafting raw digital growth from Silvassa to the world.
+            </p>
+            <span className="relative flex h-1.5 w-1.5 shrink-0">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-[#dc2626] opacity-75 animate-ping" />
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#dc2626]" />
+            </span>
+          </motion.div>
         </div>
 
         {/* Brand Logos Marquee */}
@@ -373,8 +425,8 @@ export function Hero() {
         >
           <div className="w-full overflow-hidden relative py-2">
             {/* Soft fade masks on left and right edges */}
-            <div className="absolute inset-y-0 left-0 w-16 md:w-32 bg-gradient-to-r from-[#050505] to-transparent light:from-[#fafafa] z-10 pointer-events-none" />
-            <div className="absolute inset-y-0 right-0 w-16 md:w-32 bg-gradient-to-l from-[#050505] to-transparent light:from-[#fafafa] z-10 pointer-events-none" />
+            <div className="absolute inset-y-0 left-0 w-16 md:w-32 bg-gradient-to-r from-[#050505] to-transparent light:from-[#ffffff] z-10 pointer-events-none" />
+            <div className="absolute inset-y-0 right-0 w-16 md:w-32 bg-gradient-to-l from-[#050505] to-transparent light:from-[#ffffff] z-10 pointer-events-none" />
             
             <div className="flex w-[200%] animate-marquee gap-16 md:gap-24 whitespace-nowrap">
               {Array(2).fill(null).map((_, i) => (

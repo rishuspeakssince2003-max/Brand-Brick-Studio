@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { motion } from "motion/react";
 import { ArrowRight, CheckCircle2, ShieldCheck, Mail, MapPin } from "lucide-react";
-import { Contact } from "./Contact";
-import { CaseStudies } from "./CaseStudies";
+import { FinalCTA } from "./FinalCTA";
 import { Services } from "./Services";
 import { WhyChooseUs } from "./WhyChooseUs";
+import { LiquidButton } from "./ui/LiquidButton";
 
 interface SeoPageConfig {
   title: string;
@@ -27,7 +27,7 @@ const seoPages: Record<string, SeoPageConfig> = {
   "/creative-agency-surat": {
     title: "Creative Agency Surat | Brand Brick Studio",
     headline: "Surat's Elite Creative Agency.",
-    subtitle: "One team handling branding, website engineering, volumetric shoots, and social media scaling for Surat's industry leaders.",
+    subtitle: "We are one team handling branding, website engineering, volumetric shoots, and social media scaling for Surat's industry leaders.",
     description: "As Surat's most forward-thinking creative agency, we integrate high-end visual design, production shoots, web development, and performance advertising under one roof. No outsourcing. Zero friction. Only absolute growth.",
     targetService: "General Inquiry",
     metaDesc: "Brand Brick Studio is Surat's elite creative agency. We unify premium web design, branding, reels production, and ad campaigns for elite scaling."
@@ -43,7 +43,7 @@ const seoPages: Record<string, SeoPageConfig> = {
   "/social-media-marketing-agency-surat": {
     title: "Social Media Marketing Agency Surat | Brand Brick Studio",
     headline: "Surat's Top Social Marketing Agency.",
-    subtitle: "High-impact Reels creation, daily workflow planning, and Meta ad management to scale your customer acquisitions in Surat.",
+    subtitle: "We leverage high-impact Reels creation, daily workflow planning, and Meta ad management to scale your customer acquisitions in Surat.",
     description: "We help brands command attention on Instagram and YouTube. As a top social media marketing agency in Surat, we handle daily workflow allocation, graphic assets, cinematic edits, and lead-gen campaigns that drive measurable ROI.",
     targetService: "Social Media Management",
     metaDesc: "Scale your reach with Surat's top social media marketing agency. We manage cinematic reels creation, posting strategy, and Meta ads campaigns."
@@ -51,8 +51,8 @@ const seoPages: Record<string, SeoPageConfig> = {
   "/branding-agency-gujarat": {
     title: "Branding Agency Gujarat | Brand Brick Studio",
     headline: "Gujarat's Leading Branding Team.",
-    subtitle: "Positioning blueprints, custom digital execution, and premium brand identities for scaling empires across Gujarat.",
-    description: "Operating from Silvassa, we serve high-value manufacturing, textile, real estate, and consumer brands across Gujarat. We design the logos, packaging systems, and digital portals that command high-ticket deals.",
+    subtitle: "We build positioning blueprints, custom digital execution plans, and premium brand identities for scaling empires across Gujarat.",
+    description: "Operating from Silvassa, we serve high-value manufacturing, textile, real estate, and consumer brands across Gujarat. We design logos, packaging systems, and digital portals that command high-ticket deals.",
     targetService: "Branding & Identity",
     metaDesc: "Gujarat's leading branding team for premium enterprises. We craft brand identities, marketing strategies, and custom web builds."
   }
@@ -109,12 +109,31 @@ export function SeoLandingPage({ path }: { path: string }) {
           </motion.span>
           
           <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: {},
+              visible: {
+                transition: {
+                  staggerChildren: 0.08,
+                  delayChildren: 0.15
+                }
+              }
+            }}
             className="text-5xl md:text-8xl font-display font-bold text-white light:text-zinc-900 tracking-tight leading-[0.9] mb-8"
           >
-            {config.headline}
+            {config.headline.split(" ").map((w, idx) => (
+              <motion.span
+                key={idx}
+                variants={{
+                  hidden: { y: 30, opacity: 0, filter: "blur(6px)" },
+                  visible: { y: 0, opacity: 1, filter: "blur(0px)", transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+                }}
+                className="inline-block mr-[0.25em]"
+              >
+                {w}
+              </motion.span>
+            ))}
           </motion.h1>
           
           <motion.p
@@ -132,19 +151,21 @@ export function SeoLandingPage({ path }: { path: string }) {
             transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
             className="flex flex-col sm:flex-row gap-4"
           >
-            <a
+            <LiquidButton
               href="#contact"
-              className="group relative bg-[#dc2626] text-white px-8 py-4 rounded-full text-sm font-bold uppercase tracking-wider hover:bg-[#b91c1c] transition-all duration-300 text-center inline-flex justify-center items-center gap-2 shadow-[0_0_20px_rgba(220,38,38,0.25)]"
+              variant="solid"
+              className="inline-flex gap-2 items-center text-sm"
             >
               Initiate Growth
               <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
-            </a>
-            <a
+            </LiquidButton>
+            <LiquidButton
               href="#services"
-              className="group relative bg-transparent border border-zinc-800 text-zinc-400 px-8 py-4 rounded-full text-sm font-bold uppercase tracking-wider hover:border-zinc-500 hover:text-white transition-all duration-300 text-center inline-flex justify-center items-center gap-2 light:border-zinc-350 light:text-zinc-700 light:hover:text-zinc-900"
+              variant="outline"
+              className="inline-flex gap-2 items-center text-sm"
             >
               View Services
-            </a>
+            </LiquidButton>
           </motion.div>
         </div>
       </section>
@@ -176,10 +197,34 @@ export function SeoLandingPage({ path }: { path: string }) {
               className="lg:col-span-2"
             >
               <span className="text-[10px] font-bold text-[#dc2626] uppercase tracking-[0.2em] block mb-2">Locally Engineered. Globally Scaled.</span>
-              <h2 className="text-3xl md:text-4xl font-display font-bold text-white light:text-zinc-900 tracking-tight leading-none mb-6">
-                Premium visual execution for Surat and Gujarat's leading enterprises.
-              </h2>
-              <p className="text-zinc-400 light:text-zinc-650 leading-relaxed">
+              <motion.h2 
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                variants={{
+                  hidden: {},
+                  visible: {
+                    transition: {
+                      staggerChildren: 0.05
+                    }
+                  }
+                }}
+                className="text-3xl md:text-4xl font-display font-bold text-white light:text-zinc-900 tracking-tight leading-none mb-6"
+              >
+                {"Premium visual execution for Surat and Gujarat's leading enterprises.".split(" ").map((w, idx) => (
+                  <motion.span
+                    key={idx}
+                    variants={{
+                      hidden: { y: 20, opacity: 0, filter: "blur(4px)" },
+                      visible: { y: 0, opacity: 1, filter: "blur(0px)", transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } }
+                    }}
+                    className="inline-block mr-[0.25em]"
+                  >
+                    {w}
+                  </motion.span>
+                ))}
+              </motion.h2>
+              <p className="text-zinc-400 light:text-zinc-655 leading-relaxed">
                 {config.description}
               </p>
             </motion.div>
@@ -213,10 +258,8 @@ export function SeoLandingPage({ path }: { path: string }) {
       
       <WhyChooseUs />
       
-      <CaseStudies />
-      
       <div id="contact">
-        <Contact />
+        <FinalCTA />
       </div>
 
     </div>

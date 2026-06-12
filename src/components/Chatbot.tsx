@@ -224,7 +224,7 @@ export function Chatbot() {
               {/* INPUT AREA */}
               <div className="p-5 pb-8 md:pb-5 shrink-0 relative">
                 {/* Subtle gradient overlay above input to fade messages */}
-                <div className="absolute top-0 left-0 w-full h-8 -translate-y-full bg-gradient-to-t from-[#050505]/70 to-transparent pointer-events-none light:from-[#fafafa]/70" />
+                <div className="absolute top-0 left-0 w-full h-8 -translate-y-full bg-gradient-to-t from-[#050505]/70 to-transparent pointer-events-none light:from-[#ffffff]/70" />
                 
                 <form onSubmit={handleSendMessage} className="relative flex items-center">
                   <input 

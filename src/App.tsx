@@ -4,18 +4,14 @@ import Lenis from "lenis";
 import { Loader } from "./components/Loader";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
+import { BrandStatement } from "./components/BrandStatement";
 import { Services } from "./components/Services";
-import { CaseStudies } from "./components/CaseStudies";
-import { BeforeAfter } from "./components/BeforeAfter";
-import { WhyChooseUs } from "./components/WhyChooseUs";
 import { Process } from "./components/Process";
-import { Proof } from "./components/Proof";
-import { Stack } from "./components/Stack";
-import { Packages } from "./components/Packages";
-import { Team } from "./components/Team";
-import { Instagram } from "./components/Instagram";
+import { WhyChooseUs } from "./components/WhyChooseUs";
+import { FounderStory } from "./components/FounderStory";
+import { Industries } from "./components/Industries";
 import { FAQ } from "./components/FAQ";
-import { Contact } from "./components/Contact";
+import { FinalCTA } from "./components/FinalCTA";
 import { Footer } from "./components/Footer";
 import { Chatbot } from "./components/Chatbot";
 import { PremiumTechBackground } from "./components/PremiumTechBackground";
@@ -34,9 +30,9 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [theme, setTheme] = useState<"dark" | "light">(() => {
     if (typeof window !== "undefined") {
-      return (localStorage.getItem("theme") as "dark" | "light") || "dark";
+      return (localStorage.getItem("theme") as "dark" | "light") || "light";
     }
-    return "dark";
+    return "light";
   });
 
   const [path, setPath] = useState(() => (typeof window !== "undefined" ? window.location.pathname.replace(/\/$/, "") : "/"));
@@ -63,13 +59,21 @@ export default function App() {
               
               if (url.hash) {
                 setTimeout(() => {
-                  const targetEl = document.querySelector(url.hash);
-                  if (targetEl) {
-                    targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
+                  if ((window as any).lenis) {
+                    (window as any).lenis.scrollTo(url.hash);
+                  } else {
+                    const targetEl = document.querySelector(url.hash);
+                    if (targetEl) {
+                      targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }
                   }
                 }, 100);
               } else {
-                window.scrollTo({ top: 0, behavior: "smooth" });
+                if ((window as any).lenis) {
+                  (window as any).lenis.scrollTo(0);
+                } else {
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }
               }
             }
           }
@@ -110,6 +114,7 @@ export default function App() {
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
     });
+    (window as any).lenis = lenis;
 
     let rafId: number;
     function raf(time: number) {
@@ -121,6 +126,7 @@ export default function App() {
     return () => {
       cancelAnimationFrame(rafId);
       lenis.destroy();
+      (window as any).lenis = null;
     };
   }, [loading]);
 
@@ -133,6 +139,26 @@ export default function App() {
   });
 
   const isSeoPage = seoRoutes.includes(path);
+
+  const pageVariants = {
+    initial: { 
+      opacity: 0, 
+      y: 20
+    },
+    animate: { 
+      opacity: 1, 
+      y: 0
+    },
+    exit: { 
+      opacity: 0, 
+      y: -20
+    }
+  };
+
+  const pageTransition = { 
+    duration: 0.8, 
+    ease: [0.16, 1, 0.3, 1] 
+  };
 
   return (
     <div className="min-h-screen bg-transparent text-zinc-50 light:text-zinc-900 font-sans selection:bg-brand selection:text-white relative">
@@ -154,34 +180,32 @@ export default function App() {
           {isSeoPage ? (
             <motion.div
               key={path}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              variants={pageVariants}
+              transition={pageTransition}
             >
               <SeoLandingPage path={path} />
             </motion.div>
           ) : (
             <motion.div
               key="homepage"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              variants={pageVariants}
+              transition={pageTransition}
             >
               <Hero />
+              <BrandStatement />
               <Services />
-              <CaseStudies />
-              <BeforeAfter />
-              <WhyChooseUs />
               <Process />
-              <Proof />
-              <Packages />
-              <Stack />
-              <Team />
-              <Instagram />
+              <WhyChooseUs />
+              <FounderStory />
+              <Industries />
               <FAQ />
-              <Contact />
+              <FinalCTA />
             </motion.div>
           )}
         </AnimatePresence>

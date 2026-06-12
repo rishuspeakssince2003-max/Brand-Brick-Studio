@@ -14,8 +14,15 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
-html, body, #root {
+html, body {
   overflow-x: hidden;
+  max-width: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
   max-width: 100%;
   width: 100%;
   margin: 0;
@@ -27,7 +34,7 @@ body {
 }
 
 html.light body {
-  @apply bg-[#fafafa] text-zinc-900;
+  @apply bg-[#ffffff] text-zinc-900;
 }
 
 /* Hide scrollbars but keep functionality */
@@ -60,3 +67,98 @@ html.light body {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
+
+@keyframes text-sheen {
+  0% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+  100% { background-position: 0% center; }
+}
+
+.animate-text-sheen {
+  animation: text-sheen 5s ease infinite;
+}
+
+:root {
+  --btn-3d-solid-bg: #dc2626;
+  --btn-3d-solid-shadow-color: #991b1b;
+  --btn-3d-solid-glow: rgba(220, 38, 38, 0.35);
+  --btn-3d-solid-glow-hover: rgba(220, 38, 38, 0.65);
+  --btn-3d-solid-glow-active: rgba(220, 38, 38, 0.4);
+  
+  --btn-3d-outline-bg: rgba(9, 9, 11, 0.4);
+  --btn-3d-outline-border: #27272a;
+  --btn-3d-outline-shadow-color: #18181b;
+  --btn-3d-outline-glow: rgba(0, 0, 0, 0.25);
+  --btn-3d-outline-glow-hover: rgba(0, 0, 0, 0.35);
+  --btn-3d-outline-glow-active: rgba(0, 0, 0, 0.2);
+  --btn-3d-outline-text: #a1a1aa;
+  --btn-3d-outline-text-hover: #ffffff;
+}
+
+.light {
+  --btn-3d-outline-bg: rgba(255, 255, 255, 0.55);
+  --btn-3d-outline-border: #d4d4d8;
+  --btn-3d-outline-shadow-color: #e4e4e7;
+  --btn-3d-outline-glow: rgba(0, 0, 0, 0.05);
+  --btn-3d-outline-glow-hover: rgba(0, 0, 0, 0.1);
+  --btn-3d-outline-glow-active: rgba(0, 0, 0, 0.05);
+  --btn-3d-outline-text: #4b5563;
+  --btn-3d-outline-text-hover: #111827;
+}
+
+/* ─────────────────────────────────────────────────────────
+   Mobile Performance Optimizations
+   ───────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Disable expensive backdrop filters on mobile viewports */
+  .backdrop-blur-md,
+  .backdrop-blur-lg,
+  .backdrop-blur-xl,
+  .backdrop-blur-2xl,
+  .backdrop-blur-3xl {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  
+  /* Semi-opaque fallback backgrounds for mobile readability */
+  .bg-zinc-950\/40 {
+    background-color: rgba(9, 9, 11, 0.88) !important;
+  }
+  .light .bg-white\/50 {
+    background-color: rgba(255, 255, 255, 0.94) !important;
+  }
+  .bg-zinc-900\/40 {
+    background-color: rgba(24, 24, 27, 0.9) !important;
+  }
+  .bg-zinc-900\/60 {
+    background-color: rgba(24, 24, 27, 0.92) !important;
+  }
+
+  /* Disable heavy hover translations/scales on mobile touch triggers */
+  .group:hover .group-hover\:scale-110,
+  .group:hover .group-hover\:-translate-x-2,
+  .group:hover .group-hover\:translate-y-2 {
+    transform: none !important;
+  }
+  
+  /* Optimize canvas styling */
+  canvas {
+    will-change: opacity;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────
+   Content Rendering Optimizations (GPU/CPU offloading)
+   ───────────────────────────────────────────────────────── */
+/* Tells the browser to bypass style, layout, and paint work for offscreen sections */
+#services,
+#approach,
+#why-us,
+#founder,
+#industries,
+#faq,
+#contact {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 700px;
+}
+

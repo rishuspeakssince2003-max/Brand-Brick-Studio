@@ -1,11 +1,26 @@
 import { useEffect, useState } from "react";
-import { motion } from "motion/react";
+import { motion, useMotionValue, useSpring } from "motion/react";
 
 export function CustomCursor() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  // Position motion values (off-screen initially)
+  const mouseX = useMotionValue(-100);
+  const mouseY = useMotionValue(-100);
+
+  // Spring animations for cursor follow
+  const springX = useSpring(mouseX, {
+    stiffness: 800,
+    damping: 35,
+    mass: 0.5
+  });
+  const springY = useSpring(mouseY, {
+    stiffness: 800,
+    damping: 35,
+    mass: 0.5
+  });
 
   useEffect(() => {
     // Check if device is touch
@@ -21,7 +36,8 @@ export function CustomCursor() {
     }
 
     const updateMousePosition = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
       if (!isVisible) setIsVisible(true);
     };
 
@@ -69,16 +85,17 @@ export function CustomCursor() {
       `}</style>
       <motion.div
         className="fixed top-0 left-0 z-[99999999] pointer-events-none flex items-center justify-center w-[32px] h-[32px]"
+        style={{
+          x: springX,
+          y: springY,
+          translateX: "-50%",
+          translateY: "-50%",
+        }}
         animate={{
-          x: mousePosition.x - 16,
-          y: mousePosition.y - 16,
           opacity: isVisible ? 1 : 0,
         }}
         transition={{
-          type: "spring",
-          stiffness: 800,
-          damping: 35,
-          mass: 0.5
+          duration: 0.15
         }}
       >
         {/* Bioluminescent Pulse on Hover */}

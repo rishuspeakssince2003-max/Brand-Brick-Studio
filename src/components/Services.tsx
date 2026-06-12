@@ -1,6 +1,6 @@
-import React, { useRef, useState, useEffect } from "react";
-import { motion, useInView, useMotionValue, useTransform } from "motion/react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import React, { useRef, useState } from "react";
+import { motion, useInView, useMotionValue, useMotionTemplate } from "motion/react";
+import { ArrowRight } from "lucide-react";
 
 /* ══════════════════════════════════════════════════════════
    CUSTOM SVG ICONS — Animated stroke-draw on hover
@@ -114,7 +114,7 @@ const services = [
   },
   {
     title: "Graphic Design",
-    desc: "Sleek, memorable visual identity systems that position you as premium.",
+    desc: "Sleek, memorable visual identity systems that position your brand as premium.",
     icon: "graphic",
     bullets: ["Sleek Identity Systems", "Brand Guidelines", "Premium Visual Systems"]
   },
@@ -126,9 +126,9 @@ const services = [
   },
   {
     title: "3D Design",
-    desc: "Photorealistic modeling, renders, and spatial visuals that wow audiences.",
+    desc: "Spatial modeling, photorealistic renders, and spatial visuals that wow audiences.",
     icon: "threeD",
-    bullets: ["Photorealistic Modeling", "Premium Renders", "Spatial Animation"]
+    bullets: ["Spatial Modeling", "Premium Renders", "Spatial Animation"]
   },
   {
     title: "Software Development",
@@ -140,17 +140,17 @@ const services = [
     title: "SEO Optimization",
     desc: "Data-driven strategies to own search results and drive organic revenue.",
     icon: "seo",
-    bullets: ["Rank #1 Strategies", "High Intent Keywords", "Authority Boost"]
+    bullets: ["Rank #1 Strategies", "High-Intent Keywords", "Authority Boost"]
   },
   {
     title: "Social Media Management",
-    desc: "Community building, brand authority, and undeniable social presence.",
+    desc: "Community building, brand authority, and an undeniable social presence.",
     icon: "social",
     bullets: ["Daily Post Scheduling", "Community Growth", "Meta Ad Blueprint"]
   },
   {
     title: "Content Strategy",
-    desc: "Master plans aligning brand voice, audience psychology, and business goals.",
+    desc: "Master plans that align brand voice, audience psychology, and business goals.",
     icon: "content",
     bullets: ["Audience Psychology", "Positioning Blueprint", "ROI Focus"]
   },
@@ -162,149 +162,176 @@ const services = [
   }
 ];
 
-
 /* ══════════════════════════════════════════════════════════
-   ANIMATED SERVICE CARD (Stacked playing cards deck)
+   BENTO GRID SERVICE CARD
    ══════════════════════════════════════════════════════════ */
-function ServiceCard({
-  service,
-  index,
-  activeIndex,
-  setActiveIndex
-}: {
+const ServiceBentoCard: React.FC<{
   service: typeof services[number];
   index: number;
-  activeIndex: number;
-  setActiveIndex: React.Dispatch<React.SetStateAction<number>>;
-  key?: any;
-}) {
+}> = ({
+  service,
+  index
+}) => {
   const num = String(index + 1).padStart(2, "0");
-  const relativeIndex = (index - activeIndex + 12) % 12;
-  const isActive = relativeIndex === 0;
+  const [isHovered, setIsHovered] = useState(false);
+  const rectRef = useRef<DOMRect | null>(null);
+  
+  // Track cursor position inside the card for high-end spotlight effect
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
 
-  const x = useMotionValue(0);
-  const rotateTransform = useTransform(x, [-150, 150], [-15, 15]);
-  const opacityTransform = useTransform(x, [-150, -100, 0, 100, 150], [0, 1, 1, 1, 0]);
-
-  const handleDragEnd = (event: any, info: any) => {
-    if (info.offset.x > 100) {
-      // Swiped right -> Go to previous card
-      setActiveIndex((prev) => (prev + 11) % 12);
-    } else if (info.offset.x < -100) {
-      // Swiped left -> Go to next card
-      setActiveIndex((prev) => (prev + 1) % 12);
+  function handleMouseMove(e: React.MouseEvent) {
+    if (!rectRef.current) {
+      rectRef.current = e.currentTarget.getBoundingClientRect();
     }
-  };
-
-  // Stack properties
-  let xVal = 0;
-  let yVal = 0;
-  let scaleVal = 1;
-  let rotateVal = 0;
-  let opacityVal = 1;
-  const zIndex = 12 - relativeIndex;
-
-  if (relativeIndex === 0) {
-    xVal = 0;
-    yVal = 0;
-    scaleVal = 1;
-    rotateVal = 0;
-    opacityVal = 1;
-  } else if (relativeIndex === 1) {
-    xVal = 0;
-    yVal = 16;
-    scaleVal = 0.95;
-    rotateVal = -1.5;
-    opacityVal = 0.85;
-  } else if (relativeIndex === 2) {
-    xVal = 0;
-    yVal = 32;
-    scaleVal = 0.9;
-    rotateVal = 1.5;
-    opacityVal = 0.6;
-  } else if (relativeIndex === 11) {
-    // Exit state of card swiped out
-    xVal = index % 2 === 0 ? -320 : 320;
-    yVal = -10;
-    scaleVal = 0.95;
-    rotateVal = index % 2 === 0 ? -12 : 12;
-    opacityVal = 0;
-  } else {
-    // Hidden at the back of the deck
-    xVal = 0;
-    yVal = 48;
-    scaleVal = 0.85;
-    rotateVal = 0;
-    opacityVal = 0;
+    mouseX.set(e.clientX - rectRef.current.left);
+    mouseY.set(e.clientY - rectRef.current.top);
   }
 
   return (
     <motion.div
-      drag={isActive ? "x" : false}
-      dragConstraints={{ left: 0, right: 0 }}
-      onDragEnd={handleDragEnd}
-      style={{
-        x: isActive ? x : xVal,
-        rotate: isActive ? rotateTransform : rotateVal,
-        opacity: isActive ? opacityTransform : opacityVal,
-        zIndex,
-        pointerEvents: isActive ? "auto" : "none",
-        transformOrigin: "bottom center"
+      initial={{ opacity: 0, y: 40, scale: 0.95 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      whileHover={{
+        y: -10,
+        scale: 1.03,
+        borderColor: "rgba(220, 38, 38, 0.3)",
+        boxShadow: "0 20px 40px rgba(220, 38, 38, 0.08)"
       }}
-      animate={isActive ? { y: 0, scale: 1 } : { x: xVal, y: yVal, scale: scaleVal, rotate: rotateVal, opacity: opacityVal }}
-      transition={{ type: "spring", stiffness: 300, damping: 25 }}
-      className="absolute inset-0 rounded-[2.5rem] border border-zinc-850 bg-zinc-950/70 backdrop-blur-xl p-8 flex flex-col justify-between group cursor-grab active:cursor-grabbing light:bg-white/90 light:border-zinc-200 light:shadow-lg"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        rectRef.current = null;
+      }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{
+        type: "spring",
+        stiffness: 400,
+        damping: 25
+      }}
+      onMouseMove={handleMouseMove}
+      onClick={() => {
+        if ((window as any).lenis) {
+          (window as any).lenis.scrollTo("#contact");
+        } else {
+          document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+        }
+      }}
+      className="group rounded-[2rem] border border-zinc-850 bg-zinc-950/40 backdrop-blur-md p-6 sm:p-8 flex flex-col justify-between hover:bg-zinc-950/60 transition-all duration-500 relative overflow-hidden min-h-[300px] cursor-pointer light:bg-white/50 light:border-zinc-200 light:hover:bg-zinc-100/30"
     >
-      {/* Subtle hover radial spotlight in background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#dc2626]/[0.08] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+      {/* Interactive Cursor Spotlight */}
+      <motion.div
+        className="pointer-events-none absolute -inset-px rounded-[2rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"
+        style={{
+          background: useMotionTemplate`
+            radial-gradient(
+              350px circle at ${mouseX}px ${mouseY}px,
+              rgba(220, 38, 38, 0.12),
+              rgba(220, 38, 38, 0.02) 40%,
+              transparent 80%
+            )
+          `,
+        }}
+      />
 
       {/* Watermark Index Number */}
-      <span className="absolute -right-2 -top-4 text-[7rem] md:text-[8rem] font-display font-bold leading-none text-white/[0.01] light:text-zinc-900/[0.01] group-hover:text-[#dc2626]/[0.04] transition-colors duration-700 select-none pointer-events-none tracking-tighter">
+      <span className="absolute -right-2 -top-4 text-[6rem] font-display font-bold leading-none text-white/[0.01] light:text-zinc-900/[0.01] group-hover:text-[#dc2626]/[0.03] transition-all duration-500 select-none pointer-events-none tracking-tighter group-hover:scale-110 group-hover:-translate-x-2 group-hover:translate-y-2">
         {num}
       </span>
 
       {/* Card Content container */}
-      <div className="relative z-10 h-full flex flex-col justify-between">
-        
+      <div className="relative z-10 h-full flex flex-col justify-between flex-grow">
         {/* Top row: Icon + Index */}
         <div className="flex items-start justify-between">
-          {/* Icon Box */}
-          <div className="relative h-14 w-14 rounded-2xl bg-zinc-900/80 border border-zinc-800/80 flex items-center justify-center
-            group-hover:bg-[#dc2626]/8 group-hover:border-[#dc2626]/25 transition-all duration-500 light:bg-zinc-50 light:border-zinc-200">
+          <div className="relative h-12 w-12 rounded-xl bg-zinc-900/80 border border-zinc-800/80 flex items-center justify-center
+            group-hover:bg-[#dc2626]/8 group-hover:border-[#dc2626]/25 group-hover:-translate-y-1.5 group-hover:scale-105 group-hover:rotate-3 transition-all duration-500 light:bg-zinc-50 light:border-zinc-200">
             <div className="text-zinc-500 group-hover:text-[#dc2626] transition-colors duration-400 stroke-current">
               {svgIcons[service.icon]}
             </div>
           </div>
 
-          {/* Small index pill */}
           <span className="text-[10px] font-mono font-bold text-zinc-700 group-hover:text-[#dc2626]/60 transition-colors duration-500 tracking-wider mt-1">
             {num}
           </span>
         </div>
 
         {/* Bottom: Title + Description + Bullets */}
-        <div className="mt-8">
-          <h4 className="text-2xl font-display font-bold text-white light:text-zinc-900 mb-2 leading-tight group-hover:text-[#dc2626] transition-colors duration-400">
-            {service.title}
-          </h4>
-          <p className="text-zinc-400 light:text-zinc-650 text-sm leading-relaxed max-w-md">
-            {service.desc}
-          </p>
+        <div className="mt-6 flex-grow flex flex-col justify-between">
+          <div>
+            <h4 className="text-lg md:text-xl font-display font-bold text-white light:text-zinc-900 mb-2 leading-tight group-hover:text-[#dc2626] group-hover:translate-x-1.5 transition-all duration-400">
+              {service.title}
+            </h4>
+            <p className="text-zinc-400 light:text-zinc-655 text-xs sm:text-sm leading-relaxed mb-4 group-hover:text-zinc-300 light:group-hover:text-zinc-800 transition-colors duration-300">
+              {service.desc}
+            </p>
+          </div>
 
-          {/* Bullets */}
-          {service.bullets && (
-            <div className="flex flex-wrap gap-2 mt-5">
-              {service.bullets.map((bullet, bIdx) => (
-                <span key={bIdx} className="px-3 py-1 rounded-full border border-zinc-850 bg-zinc-900/40 text-zinc-400 text-[11px] font-medium light:border-zinc-250 light:bg-zinc-100 light:text-zinc-700">
-                  {bullet}
-                </span>
-              ))}
-            </div>
-          )}
-
-          {/* Animated underline indicator */}
-          <div className="mt-6 h-[1.5px] w-full overflow-hidden">
-            <div className="h-full w-full bg-gradient-to-r from-[#dc2626] to-transparent scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]" />
+          {/* Bullets + Interactive Chevron Button */}
+          <div className="flex items-center justify-between gap-3 mt-4 border-t border-zinc-900/30 pt-4 light:border-zinc-200">
+            {service.bullets && (
+              <div className="flex flex-wrap gap-1.5 flex-grow">
+                {service.bullets.map((bullet, bIdx) => (
+                  <span
+                    key={bIdx}
+                    className="px-2 py-0.5 rounded-md border border-zinc-850 bg-zinc-900/40 text-zinc-400 text-[9px] font-medium light:border-zinc-250 light:bg-zinc-100 light:text-zinc-700 group-hover:border-[#dc2626]/20 group-hover:bg-[#dc2626]/5 group-hover:text-[#dc2626] transition-all duration-300"
+                  >
+                    {bullet}
+                  </span>
+                ))}
+              </div>
+            )}
+            
+            {/* Ultra Premium 3D Action Arrow Button */}
+            <motion.div
+              variants={{
+                initial: {
+                  y: 0,
+                  scale: 1,
+                  backgroundColor: "var(--btn-3d-outline-bg)",
+                  borderColor: "var(--btn-3d-outline-border)",
+                  boxShadow: "0 3px 0 var(--btn-3d-outline-shadow-color), 0 5px 10px var(--btn-3d-outline-glow)",
+                  color: "var(--btn-3d-outline-text)",
+                },
+                hover: {
+                  y: -2,
+                  scale: 1.12,
+                  backgroundColor: "var(--btn-3d-solid-bg)",
+                  borderColor: "rgba(239, 68, 68, 0.5)",
+                  boxShadow: "0 5px 0 var(--btn-3d-solid-shadow-color), 0 10px 18px var(--btn-3d-solid-glow-hover), inset 0 1px 0 rgba(255,255,255,0.25)",
+                  color: "#ffffff",
+                },
+                tap: {
+                  y: 2,
+                  scale: 0.95,
+                  boxShadow: "0 0px 0 var(--btn-3d-solid-shadow-color), 0 4px 8px var(--btn-3d-solid-glow-active)",
+                }
+              }}
+              animate={isHovered ? "hover" : "initial"}
+              whileHover={{
+                scale: 1.18,
+                y: -3,
+                boxShadow: "0 6px 0 var(--btn-3d-solid-shadow-color), 0 12px 22px rgba(220, 38, 38, 0.55), inset 0 1px 0 rgba(255,255,255,0.3)",
+              }}
+              whileTap="tap"
+              transition={{
+                type: "spring",
+                stiffness: 550,
+                damping: 16
+              }}
+              className="w-10 h-10 rounded-full border flex items-center justify-center shrink-0 transition-colors duration-300 light:border-zinc-200"
+            >
+              <div className="relative overflow-hidden w-4.5 h-4.5 flex items-center justify-center">
+                <motion.div
+                  className="flex items-center"
+                  animate={isHovered ? { x: -18 } : { x: 0 }}
+                  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                  style={{ width: "36px" }}
+                >
+                  <ArrowRight size={15} className="w-4 h-4 shrink-0" />
+                  <ArrowRight size={15} className="w-4 h-4 shrink-0 ml-[2px]" />
+                </motion.div>
+              </div>
+            </motion.div>
           </div>
         </div>
       </div>
@@ -313,225 +340,170 @@ function ServiceCard({
 }
 
 /* ══════════════════════════════════════════════════════════
-   FLOATING ORB
-   ══════════════════════════════════════════════════════════ */
-function FloatingOrb({ size, x, y, delay }: { size: number; x: string; y: string; delay: number }) {
-  return (
-    <motion.div
-      className="absolute rounded-full pointer-events-none"
-      style={{
-        width: size,
-        height: size,
-        left: x,
-        top: y,
-        background: "radial-gradient(circle, rgba(220,38,38,0.08) 0%, transparent 70%)",
-        filter: "blur(40px)",
-      }}
-      animate={{
-        y: [0, -30, 0, 20, 0],
-        x: [0, 15, -10, 5, 0],
-        scale: [1, 1.1, 0.95, 1.05, 1],
-      }}
-      transition={{
-        duration: 12 + delay * 2,
-        repeat: Infinity,
-        ease: "easeInOut",
-        delay,
-      }}
-    />
-  );
-}
-
-/* ══════════════════════════════════════════════════════════
    MAIN SERVICES SECTION
    ══════════════════════════════════════════════════════════ */
 export function Services() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
-
-  const handleNext = () => {
-    setActiveIndex((prev) => (prev + 1) % 12);
-  };
-
-  const handlePrev = () => {
-    setActiveIndex((prev) => (prev + 11) % 12);
-  };
-
-  useEffect(() => {
-    if (isPaused) return;
-    const interval = setInterval(() => {
-      handleNext();
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [activeIndex, isPaused]);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const isHeaderInView = useInView(headerRef, { once: true, margin: "-80px" });
 
   return (
     <section
-      ref={sectionRef}
-      className="relative py-24 md:py-36 bg-transparent px-4 md:px-6 overflow-hidden scroll-mt-24 md:scroll-mt-28"
+      className="py-16 md:py-24 px-4 md:px-6 max-w-7xl mx-auto scroll-mt-24 md:scroll-mt-28 relative"
       id="services"
     >
-      {/* ── Floating Background Orbs ── */}
-      <FloatingOrb size={350} x="5%" y="10%" delay={0} />
-      <FloatingOrb size={250} x="75%" y="60%" delay={2} />
-      <FloatingOrb size={200} x="40%" y="80%" delay={4} />
-      <FloatingOrb size={180} x="85%" y="15%" delay={1} />
+      {/* ── Background Glow ── */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#dc2626]/[0.015] blur-[150px] rounded-full pointer-events-none" />
 
-      {/* ── Subtle grid pattern overlay ── */}
-      <div
-        className="absolute inset-0 opacity-[0.015] pointer-events-none"
-        style={{
-          backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-                            linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-          backgroundSize: "80px 80px",
-        }}
-      />
-
-      <motion.div
-        className="max-w-7xl mx-auto relative z-10"
-        initial={{ opacity: 0, y: 80 }}
-        animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      >
-        {/* ── Section Header ── */}
-        <div className="mb-16 md:mb-24 max-w-4xl">
+      {/* ── Section Header ── */}
+      <div ref={headerRef} className="w-full relative z-20 mb-12 md:mb-16">
+        <div className="max-w-4xl">
           <motion.span
             initial={{ opacity: 0, y: 15 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8 }}
-            className="inline-block px-5 py-2 rounded-full border border-[#dc2626]/30 bg-[#dc2626]/5 text-[#dc2626] text-xs font-bold tracking-[0.25em] uppercase mb-6"
+            className="inline-block px-5 py-2 rounded-full border border-[#dc2626]/30 bg-[#dc2626]/5 text-[#dc2626] text-xs font-bold tracking-[0.25em] uppercase mb-4"
           >
             Our Services
           </motion.span>
 
           <div className="overflow-hidden">
             <motion.h2
-              initial={{ y: 80, opacity: 0 }}
-              animate={isInView ? { y: 0, opacity: 1 } : {}}
-              transition={{ duration: 1, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="text-4xl md:text-6xl lg:text-7xl font-display font-bold text-white light:text-zinc-900 tracking-tight leading-[1.05] mb-6"
+              initial="hidden"
+              animate={isHeaderInView ? "visible" : "hidden"}
+              variants={{
+                hidden: {},
+                visible: {
+                  transition: {
+                    staggerChildren: 0.08
+                  }
+                }
+              }}
+              className="text-3xl md:text-5xl lg:text-6xl font-display font-bold text-white light:text-zinc-900 tracking-tight leading-[1.05] mb-3"
             >
-              One Team For{" "}
-              <span className="relative inline-block">
-                <span className="text-[#dc2626] italic">Everything</span>
+              {["One", "Team", "For"].map((w, idx) => (
+                <motion.span
+                  key={`w1-${idx}`}
+                  variants={{
+                    hidden: { y: 35, opacity: 0, filter: "blur(6px)" },
+                    visible: { y: 0, opacity: 1, filter: "blur(0px)", transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+                  }}
+                  className="inline-block mr-[0.25em]"
+                >
+                  {w}
+                </motion.span>
+              ))}
+
+              <span className="relative inline-block mr-[0.25em]">
+                <motion.span
+                  variants={{
+                    hidden: { y: 35, opacity: 0, scale: 0.95, filter: "blur(6px)" },
+                    visible: { y: 0, opacity: 1, scale: 1, filter: "blur(0px)", transition: { duration: 0.8, delay: 0.25, ease: [0.16, 1, 0.3, 1] } }
+                  }}
+                  className="text-[#dc2626] italic inline-block"
+                >
+                  Everything
+                </motion.span>
+
                 {/* Animated underline swoosh */}
                 <motion.svg
                   viewBox="0 0 200 12"
                   className="absolute -bottom-2 left-0 w-full h-3"
                   initial={{ pathLength: 0, opacity: 0 }}
-                  animate={isInView ? { pathLength: 1, opacity: 1 } : {}}
-                  transition={{ duration: 1.2, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                  variants={{
+                    hidden: { pathLength: 0, opacity: 0 },
+                    visible: { pathLength: 1, opacity: 1, transition: { duration: 1.0, delay: 0.8, ease: "easeOut" } }
+                  }}
                 >
-                  <motion.path
+                  <path
                     d="M2 8 C40 2, 80 2, 100 6 S160 12, 198 4"
                     fill="none"
                     stroke="#dc2626"
                     strokeWidth="2.5"
                     strokeLinecap="round"
-                    initial={{ pathLength: 0 }}
-                    animate={isInView ? { pathLength: 1 } : {}}
-                    transition={{ duration: 1.2, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
                   />
                 </motion.svg>
+
+                {/* Floating 3D Isometric Cube next to "Everything" */}
+                <motion.div
+                  className="absolute -right-5 -bottom-2.5 w-6 h-6 pointer-events-none z-10"
+                  initial={{ y: 15, opacity: 0, scale: 0 }}
+                  variants={{
+                    hidden: { y: 15, opacity: 0, scale: 0 },
+                    visible: {
+                      y: 0,
+                      opacity: 1,
+                      scale: 1,
+                      transition: { duration: 0.8, delay: 0.95, type: "spring" }
+                    }
+                  }}
+                  animate={{
+                    y: [0, -6, 0],
+                  }}
+                  transition={{
+                    y: {
+                      duration: 2.2,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }
+                  }}
+                >
+                  <svg viewBox="0 0 24 24" className="w-full h-full drop-shadow-[0_4px_10px_rgba(220,38,38,0.5)]">
+                    {/* Top Face */}
+                    <path d="M12 2L20 6L12 10L4 6Z" fill="#ff6b6b" />
+                    {/* Left Face */}
+                    <path d="M4 6L12 10V18L4 14Z" fill="#dc2626" />
+                    {/* Right Face */}
+                    <path d="M12 10L20 6V14L12 18Z" fill="#991b1b" />
+                    {/* Isometric details */}
+                    <path d="M12 11.5L16 9.5M12 13.5L16 11.5M12 15.5L16 13.5" stroke="rgba(255,255,255,0.4)" strokeWidth="1" strokeLinecap="round" />
+                  </svg>
+                </motion.div>
               </span>
               <br className="hidden md:block" />
-              Your Brand Needs.
+
+              {["Your", "Brand", "Needs."].map((w, idx) => (
+                <motion.span
+                  key={`w2-${idx}`}
+                  variants={{
+                    hidden: { y: 35, opacity: 0, filter: "blur(6px)" },
+                    visible: { y: 0, opacity: 1, filter: "blur(0px)", transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+                  }}
+                  className="inline-block mr-[0.25em]"
+                >
+                  {w}
+                </motion.span>
+              ))}
             </motion.h2>
           </div>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-lg md:text-xl text-zinc-400 light:text-zinc-600 font-light leading-relaxed max-w-2xl"
+            className="text-sm md:text-base text-zinc-400 light:text-zinc-655 font-light leading-relaxed max-w-2xl mt-4"
           >
             12 core services under one roof, creative, content, digital, and
             technical execution built for brands that refuse to blend in.
           </motion.p>
         </div>
+      </div>
 
-        {/* ── Stacked Cards Deck Area ── */}
-        <div 
-          className="relative w-full max-w-[480px] h-[380px] sm:h-[420px] md:h-[400px] mx-auto mt-16 z-10"
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-        >
-          {services.map((service, i) => (
-            <ServiceCard 
-              key={i} 
-              service={service} 
-              index={i} 
-              activeIndex={activeIndex}
-              setActiveIndex={setActiveIndex}
-            />
-          ))}
-        </div>
-
-        {/* ── Deck Controls ── */}
-        <div className="flex flex-col items-center gap-4 mt-12 relative z-20">
-          {/* Navigation row */}
-          <div className="flex items-center gap-6">
-            <button
-              onClick={handlePrev}
-              className="w-12 h-12 rounded-full border border-zinc-850 bg-zinc-950/60 flex items-center justify-center text-zinc-400 hover:text-white hover:border-[#dc2626] hover:bg-[#dc2626]/5 transition-all duration-300 light:border-zinc-200 light:bg-white light:text-zinc-600 light:hover:text-[#dc2626] cursor-pointer"
-              aria-label="Previous Service"
-            >
-              <ArrowLeft size={18} />
-            </button>
-            
-            <span className="text-sm font-mono font-bold text-zinc-500 tracking-wider select-none">
-              {String(activeIndex + 1).padStart(2, "0")} <span className="text-zinc-800 light:text-zinc-300">/</span> 12
-            </span>
-            
-            <button
-              onClick={handleNext}
-              className="w-12 h-12 rounded-full border border-zinc-850 bg-zinc-950/60 flex items-center justify-center text-zinc-400 hover:text-white hover:border-[#dc2626] hover:bg-[#dc2626]/5 transition-all duration-300 light:border-zinc-200 light:bg-white light:text-zinc-600 light:hover:text-[#dc2626] cursor-pointer"
-              aria-label="Next Service"
-            >
-              <ArrowRight size={18} />
-            </button>
-          </div>
-          
-          {/* Progress Bar */}
-          <div className="w-full max-w-[280px] h-[3px] bg-zinc-900 rounded-full overflow-hidden light:bg-zinc-200">
-            <motion.div
-              key={activeIndex + (isPaused ? "-paused" : "-active")}
-              initial={{ width: "0%" }}
-              animate={isPaused ? { width: "0%" } : { width: "100%" }}
-              transition={{ duration: 3, ease: "linear" }}
-              className="h-full bg-[#dc2626] shadow-[0_0_8px_#dc2626]"
-            />
-          </div>
-          
-          {isPaused && (
-            <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest animate-pulse mt-1 select-none">
-              Auto-cycle Paused (Hovering)
-            </span>
-          )}
-        </div>
-      </motion.div>
+      {/* ── Bento Grid (4 Columns, 3 Rows on Desktop) ── */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-20 w-full">
+        {services.map((service, i) => (
+          <ServiceBentoCard key={i} service={service} index={i} />
+        ))}
+      </div>
 
       {/* ── CSS Animations ── */}
       <style>{`
-        @keyframes border-spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-
         .service-icon-svg {
-          stroke: currentColor;
-          transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        .group:hover .service-icon-box {
-          transform: translateY(-3px);
+          transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .group:hover .service-icon-svg {
-          transform: scale(1.1);
-          filter: drop-shadow(0 0 8px rgba(220, 38, 38, 0.4));
+          transform: scale(1.15) translateY(-2px);
+          filter: drop-shadow(0 2px 10px rgba(220, 38, 38, 0.5));
         }
       `}</style>
     </section>

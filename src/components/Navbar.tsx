@@ -6,8 +6,9 @@ import { MenuBar } from "./ui/animated-menu-bar";
 
 const navLinks = [
   { name: "Services", href: "/#services" },
+  { name: "Process", href: "/#process" },
   { name: "Why Us", href: "/#why-us" },
-  { name: "Our Tools", href: "/#stack" },
+  { name: "Founder", href: "/#founder" },
   { name: "Contact", href: "/#contact" },
 ];
 
@@ -21,7 +22,7 @@ export function Navbar({ theme, toggleTheme, currentPath }: { theme: "dark" | "l
       setScrolled(window.scrollY > 20);
 
       // Simple active section detection
-      const sections = ["services", "why-us", "stack", "contact"];
+      const sections = ["services", "work", "process", "why-us", "founder", "contact"];
       const scrollPosition = window.scrollY + window.innerHeight / 3;
       let currentSection = "";
 
@@ -91,30 +92,8 @@ export function Navbar({ theme, toggleTheme, currentPath }: { theme: "dark" | "l
                 {theme === "light" ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
               </motion.div>
             </button>
-            <a 
-              href="#industry-discounts"
-              onClick={(e) => {
-                e.preventDefault();
-                const el = document.getElementById("industry-discounts");
-                if (el) {
-                  el.scrollIntoView({ behavior: "smooth", block: "center" });
-                }
-              }}
-              className="relative p-2.5 rounded-full border border-zinc-800 hover:border-amber-400 bg-zinc-900/50 hover:bg-amber-400/10 text-zinc-400 hover:text-white transition-all duration-300 group flex items-center justify-center animate-pulse"
-              title="Special Partner Discounts"
-            >
-              {/* Spinning Golden outer ring border on hover */}
-              <div className="absolute inset-0 rounded-full p-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="w-full h-full rounded-full border border-dashed border-amber-400/60 animate-[spin_8s_linear_infinite]" />
-              </div>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-amber-400 drop-shadow-[0_0_6px_rgba(245,158,11,0.5)]">
-                <line x1="19" y1="5" x2="5" y2="19" />
-                <circle cx="6.5" cy="6.5" r="2.5" fill="currentColor" />
-                <circle cx="17.5" cy="17.5" r="2.5" fill="currentColor" />
-              </svg>
-            </a>
-            <LiquidButton href="/#contact" variant="solid" size="default">
-              Book a Call
+            <LiquidButton href="https://wa.me/917383386318" target="_blank" rel="noreferrer" variant="solid" size="default">
+              Start Chat
             </LiquidButton>
           </div>
 
@@ -127,25 +106,6 @@ export function Navbar({ theme, toggleTheme, currentPath }: { theme: "dark" | "l
             >
               {theme === "light" ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
             </button>
-            <a 
-              href="#industry-discounts"
-              onClick={(e) => {
-                e.preventDefault();
-                setIsOpen(false);
-                const el = document.getElementById("industry-discounts");
-                if (el) {
-                  el.scrollIntoView({ behavior: "smooth", block: "center" });
-                }
-              }}
-              className="p-2.5 rounded-full border border-zinc-800 bg-zinc-900/50 text-amber-400 flex items-center justify-center active:border-amber-400 animate-pulse"
-              title="Special Partner Discounts"
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-amber-400 drop-shadow-[0_0_6px_rgba(245,158,11,0.5)]">
-                <line x1="19" y1="5" x2="5" y2="19" />
-                <circle cx="6.5" cy="6.5" r="2.5" fill="currentColor" />
-                <circle cx="17.5" cy="17.5" r="2.5" fill="currentColor" />
-              </svg>
-            </a>
             <button
               className="p-2 -mr-2 text-zinc-300 hover:text-white light:text-zinc-600 light:hover:text-zinc-950 transition-colors group"
               onClick={() => setIsOpen(!isOpen)}
@@ -163,7 +123,7 @@ export function Navbar({ theme, toggleTheme, currentPath }: { theme: "dark" | "l
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 z-40 bg-[#050505] light:bg-[#fafafa] pt-28 px-6 pb-6 overflow-y-auto"
+            className="fixed inset-0 z-40 bg-[#050505] light:bg-[#ffffff] pt-28 px-6 pb-6 overflow-y-auto"
           >
             <div className="flex flex-col gap-6">
               {navLinks.map((link) => (
@@ -177,11 +137,13 @@ export function Navbar({ theme, toggleTheme, currentPath }: { theme: "dark" | "l
                 </a>
               ))}
               <LiquidButton
-                href="/#contact"
+                href="https://wa.me/917383386318"
+                target="_blank"
+                rel="noreferrer"
                 onClick={() => setIsOpen(false)}
-                className="mt-4 self-start w-full"
+                className="mt-4 self-start w-full text-center"
               >
-                Book a Call
+                Start Chat
               </LiquidButton>
             </div>
           </motion.div>

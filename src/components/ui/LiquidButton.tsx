@@ -1,77 +1,99 @@
-import React, { ButtonHTMLAttributes } from 'react';
+import React from 'react';
+import { motion } from 'motion/react';
 
-export interface LiquidButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface LiquidButtonProps {
   href?: string;
+  target?: string;
+  rel?: string;
   variant?: 'solid' | 'outline' | 'glass';
   size?: 'default' | 'icon' | 'lg';
   className?: string;
   children?: React.ReactNode;
   onClick?: React.MouseEventHandler<any>;
+  style?: React.CSSProperties;
 }
 
 export function LiquidButton({ 
   children, 
   href, 
+  target,
+  rel,
   variant = 'solid', 
   size = 'default',
   className = '',
+  style = {},
+  onClick,
   ...props 
 }: LiquidButtonProps) {
   
-  const baseClasses = "relative overflow-hidden group inline-flex justify-center items-center font-bold tracking-wider uppercase transition-all duration-500 hover:shadow-[0_0_40px_rgba(220,38,38,0.6)] rounded-full";
+  const isSolid = variant === 'solid';
+  const shadowDefault = isSolid
+    ? "0 6px 0 var(--btn-3d-solid-shadow-color), 0 12px 25px var(--btn-3d-solid-glow)"
+    : "0 6px 0 var(--btn-3d-outline-shadow-color), 0 12px 25px var(--btn-3d-outline-glow)";
+
+  const shadowHover = isSolid
+    ? "0 4px 0 var(--btn-3d-solid-shadow-color), 0 8px 30px var(--btn-3d-solid-glow-hover)"
+    : "0 4px 0 var(--btn-3d-outline-shadow-color), 0 8px 30px var(--btn-3d-outline-glow-hover)";
+
+  const shadowTap = isSolid
+    ? "0 0px 0 var(--btn-3d-solid-shadow-color), 0 2px 10px var(--btn-3d-solid-glow-active)"
+    : "0 0px 0 var(--btn-3d-outline-shadow-color), 0 2px 10px var(--btn-3d-outline-glow-active)";
+
+  const baseClasses = "relative font-display font-bold uppercase tracking-wider select-none cursor-pointer flex items-center justify-center text-center transition-colors duration-300";
   
   const sizeClasses = {
-    default: "px-8 py-4 text-sm",
-    lg: "px-10 py-5 text-sm",
-    icon: "w-12 h-12",
+    default: "px-8 py-4 text-sm rounded-[1.25rem]",
+    lg: "px-10 py-5 text-sm md:text-base rounded-2xl",
+    icon: "w-12 h-12 rounded-xl",
   };
 
   const variantClasses = {
-    solid: "bg-transparent border-2 border-brand text-white light:text-brand light:group-hover:text-white", 
-    outline: "bg-transparent border-2 border-zinc-800 text-white hover:border-brand/50 light:border-zinc-300 light:text-zinc-800 light:group-hover:text-white light:hover:border-brand/50",
-    glass: "bg-transparent backdrop-blur-sm border-2 border-zinc-700 text-white light:border-zinc-300 light:text-zinc-800 light:group-hover:text-white",
+    solid: "bg-[#dc2626] border border-white/20 text-white hover:bg-[#b91c1c]",
+    outline: "bg-[var(--btn-3d-outline-bg)] border border-[var(--btn-3d-outline-border)] text-[var(--btn-3d-outline-text)] hover:text-[var(--btn-3d-outline-text-hover)]",
+    glass: "bg-[var(--btn-3d-outline-bg)] border border-[var(--btn-3d-outline-border)] text-[var(--btn-3d-outline-text)] hover:text-[var(--btn-3d-outline-text-hover)]",
   };
 
-  const innerContent = (
-    <>
-      <div className="absolute inset-0 overflow-hidden rounded-full pointer-events-none">
-        <div className="absolute left-0 right-0 top-[calc(100%+40px)] h-[170%] bg-brand transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:-translate-y-[110%] z-0">
-          <svg
-            className="absolute bottom-[99%] left-0 w-[200%] h-[24px] text-brand transform translate-x-0 group-hover:animate-[liquid-wave_1s_linear_infinite]"
-            fill="currentColor"
-            viewBox="0 0 1000 100"
-            preserveAspectRatio="none"
-          >
-            <path d="M0,50 C125,0 375,100 500,50 C625,0 875,100 1000,50 L1000,101 L0,101 Z" />
-          </svg>
-        </div>
-      </div>
-      
-      {/* Button Content */}
-      <span className="relative z-20 flex items-center justify-center gap-2 group-hover:text-white transition-colors duration-300 drop-shadow-md">
-        {children}
-      </span>
-    </>
-  );
+  const textShadowStyle = isSolid ? { textShadow: "0 1px 2px rgba(0,0,0,0.5)" } : {};
+
+  const motionProps = {
+    style: {
+      boxShadow: shadowDefault,
+      ...textShadowStyle,
+      ...style
+    },
+    whileHover: {
+      y: 2,
+      boxShadow: shadowHover,
+    },
+    whileTap: {
+      y: 6,
+      boxShadow: shadowTap,
+    },
+    transition: { type: "spring", stiffness: 600, damping: 15 },
+    className: `${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]} ${className}`,
+    onClick,
+    ...props
+  };
 
   if (href) {
     return (
-      <a 
-        href={href} 
-        className={`${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]} ${className}`}
-        {...(props as any)}
+      <motion.a
+        href={href}
+        target={target}
+        rel={rel}
+        {...(motionProps as any)}
       >
-        {innerContent}
-      </a>
+        {children}
+      </motion.a>
     );
   }
 
   return (
-    <button 
-      className={`${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]} ${className}`}
-      {...props}
+    <motion.button
+      type="button"
+      {...(motionProps as any)}
     >
-      {innerContent}
-    </button>
+      {children}
+    </motion.button>
   );
 }

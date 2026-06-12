@@ -1,110 +1,194 @@
-import { motion } from "motion/react";
+import React, { useState, useRef } from "react";
+import { motion, useMotionValue, useMotionTemplate } from "motion/react";
 import { Compass, Target, PenTool, Code, Rocket, BarChart3 } from "lucide-react";
 
 const steps = [
   {
     icon: Compass,
-    title: "Discover",
-    desc: "We dive deep into your business, auditing your current assets, researching competitors, and hosting brand alignment workshops.",
-    deliverables: ["Brand audit report", "Competitor matrix", "Target audience personas"]
+    title: "Discovery",
+    desc: "We dive deep into your business objectives, audit brand assets, map out competitor landscapes, and uncover customer psychographics.",
+    deliverables: ["Brand audit report", "Competitor matrix", "Audience research"]
   },
   {
     icon: Target,
     title: "Strategy",
-    desc: "We define your brand positioning, design a content blueprint, formulate advertising roadmaps, and set conversion benchmarks.",
-    deliverables: ["Positioning blueprint", "Marketing campaign plan", "SEO roadmap"]
+    desc: "We define your brand positioning, formulate marketing campaigns, design a vertical video strategy, and outline an SEO roadmap.",
+    deliverables: ["Positioning blueprint", "Reels calendar", "SEO & Ads playbook"]
   },
   {
     icon: PenTool,
     title: "Design",
-    desc: "We bring concepts to life, designing high-fidelity brand systems, creative visual campaigns, and premium spatial website wireframes.",
-    deliverables: ["Vector brand style guide", "Figma UI/UX layouts", "Volumetric shoots moodboard"]
+    desc: "We translate strategic direction into high-fidelity premium visual assets, corporate brand systems, and sleek UI layouts.",
+    deliverables: ["Brand identity guidelines", "Figma UI/UX layouts", "Volumetric campaign mockups"]
   },
   {
     icon: Code,
-    title: "Develop",
-    desc: "We write clean, optimized code. Our developers build high-speed frontend pages, integrate CRMs, and set up analytics pipelines.",
-    deliverables: ["Vite + React code repo", "Database & CRM integrations", "Vercel pipeline deployment"]
+    title: "Development",
+    desc: "We construct custom frontend experiences in React/Next.js, ensuring smooth micro-animations, lightning-fast loading speeds, and robust SEO tags.",
+    deliverables: ["React / Next.js code", "Analytics & Tracking", "Domain DNS deployment"]
   },
   {
     icon: Rocket,
     title: "Launch",
-    desc: "We conduct end-to-end quality assurance, optimize page speed performance, and launch your campaign/website with zero downtime.",
-    deliverables: ["QA validation check", "Domain DNS setup", "Public launch checklist"]
+    desc: "We test across viewports, run accessibility audits, verify page speeds, and push the campaign/website live with zero downtime.",
+    deliverables: ["Cross-browser QA check", "Production build", "Live launch validation"]
   },
   {
     icon: BarChart3,
-    title: "Scale",
-    desc: "We don't just launch and leave. We continuously track engagement metrics, A/B test ad hooks, and execute optimization sprints.",
-    deliverables: ["Monthly ROAS audit", "Heatmap usability analysis", "Speed & content updates"]
+    title: "Growth",
+    desc: "We scale your client acquisitions through continuous conversion audits, creative A/B testing, and data-driven updates.",
+    deliverables: ["Conversion rate audit", "A/B test logs", "Monthly expansion sprints"]
   }
 ];
 
+const ProcessCard: React.FC<{
+  step: typeof steps[number];
+  index: number;
+}> = ({
+  step,
+  index
+}) => {
+  const IconComp = step.icon;
+  const [isHovered, setIsHovered] = useState(false);
+  const rectRef = useRef<DOMRect | null>(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  function handleMouseMove(e: React.MouseEvent) {
+    if (!rectRef.current) {
+      rectRef.current = e.currentTarget.getBoundingClientRect();
+    }
+    mouseX.set(e.clientX - rectRef.current.left);
+    mouseY.set(e.clientY - rectRef.current.top);
+  }
+
+  const num = String(index + 1).padStart(2, "0");
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 40, scale: 0.95 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      whileHover={{
+        y: -8,
+        scale: 1.02,
+        borderColor: "rgba(220, 38, 38, 0.25)",
+        boxShadow: "0 20px 40px rgba(220, 38, 38, 0.05)"
+      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        rectRef.current = null;
+      }}
+      onMouseMove={handleMouseMove}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.8, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+      className="group relative flex flex-col justify-between p-8 rounded-[2.5rem] bg-zinc-950/40 border border-zinc-850 backdrop-blur-md overflow-hidden hover:bg-zinc-950/60 transition-colors duration-500 shadow-lg min-h-[340px] cursor-pointer light:bg-white/50 light:border-zinc-200"
+    >
+      {/* Interactive Cursor Spotlight */}
+      <motion.div
+        className="pointer-events-none absolute -inset-px rounded-[2.5rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"
+        style={{
+          background: useMotionTemplate`
+            radial-gradient(
+              350px circle at ${mouseX}px ${mouseY}px,
+              rgba(220, 38, 38, 0.12),
+              rgba(220, 38, 38, 0.02) 40%,
+              transparent 80%
+            )
+          `,
+        }}
+      />
+
+      {/* Watermark Index Number */}
+      <span className="absolute -right-2 -top-4 text-[6rem] font-display font-bold leading-none text-white/[0.01] light:text-zinc-900/[0.01] group-hover:text-[#dc2626]/[0.03] transition-all duration-500 select-none pointer-events-none tracking-tighter group-hover:scale-110 group-hover:-translate-x-2 group-hover:translate-y-2">
+        {num}
+      </span>
+
+      <div className="relative z-10">
+        {/* Step Index & Icon */}
+        <div className="flex items-center justify-between mb-8">
+          <div className="w-12 h-12 rounded-2xl bg-zinc-900 border border-zinc-850 flex items-center justify-center text-[#dc2626] shadow-[0_0_15px_rgba(220,38,38,0.1)] group-hover:bg-[#dc2626]/10 group-hover:border-[#dc2626]/30 group-hover:-translate-y-1.5 group-hover:scale-105 group-hover:rotate-3 transition-all duration-500 light:bg-zinc-100 light:border-zinc-200">
+            <IconComp size={20} className="group-hover:scale-110 transition-transform duration-300" />
+          </div>
+          <span className="text-[10px] font-mono font-bold text-zinc-600 uppercase tracking-widest transition-colors duration-300 group-hover:text-[#dc2626]/80">
+            Step {num}
+          </span>
+        </div>
+
+        {/* Content */}
+        <h3 className="text-xl font-display font-bold text-white light:text-zinc-900 mb-4 group-hover:text-[#dc2626] group-hover:translate-x-1.5 transition-all duration-400">
+          {step.title}
+        </h3>
+        <p className="text-sm text-zinc-400 light:text-zinc-600 leading-relaxed mb-6 group-hover:text-zinc-300 light:group-hover:text-zinc-800 transition-colors duration-300">
+          {step.desc}
+        </p>
+      </div>
+
+      {/* Deliverables tags */}
+      <div className="relative z-10 border-t border-zinc-900/60 pt-4 flex flex-wrap gap-2 light:border-zinc-200">
+        {step.deliverables.map((del, dIdx) => (
+          <span
+            key={dIdx}
+            className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-zinc-900/80 border border-zinc-800 text-zinc-500 transition-all duration-300 group-hover:border-[#dc2626]/20 group-hover:bg-[#dc2626]/5 group-hover:text-[#dc2626] light:bg-zinc-100 light:border-zinc-200 light:text-zinc-650"
+          >
+            {del}
+          </span>
+        ))}
+      </div>
+    </motion.div>
+  );
+};
+
 export function Process() {
   return (
-    <section className="py-24 md:py-40 px-4 md:px-6 max-w-7xl mx-auto scroll-mt-24 md:scroll-mt-28" id="approach">
-      <div className="mb-16 md:mb-24">
-        <span className="inline-block px-4 py-1.5 rounded-full border border-zinc-800 bg-zinc-900/50 text-[#dc2626] text-xs font-bold tracking-[0.2em] uppercase mb-6 backdrop-blur-md light:border-zinc-200 light:bg-white/50">
+    <section className="py-16 md:py-24 px-4 md:px-6 max-w-7xl mx-auto scroll-mt-24 md:scroll-mt-28" id="approach">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="mb-16 md:mb-24"
+      >
+        <span className="inline-block px-4 py-1.5 rounded-full border border-zinc-800 bg-zinc-900/50 text-[#dc2626] text-xs font-bold tracking-[0.2em] uppercase mb-6 light:border-zinc-200 light:bg-white/50">
           Our Process
         </span>
-        <h2 className="text-4xl md:text-6xl font-display font-bold text-white light:text-zinc-900 tracking-tight leading-none">
-          How We Build Empires.
-        </h2>
-      </div>
+        <motion.h2 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={{
+            hidden: {},
+            visible: {
+              transition: {
+                staggerChildren: 0.08
+              }
+            }
+          }}
+          className="text-4xl md:text-6xl font-display font-bold text-white light:text-zinc-900 tracking-tight leading-none"
+        >
+          {["How", "We", "Build", "Empires."].map((w, idx) => (
+            <motion.span
+              key={idx}
+              variants={{
+                hidden: { y: 30, opacity: 0, filter: "blur(6px)" },
+                visible: { y: 0, opacity: 1, filter: "blur(0px)", transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+              }}
+              className="inline-block mr-[0.25em]"
+            >
+              {w}
+            </motion.span>
+          ))}
+        </motion.h2>
+      </motion.div>
 
       {/* Grid of Steps */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative">
         {/* Subtle timeline track overlay for decorative purpose */}
         <div className="absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-zinc-800 to-transparent hidden lg:block pointer-events-none -translate-y-1/2" />
         
-        {steps.map((step, idx) => {
-          const IconComp = step.icon;
-          return (
-            <motion.div
-              key={idx}
-              className="group relative flex flex-col justify-between p-8 rounded-[2.5rem] bg-zinc-950/40 border border-zinc-850 backdrop-blur-md overflow-hidden hover:border-[#dc2626]/30 transition-all duration-300 shadow-lg min-h-[340px] light:bg-white/50 light:border-zinc-200"
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.6, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
-            >
-              {/* Subtle ambient light dot inside cards */}
-              <div className="absolute -top-16 -right-16 w-32 h-32 bg-[#dc2626]/5 rounded-full blur-2xl group-hover:bg-[#dc2626]/10 transition-all duration-500" />
-              
-              <div>
-                {/* Step Index & Icon */}
-                <div className="flex items-center justify-between mb-8">
-                  <div className="w-12 h-12 rounded-2xl bg-zinc-900 border border-zinc-850 flex items-center justify-center text-[#dc2626] shadow-[0_0_15px_rgba(220,38,38,0.1)] group-hover:bg-[#dc2626]/10 group-hover:border-[#dc2626]/30 transition-all duration-300 light:bg-zinc-100 light:border-zinc-200">
-                    <IconComp size={20} className="group-hover:scale-110 transition-transform duration-300" />
-                  </div>
-                  <span className="font-display font-bold text-4xl text-zinc-800/40 group-hover:text-[#dc2626]/35 transition-colors duration-300 light:text-zinc-300 light:group-hover:text-[#dc2626]/20">
-                    0{idx + 1}
-                  </span>
-                </div>
-
-                {/* Content */}
-                <h3 className="text-xl font-display font-bold text-white light:text-zinc-900 mb-4">
-                  {step.title}
-                </h3>
-                <p className="text-sm text-zinc-400 light:text-zinc-600 leading-relaxed mb-6">
-                  {step.desc}
-                </p>
-              </div>
-
-              {/* Deliverables tags */}
-              <div className="border-t border-zinc-900/60 pt-4 flex flex-wrap gap-2 light:border-zinc-200">
-                {step.deliverables.map((del, dIdx) => (
-                  <span
-                    key={dIdx}
-                    className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-zinc-900/80 border border-zinc-800 text-zinc-500 light:bg-zinc-100 light:border-zinc-200 light:text-zinc-650"
-                  >
-                    {del}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
-          );
-        })}
+        {steps.map((step, idx) => (
+          <ProcessCard key={idx} step={step} index={idx} />
+        ))}
       </div>
     </section>
   );

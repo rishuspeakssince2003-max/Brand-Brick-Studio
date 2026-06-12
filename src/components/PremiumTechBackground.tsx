@@ -130,7 +130,7 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
     }
 
     // Grid details
-    const gridSize = 72; // Spacing of grid cells
+    const gridSize = 100; // Spacing of grid cells
     const spotlightRadius = 300;
 
     let animationFrameId: number;
@@ -140,7 +140,7 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
       const isLight = document.documentElement.classList.contains("light");
 
       if (!activeRef.current) {
-        ctx.fillStyle = isLight ? "#fafafa" : "#040404";
+        ctx.fillStyle = isLight ? "#ffffff" : "#040404";
         ctx.fillRect(0, 0, width, height);
         animationFrameId = requestAnimationFrame(render);
         return;
@@ -153,7 +153,7 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
       mouse.y += (targetMouse.y - mouse.y) * 0.08;
 
       // 1. Draw base deep background
-      ctx.fillStyle = isLight ? "#fafafa" : "#040404";
+      ctx.fillStyle = isLight ? "#ffffff" : "#040404";
       ctx.fillRect(0, 0, width, height);
 
       // 2. Draw subtle radial background vignette
@@ -166,9 +166,9 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
         Math.max(width, height) * 0.8
       );
       if (isLight) {
-        centerGlow.addColorStop(0, "rgba(220, 38, 38, 0.03)");
-        centerGlow.addColorStop(0.5, "rgba(244, 244, 245, 0.9)");
-        centerGlow.addColorStop(1, "rgba(250, 250, 250, 1)");
+        centerGlow.addColorStop(0, "rgba(255, 230, 230, 0.3)");
+        centerGlow.addColorStop(0.5, "rgba(255, 255, 255, 0.9)");
+        centerGlow.addColorStop(1, "rgba(255, 255, 255, 1)");
       } else {
         centerGlow.addColorStop(0, "rgba(24, 4, 4, 1)");
         centerGlow.addColorStop(0.5, "rgba(8, 2, 2, 1)");
@@ -187,7 +187,7 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
           Math.sin(time * wave.speed + wave.phase) * wave.amplitude;
         ctx.moveTo(0, startY);
 
-        const step = isMobileDevice ? 45 : 15;
+        const step = isMobileDevice ? 45 : 35;
         // Plot points along the screen width
         for (let x = 0; x <= width; x += step) {
           const currentY =
@@ -207,8 +207,8 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
         const grad = ctx.createLinearGradient(0, wave.y - wave.amplitude, 0, height);
         grad.addColorStop(0, wave.color);
         if (isLight) {
-          grad.addColorStop(0.6, "rgba(250, 250, 250, 0.0)");
-          grad.addColorStop(1, "rgba(250, 250, 250, 0)");
+          grad.addColorStop(0.6, "rgba(255, 255, 255, 0.0)");
+          grad.addColorStop(1, "rgba(255, 255, 255, 0)");
         } else {
           grad.addColorStop(0.6, "rgba(10, 2, 2, 0.0)");
           grad.addColorStop(1, "rgba(4, 4, 4, 0)");
@@ -326,31 +326,12 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
         if (p.x < -10) p.x = width + 10;
         if (p.x > width + 10) p.x = -10;
 
-        // Draw ember
-        if (isMobileDevice) {
-          // Hardware-accelerated simple circles on mobile to avoid radial gradients
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.radius * 2, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(220, 38, 38, ${p.alpha * (isLight ? 0.85 : 0.75)})`;
-          ctx.fill();
-        } else {
-          const glowGrad = ctx.createRadialGradient(
-            p.x,
-            p.y,
-            0,
-            p.x,
-            p.y,
-            p.radius * 3
-          );
-          glowGrad.addColorStop(0, `rgba(220, 38, 38, ${p.alpha * (isLight ? 0.9 : 1.0)})`);
-          glowGrad.addColorStop(0.3, `rgba(220, 38, 38, ${p.alpha * 0.4})`);
-          glowGrad.addColorStop(1, "rgba(220, 38, 38, 0)");
-
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.radius * 3, 0, Math.PI * 2);
-          ctx.fillStyle = glowGrad;
-          ctx.fill();
-        }
+        // Draw ember - optimized to use simple arc fills to avoid expensive radial gradient allocations
+        ctx.beginPath();
+        const drawRadius = isMobileDevice ? p.radius * 2 : p.radius * 2.5;
+        ctx.arc(p.x, p.y, drawRadius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(220, 38, 38, ${p.alpha * (isLight ? 0.75 : 0.65)})`;
+        ctx.fill();
       });
 
       animationFrameId = requestAnimationFrame(render);
@@ -369,7 +350,7 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 w-full h-full z-[-50] pointer-events-none overflow-hidden select-none bg-[#040404] light:bg-[#fafafa]"
+      className="fixed inset-0 w-full h-full z-[-50] pointer-events-none overflow-hidden select-none bg-[#040404] light:bg-[#ffffff]"
       style={{ transform: "translateZ(0)" }}
     >
       {/* Dynamic Canvas */}
