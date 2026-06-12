@@ -216,7 +216,7 @@ const ServiceBentoCard: React.FC<{
           document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
         }
       }}
-      className="group rounded-[2.25rem] border border-zinc-800/30 light:border-zinc-200/50 bg-[#1c1c1e]/40 light:bg-white/60 backdrop-blur-xl p-6 sm:p-8 flex flex-col justify-between hover:bg-[#1c1c1e]/60 light:hover:bg-white/80 hover:shadow-[0_30px_70px_rgba(0,0,0,0.45)] light:hover:shadow-[0_30px_70px_rgba(0,0,0,0.06)] transition-all duration-500 relative overflow-hidden min-h-[300px] cursor-pointer"
+      className="group rounded-[2.25rem] border border-zinc-800/30 light:border-zinc-200 bg-[#1c1c1e]/40 light:bg-white backdrop-blur-xl p-6 sm:p-8 flex flex-col justify-between hover:bg-[#1c1c1e]/60 light:hover:bg-zinc-50/50 hover:shadow-[0_30px_70px_rgba(0,0,0,0.45)] light:hover:shadow-[0_20px_50px_rgba(0,0,0,0.04)] transition-all duration-500 relative overflow-hidden min-h-[300px] cursor-pointer"
     >
       {/* Interactive Cursor Spotlight */}
       <motion.div
@@ -237,14 +237,14 @@ const ServiceBentoCard: React.FC<{
       <div className="relative z-10 h-full flex flex-col justify-between flex-grow">
         {/* Top row: Icon + Index */}
         <div className="flex items-start justify-between">
-          <div className="relative h-11 w-11 rounded-2xl bg-zinc-900 light:bg-zinc-50 border border-zinc-800/80 light:border-zinc-200/60 flex items-center justify-center
+          <div className="relative h-11 w-11 rounded-2xl bg-zinc-900 light:bg-zinc-50 border border-zinc-800/80 light:border-zinc-200 flex items-center justify-center
             group-hover:bg-zinc-800/40 light:group-hover:bg-zinc-100 group-hover:scale-105 transition-all duration-300">
-            <div className="text-zinc-450 light:text-zinc-500 group-hover:text-[#dc2626] transition-colors duration-300 stroke-current">
+            <div className="text-zinc-455 light:text-zinc-500 group-hover:text-[#dc2626] transition-colors duration-300 stroke-current">
               {svgIcons[service.icon]}
             </div>
           </div>
 
-          <span className="text-[11px] font-mono font-medium text-zinc-500 light:text-zinc-450 tracking-wider mt-1">
+          <span className="text-[11px] font-mono font-medium text-zinc-500 light:text-zinc-400 tracking-wider mt-1">
             {num}
           </span>
         </div>
@@ -255,7 +255,7 @@ const ServiceBentoCard: React.FC<{
             <h4 className="text-lg md:text-xl font-display font-semibold text-white light:text-zinc-900 mb-2.5 leading-tight group-hover:text-[#dc2626] transition-all duration-300">
               {service.title}
             </h4>
-            <p className="text-zinc-450 light:text-zinc-500 text-xs sm:text-sm leading-relaxed mb-4 transition-colors duration-300">
+            <p className="text-zinc-450 light:text-zinc-600 text-xs sm:text-sm leading-relaxed mb-4 transition-colors duration-300">
               {service.desc}
             </p>
           </div>
@@ -267,7 +267,7 @@ const ServiceBentoCard: React.FC<{
                 {service.bullets.map((bullet, bIdx) => (
                   <span
                     key={bIdx}
-                    className="px-2.5 py-0.5 rounded-full border border-zinc-800/60 light:border-zinc-200/50 bg-zinc-900/30 light:bg-zinc-50/50 text-zinc-400 light:text-zinc-500 text-[9px] font-medium group-hover:border-zinc-750 light:group-hover:border-zinc-300 group-hover:bg-zinc-900/50 light:group-hover:bg-zinc-100/50 group-hover:text-white light:group-hover:text-zinc-800 transition-all duration-300"
+                    className="px-2.5 py-0.5 rounded-full border border-zinc-800/60 light:border-zinc-200 bg-zinc-900/30 light:bg-zinc-50 text-zinc-400 light:text-zinc-650 text-[9px] font-medium group-hover:border-zinc-750 light:group-hover:border-zinc-300 group-hover:bg-zinc-900/50 light:group-hover:bg-zinc-100/50 group-hover:text-white light:group-hover:text-zinc-900 transition-all duration-300"
                   >
                     {bullet}
                   </span>
@@ -275,7 +275,7 @@ const ServiceBentoCard: React.FC<{
               </div>
             )}
             {/* Minimal Circular Action Arrow Button */}
-            <div className="w-8 h-8 rounded-full border border-zinc-800/60 light:border-zinc-200/60 bg-zinc-900/30 light:bg-zinc-50/50 text-zinc-450 light:text-zinc-700 flex items-center justify-center shrink-0 group-hover:bg-[#dc2626] group-hover:border-[#dc2626] group-hover:text-white transition-all duration-300">
+            <div className="w-8 h-8 rounded-full border border-zinc-800/60 light:border-zinc-200 bg-zinc-900/30 light:bg-zinc-50 text-zinc-450 light:text-zinc-600 flex items-center justify-center shrink-0 group-hover:bg-[#dc2626] group-hover:border-[#dc2626] group-hover:text-white transition-all duration-300">
               <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform duration-300" />
             </div>
           </div>

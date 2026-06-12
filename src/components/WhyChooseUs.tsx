@@ -76,7 +76,7 @@ const PillarCard: React.FC<{
       onMouseMove={handleMouseMove}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.8, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
-      className="group relative p-8 md:p-10 rounded-[2.5rem] bg-zinc-950/40 border border-zinc-850 backdrop-blur-md overflow-hidden hover:bg-zinc-950/60 transition-colors duration-500 cursor-pointer light:bg-white/50 light:border-zinc-200 light:hover:bg-zinc-100/50"
+      className="group relative p-8 md:p-10 rounded-[2.5rem] bg-zinc-950/40 border border-zinc-855 backdrop-blur-md overflow-hidden hover:bg-zinc-950/60 transition-colors duration-500 cursor-pointer light:bg-white light:border-zinc-200 light:hover:bg-zinc-50/50"
     >
       {/* Interactive Cursor Spotlight */}
       <motion.div
