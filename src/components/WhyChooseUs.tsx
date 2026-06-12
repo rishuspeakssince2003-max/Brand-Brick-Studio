@@ -125,7 +125,7 @@ export function WhyChooseUs() {
   return (
     <section className="py-16 md:py-24 px-4 md:px-6 max-w-7xl mx-auto scroll-mt-24 md:scroll-mt-28" id="why-us">
       {/* Header with Strategic Leverage 3D Render Asset */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-center mb-16 md:mb-24">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center mb-16 md:mb-24">
         <motion.div
           initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -174,37 +174,6 @@ export function WhyChooseUs() {
         >
           "We don't just create designs. We create brand experiences that help businesses grow." We align strategy, creativity, and business focus under one unified execution team.
         </motion.p>
-
-        {/* Premium Volumetric 3D Abstract Visualization Box */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          whileHover={{ y: -5, scale: 1.02 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, delay: 0.2, type: "spring", stiffness: 200 }}
-          className="lg:col-span-1 relative aspect-video rounded-3xl overflow-hidden border border-zinc-850 bg-zinc-950/40 backdrop-blur-md shadow-[0_0_50px_rgba(220,38,38,0.02)] group/leverage cursor-pointer light:border-zinc-200 light:bg-white/50"
-        >
-          {/* Ambient red pulsing glow ring */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#dc2626]/20 via-transparent to-transparent opacity-0 group-hover/leverage:opacity-100 transition-opacity duration-500 rounded-3xl pointer-events-none -z-10" />
-          
-          <img 
-            src="/strategic_leverage.png" 
-            alt="Strategic Leverage 3D visualization" 
-            className="w-full h-full object-cover opacity-90 group-hover/leverage:opacity-100 group-hover/leverage:scale-105 transition-all duration-700 ease-[0.16, 1, 0.3, 1]" 
-          />
-          
-          {/* Dark gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/70 via-transparent to-transparent pointer-events-none" />
-          
-          <div className="absolute bottom-4 left-5 right-5 flex items-center justify-between z-10">
-            <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest group-hover/leverage:text-white transition-colors duration-300">
-              Interactive Scaling System
-            </span>
-            <span className="text-[10px] font-mono text-[#dc2626] font-bold uppercase tracking-wider bg-[#dc2626]/10 px-2 py-0.5 rounded border border-[#dc2626]/20">
-              Leverage Node
-            </span>
-          </div>
-        </motion.div>
       </div>
 
       {/* Pillars Grid */}
