@@ -367,7 +367,7 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
       />
 
       {/* Vignette styling for a deep, cinematic contrast */}
-      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_30%,rgba(0,0,0,0.85)_95%)] light:bg-[radial-gradient(circle_at_center,transparent_40%,rgba(255,255,255,0.75)_95%)]" />
+      <div className="absolute inset-0 pointer-events-none vignette-overlay" />
     </div>
   );
 }

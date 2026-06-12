@@ -194,7 +194,7 @@ export function FounderStory() {
                 />
                 <Quote size={36} className="text-[#dc2626] shrink-0 opacity-40 mt-1 relative z-10 group-hover:scale-110 transition-transform duration-300" />
                 <div className="flex flex-col gap-2 relative z-10">
-                  <p className="text-white light:text-zinc-900 font-medium italic text-lg leading-relaxed group-hover:text-zinc-100 transition-colors duration-300">
+                  <p className="text-white light:text-zinc-900 font-medium italic text-lg leading-relaxed group-hover:text-zinc-100 light:group-hover:text-zinc-950 transition-colors duration-300">
                     "I started Brand Brick Studio because I saw tremendous opportunities for businesses to grow through strong branding, powerful websites, and a strategic digital presence."
                   </p>
                   <span className="text-xs font-mono font-bold text-zinc-500 uppercase tracking-widest mt-2 group-hover:text-[#dc2626] transition-colors duration-300">

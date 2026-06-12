@@ -82,7 +82,7 @@ const ProcessCard: React.FC<{
       onMouseMove={handleMouseMove}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.8, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
-      className="group relative flex flex-col justify-between p-8 rounded-[2.5rem] bg-zinc-950/40 border border-zinc-850 backdrop-blur-md overflow-hidden hover:bg-zinc-950/60 transition-colors duration-500 shadow-lg min-h-[340px] cursor-pointer light:bg-white/50 light:border-zinc-200"
+      className="group relative flex flex-col justify-between p-8 rounded-[2.5rem] bg-zinc-950/40 border border-zinc-850 backdrop-blur-md overflow-hidden hover:bg-zinc-950/60 transition-colors duration-500 shadow-lg min-h-[340px] cursor-pointer light:bg-white/50 light:border-zinc-200 light:hover:bg-zinc-100/50"
     >
       {/* Interactive Cursor Spotlight */}
       <motion.div
