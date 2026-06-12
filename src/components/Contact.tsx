@@ -1,68 +1,75 @@
 import React, { useState } from "react";
 import { motion } from "motion/react";
 import { collection, addDoc, serverTimestamp, getDoc, doc } from "firebase/firestore";
-import { db } from "../lib/firebase";
 import { ArrowRight, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
+import { db } from "../lib/firebase";
 import { countries } from "../lib/countries";
+import { useDeviceProfile } from "../lib/useDeviceProfile";
 
 export function Contact() {
+  const { lowPerformanceMode } = useDeviceProfile();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     country: "",
     service: "",
-    message: ""
+    message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+  ) => {
     const { name, value } = e.target;
-    
+
     if (name === "name") {
-      // Allow only letters, spaces, hyphens, and apostrophes for name input
-      const cleanValue = value.replace(/[^a-zA-Z\s\-\']/g, "");
-      setFormData(prev => ({ ...prev, [name]: cleanValue }));
+      const cleanValue = value.replace(/[^a-zA-Z\s\-']/g, "");
+      setFormData((prev) => ({ ...prev, [name]: cleanValue }));
       return;
     }
 
     if (name === "phone") {
-      // Allow only digits, space, and a leading plus sign for phone input
-      let cleanValue = value.replace(/[^\d\s\+]/g, "");
+      let cleanValue = value.replace(/[^\d\s+]/g, "");
       if (cleanValue.includes("+")) {
         const startsWithPlus = cleanValue.startsWith("+");
         cleanValue = (startsWithPlus ? "+" : "") + cleanValue.replace(/\+/g, "");
       }
-      setFormData(prev => ({ ...prev, [name]: cleanValue }));
+      setFormData((prev) => ({ ...prev, [name]: cleanValue }));
       return;
     }
 
     if (name === "country") {
-      const selectedCountry = countries.find(c => c.name === value);
+      const selectedCountry = countries.find((country) => country.name === value);
       if (selectedCountry) {
-        setFormData(prev => ({ 
-          ...prev, 
+        setFormData((prev) => ({
+          ...prev,
           country: value,
-          phone: selectedCountry.dialCode + " " 
+          phone: `${selectedCountry.dialCode} `,
         }));
         return;
       }
     }
-    
-    setFormData(prev => ({ ...prev, [name]: value }));
+
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handlePhoneKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const allowedKeys = [
-      "Backspace", "Delete", "Tab", "Escape", "Enter",
-      "ArrowLeft", "ArrowRight", "Home", "End"
+      "Backspace",
+      "Delete",
+      "Tab",
+      "Escape",
+      "Enter",
+      "ArrowLeft",
+      "ArrowRight",
+      "Home",
+      "End",
     ];
-    
-    if (allowedKeys.includes(e.key)) {
-      return;
-    }
+
+    if (allowedKeys.includes(e.key)) return;
 
     if ((e.ctrlKey || e.metaKey) && ["a", "c", "v", "x"].includes(e.key.toLowerCase())) {
       return;
@@ -88,13 +95,18 @@ export function Contact() {
 
   const handleNameKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const allowedKeys = [
-      "Backspace", "Delete", "Tab", "Escape", "Enter",
-      "ArrowLeft", "ArrowRight", "Home", "End"
+      "Backspace",
+      "Delete",
+      "Tab",
+      "Escape",
+      "Enter",
+      "ArrowLeft",
+      "ArrowRight",
+      "Home",
+      "End",
     ];
-    
-    if (allowedKeys.includes(e.key)) {
-      return;
-    }
+
+    if (allowedKeys.includes(e.key)) return;
 
     if ((e.ctrlKey || e.metaKey) && ["a", "c", "v", "x"].includes(e.key.toLowerCase())) {
       return;
@@ -119,14 +131,12 @@ export function Contact() {
     const trimmedCountry = formData.country;
     const trimmedMessage = formData.message.trim();
 
-    // 1. Name validation
     if (trimmedName.length < 2) {
       setStatus("error");
       setErrorMessage("Please enter a valid Full Name (at least 2 letters).");
       return;
     }
 
-    // 2. Email validation (strict regex pattern)
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(trimmedEmail)) {
       setStatus("error");
@@ -134,7 +144,6 @@ export function Contact() {
       return;
     }
 
-    // 3. Phone validation
     const digitsOnly = trimmedPhone.replace(/\D/g, "");
     if (digitsOnly.length < 9 || digitsOnly.length > 15) {
       setStatus("error");
@@ -142,14 +151,12 @@ export function Contact() {
       return;
     }
 
-    // 4. Country validation
     if (!trimmedCountry) {
       setStatus("error");
       setErrorMessage("Please select your Country.");
       return;
     }
 
-    // 5. Message validation
     if (trimmedMessage.length < 10) {
       setStatus("error");
       setErrorMessage("Please write a message with at least 10 characters.");
@@ -157,9 +164,8 @@ export function Contact() {
     }
 
     setIsSubmitting(true);
-    
+
     try {
-      // 1. Save to Firebase Firestore database
       await addDoc(collection(db, "contact_inquiries"), {
         name: trimmedName,
         email: trimmedEmail,
@@ -167,11 +173,11 @@ export function Contact() {
         country: trimmedCountry,
         service: formData.service || "General Inquiry",
         message: trimmedMessage,
-        createdAt: serverTimestamp()
+        createdAt: serverTimestamp(),
       });
-      
-      // 2. Direct Sync to user's Google Sheet (via Google Form submission)
-      const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSckKk0DgA_zT1eerWoDg8dBPrmGHTcQeE8z8j06TuEcfOCIbg/formResponse";
+
+      const formUrl =
+        "https://docs.google.com/forms/d/e/1FAIpQLSckKk0DgA_zT1eerWoDg8dBPrmGHTcQeE8z8j06TuEcfOCIbg/formResponse";
       const formBody = new URLSearchParams();
       formBody.append("entry.1050828459", trimmedName);
       formBody.append("entry.829173877", trimmedEmail);
@@ -185,15 +191,14 @@ export function Contact() {
           method: "POST",
           mode: "no-cors",
           headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
+            "Content-Type": "application/x-www-form-urlencoded",
           },
-          body: formBody.toString()
+          body: formBody.toString(),
         });
       } catch (sheetsErr) {
         console.error("Failed to sync to Google Sheets:", sheetsErr);
       }
 
-      // 3. Send email notifications to configured recipients in Firestore
       try {
         const configRef = doc(db, "contact_inquiries", "_config_notifications");
         const configSnap = await getDoc(configRef);
@@ -206,23 +211,24 @@ export function Contact() {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",
-                    "Accept": "application/json"
+                    Accept: "application/json",
                   },
                   body: JSON.stringify({
-                    _subject: `🔥 New Lead Submission - ${trimmedName}`,
+                    _subject: `New Lead Submission - ${trimmedName}`,
                     Name: trimmedName,
                     Email: trimmedEmail,
                     Phone: trimmedPhone,
                     Country: trimmedCountry,
                     "Requested Service": formData.service || "General Inquiry",
                     Message: trimmedMessage,
-                    _template: "table"
-                  })
+                    _template: "table",
+                  }),
                 });
               } catch (mailErr) {
                 console.error(`Failed to trigger email notification for ${email}:`, mailErr);
               }
             });
+
             await Promise.all(emailPromises);
           }
         }
@@ -230,12 +236,11 @@ export function Contact() {
         console.error("Failed to load email configurations:", emailConfigErr);
       }
 
-      // 4. Send branded confirmation email to the enquiry submitter
       try {
         await fetch("/api/send-email", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             name: trimmedName,
@@ -243,16 +248,15 @@ export function Contact() {
             phone: trimmedPhone,
             country: trimmedCountry,
             service: formData.service || "General Inquiry",
-            message: trimmedMessage
-          })
+            message: trimmedMessage,
+          }),
         });
       } catch (confirmEmailErr) {
         console.error("Failed to send confirmation email:", confirmEmailErr);
       }
-      
+
       setStatus("success");
       setFormData({ name: "", email: "", phone: "", country: "", service: "", message: "" });
-      
       setTimeout(() => setStatus("idle"), 5000);
     } catch (error: any) {
       console.error("Error adding document: ", error);
@@ -263,17 +267,16 @@ export function Contact() {
     }
   };
 
-  const inputClasses = "w-full bg-transparent border-b border-zinc-800 text-white md:text-xl lg:text-2xl px-0 py-4 focus:outline-none focus:border-[#dc2626] transition-colors duration-500 placeholder:text-zinc-800 font-display shadow-none rounded-none";
-  const labelClasses = "text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-500 group-focus-within:text-[#dc2626] transition-colors duration-500";
+  const inputClasses =
+    "w-full bg-transparent border-b border-zinc-800 text-white text-base md:text-xl lg:text-2xl px-0 py-3 md:py-4 focus:outline-none focus:border-[#dc2626] transition-colors duration-500 placeholder:text-zinc-700 font-display shadow-none rounded-none";
+  const labelClasses =
+    "text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-500 group-focus-within:text-[#dc2626] transition-colors duration-500";
 
   return (
     <section className="py-24 md:py-40 px-4 md:px-6 max-w-7xl mx-auto relative overflow-hidden" id="contact">
-      {/* Premium Minimalist Layout */}
       <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 relative z-10">
-        
-        {/* Left: Huge Typography Header */}
         <div className="lg:w-1/2 flex flex-col justify-center">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -282,18 +285,18 @@ export function Contact() {
             <span className="inline-block px-4 py-1.5 rounded-full border border-zinc-800 bg-zinc-900/50 text-zinc-400 text-xs font-bold tracking-[0.2em] uppercase mb-8 backdrop-blur-md">
               Exclusive Access
             </span>
-            <h2 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold text-white tracking-tighter leading-[0.9] mb-8">
+            <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-display font-bold text-white tracking-tighter leading-[0.9] mb-6 md:mb-8">
               Let's build
               <br />
               <span className="text-[#dc2626] italic">an empire.</span>
             </h2>
-            <p className="text-xl md:text-2xl text-zinc-400 font-light max-w-md leading-relaxed">
-              We partner with brands ready to dominate their market. Submit your details below to initiate contact.
+            <p className="text-lg md:text-2xl text-zinc-400 font-light max-w-md leading-relaxed">
+              We partner with brands ready to dominate their market. Submit your details below to
+              initiate contact.
             </p>
           </motion.div>
         </div>
 
-        {/* Right: VIP Consultation Terminal */}
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -301,68 +304,136 @@ export function Contact() {
           transition={{ duration: 1, delay: 0.2 }}
           className="lg:w-1/2 relative"
         >
-          {/* Glassmorphic Panel */}
-          <motion.div 
-            className="bg-[#030303]/60 backdrop-blur-3xl border-solid border-[1px] p-8 md:p-12 lg:p-16 rounded-[2.5rem] relative overflow-hidden"
+          <motion.div
+            className="bg-[#030303]/60 backdrop-blur-2xl md:backdrop-blur-3xl border-solid border-[1px] p-5 sm:p-8 md:p-12 lg:p-16 rounded-[2rem] md:rounded-[2.5rem] relative overflow-hidden"
             initial={{ borderColor: "rgba(220,38,38,0.1)", boxShadow: "0 0 60px -15px rgba(220,38,38,0.15)" }}
-            animate={{ 
-              boxShadow: [
-                "0 0 60px -15px rgba(220,38,38,0.15), 0 0 10px 0px rgba(220,38,38,0.1)", 
-                "0 0 60px -15px rgba(220,38,38,0.15), 0 0 20px 2px rgba(220,38,38,0.25)", 
-                "0 0 60px -15px rgba(220,38,38,0.15), 0 0 10px 0px rgba(220,38,38,0.1)"
-              ],
-              borderColor: ["rgba(220,38,38,0.1)", "rgba(220,38,38,0.3)", "rgba(220,38,38,0.1)"]
-            }}
-            transition={{ 
-              boxShadow: { duration: 3, repeat: Infinity, ease: "easeInOut" },
-              borderColor: { duration: 3, repeat: Infinity, ease: "easeInOut" }
-            }}
+            animate={
+              lowPerformanceMode
+                ? undefined
+                : {
+                    boxShadow: [
+                      "0 0 60px -15px rgba(220,38,38,0.15), 0 0 10px 0px rgba(220,38,38,0.1)",
+                      "0 0 60px -15px rgba(220,38,38,0.15), 0 0 20px 2px rgba(220,38,38,0.25)",
+                      "0 0 60px -15px rgba(220,38,38,0.15), 0 0 10px 0px rgba(220,38,38,0.1)",
+                    ],
+                    borderColor: [
+                      "rgba(220,38,38,0.1)",
+                      "rgba(220,38,38,0.3)",
+                      "rgba(220,38,38,0.1)",
+                    ],
+                  }
+            }
+            transition={
+              lowPerformanceMode
+                ? undefined
+                : {
+                    boxShadow: { duration: 3, repeat: Infinity, ease: "easeInOut" },
+                    borderColor: { duration: 3, repeat: Infinity, ease: "easeInOut" },
+                  }
+            }
           >
-            
-            {/* Subtle red ambient glow inside the terminal */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-[#dc2626]/10 blur-[100px] pointer-events-none" />
 
-            <form onSubmit={handleSubmit} className="space-y-10 relative z-10">
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <form onSubmit={handleSubmit} className="space-y-8 md:space-y-10 relative z-10">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
                 <div className="group space-y-2">
-                  <label htmlFor="name" className={labelClasses}>Full Name</label>
-                  <input type="text" id="name" name="name" required value={formData.name} onChange={handleChange} onKeyDown={handleNameKeyDown} className={inputClasses} placeholder="Rahul Sharma" />
+                  <label htmlFor="name" className={labelClasses}>
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    required
+                    value={formData.name}
+                    onChange={handleChange}
+                    onKeyDown={handleNameKeyDown}
+                    className={inputClasses}
+                    placeholder="Rahul Sharma"
+                  />
                 </div>
 
                 <div className="group space-y-2">
-                  <label htmlFor="email" className={labelClasses}>Email Address</label>
-                  <input type="email" id="email" name="email" required value={formData.email} onChange={handleChange} className={inputClasses} placeholder="rahul@example.com" />
+                  <label htmlFor="email" className={labelClasses}>
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
+                    className={inputClasses}
+                    placeholder="rahul@example.com"
+                  />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
                 <div className="group space-y-2">
-                  <label htmlFor="phone" className={labelClasses}>Phone Number</label>
-                  <input type="tel" id="phone" name="phone" required value={formData.phone} onChange={handleChange} onKeyDown={handlePhoneKeyDown} className={inputClasses} placeholder="+91 98765 43210" />
+                  <label htmlFor="phone" className={labelClasses}>
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    required
+                    value={formData.phone}
+                    onChange={handleChange}
+                    onKeyDown={handlePhoneKeyDown}
+                    className={inputClasses}
+                    placeholder="+91 98765 43210"
+                  />
                 </div>
-                
+
                 <div className="group space-y-2 relative">
-                  <label htmlFor="country" className={labelClasses}>Country</label>
-                  <select id="country" name="country" required value={formData.country} onChange={handleChange} className={`${inputClasses} appearance-none cursor-pointer relative z-10`}>
-                    <option value="" disabled className="bg-[#050505] text-zinc-500">Select country</option>
-                    {countries.map(c => (
-                      <option key={c.name} value={c.name} className="bg-[#050505] text-white">
-                        {c.name}
+                  <label htmlFor="country" className={labelClasses}>
+                    Country
+                  </label>
+                  <select
+                    id="country"
+                    name="country"
+                    required
+                    value={formData.country}
+                    onChange={handleChange}
+                    className={`${inputClasses} appearance-none cursor-pointer relative z-10`}
+                  >
+                    <option value="" disabled className="bg-[#050505] text-zinc-500">
+                      Select country
+                    </option>
+                    {countries.map((country) => (
+                      <option key={country.name} value={country.name} className="bg-[#050505] text-white">
+                        {country.name}
                       </option>
                     ))}
                   </select>
-                  <div className="absolute right-0 bottom-4 text-zinc-600 pointer-events-none">▼</div>
+                  <div className="absolute right-0 bottom-4 text-zinc-600 pointer-events-none">
+                    <svg viewBox="0 0 20 20" className="h-4 w-4 fill-current">
+                      <path d="M5 7.5L10 12.5L15 7.5H5Z" />
+                    </svg>
+                  </div>
                 </div>
               </div>
 
               <div className="group space-y-2">
-                <label htmlFor="message" className={labelClasses}>Message</label>
-                <textarea id="message" name="message" required rows={2} value={formData.message} onChange={handleChange} className={`${inputClasses} resize-none`} placeholder="Tell us how we can help your business grow..."></textarea>
+                <label htmlFor="message" className={labelClasses}>
+                  Message
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  required
+                  rows={3}
+                  value={formData.message}
+                  onChange={handleChange}
+                  className={`${inputClasses} resize-none min-h-28`}
+                  placeholder="Tell us how we can help your business grow..."
+                />
               </div>
 
-              <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-6">
-                
+              <div className="pt-4 md:pt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 md:gap-6">
                 <button
                   type="submit"
                   disabled={isSubmitting}
@@ -371,21 +442,34 @@ export function Contact() {
                   <div className="absolute inset-0 bg-gradient-to-r from-[#dc2626] to-[#dc2626] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-out" />
                   <span className="relative z-10 group-hover:text-white transition-colors duration-500 flex items-center gap-3">
                     {isSubmitting ? (
-                      <><Loader2 className="w-5 h-5 animate-spin" /> Transmitting...</>
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" /> Transmitting...
+                      </>
                     ) : (
-                      <>Initiate Growth <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" /></>
+                      <>
+                        Initiate Growth{" "}
+                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                      </>
                     )}
                   </span>
                 </button>
 
                 {status === "success" && (
-                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-2 text-green-400 text-sm font-medium">
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="flex items-center gap-2 text-green-400 text-sm font-medium"
+                  >
                     <CheckCircle2 className="w-5 h-5" /> Request Confirmed.
                   </motion.div>
                 )}
 
                 {status === "error" && (
-                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-2 text-[#dc2626] text-sm font-medium">
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="flex items-center gap-2 text-[#dc2626] text-sm font-medium"
+                  >
                     <AlertCircle className="w-5 h-5" /> {errorMessage}
                   </motion.div>
                 )}

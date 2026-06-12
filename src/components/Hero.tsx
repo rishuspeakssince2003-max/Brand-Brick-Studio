@@ -10,10 +10,8 @@ import {
   AnimatePresence,
 } from "motion/react";
 import { LiquidButton } from "./ui/LiquidButton";
+import { useDeviceProfile } from "../lib/useDeviceProfile";
 
-/* ══════════════════════════════════════════════════════════
-   ANIMATED COUNTER
-   ══════════════════════════════════════════════════════════ */
 function useCounter(target: number, dur: number, go: boolean) {
   const mv = useMotionValue(0);
   const rd = useTransform(mv, (v) => Math.round(v));
@@ -22,14 +20,14 @@ function useCounter(target: number, dur: number, go: boolean) {
     if (!go) return;
     const c = animate(mv, target, { duration: dur, ease: [0.16, 1, 0.3, 1] });
     const u = rd.on("change", setD);
-    return () => { c.stop(); u(); };
+    return () => {
+      c.stop();
+      u();
+    };
   }, [go, target, dur, mv, rd]);
   return d;
 }
 
-/* ══════════════════════════════════════════════════════════
-   ROTATING WORD
-   ══════════════════════════════════════════════════════════ */
 const rotatingWords = ["ignore.", "forget.", "outgrow.", "replace."];
 
 function RotatingWord() {
@@ -57,9 +55,6 @@ function RotatingWord() {
   );
 }
 
-/* ══════════════════════════════════════════════════════════
-   FLOATING SERVICE DECK
-   ══════════════════════════════════════════════════════════ */
 const servicesList = [
   { icon: Layout, title: "UI/UX Design" },
   { icon: Code2, title: "Web Development" },
@@ -80,7 +75,7 @@ function FloatingServiceDeck() {
   }, [isHovered]);
 
   return (
-    <div 
+    <div
       className="relative w-full h-full flex items-center justify-center cursor-pointer z-10 perspective-[1200px]"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -101,17 +96,14 @@ function FloatingServiceDeck() {
               scale: isHovered ? 1.04 : 1 - visualIdx * 0.05,
               x: isHovered ? (visualIdx - 1.5) * 42 : visualIdx * 10,
               zIndex: servicesList.length - visualIdx,
-              boxShadow: isHovered ? "0 0 40px rgba(220,38,38,0.15)" : "0 0 50px rgba(0,0,0,0.5)"
+              boxShadow: isHovered ? "0 0 40px rgba(220,38,38,0.15)" : "0 0 50px rgba(0,0,0,0.5)",
             }}
             transition={{ type: "spring", stiffness: isHovered ? 300 : 120, damping: isHovered ? 25 : 18 }}
             className="absolute w-[200px] h-[280px] sm:w-[240px] sm:h-[340px] md:w-[260px] md:h-[360px] rounded-[2rem] flex flex-col items-center justify-center gap-6 p-6 group"
-            style={{
-              transformOrigin: "bottom center",
-            }}
+            style={{ transformOrigin: "bottom center" }}
           >
-            {/* Animated Spinning Edge Glow */}
             <div className="absolute inset-0 overflow-hidden rounded-[2rem] pointer-events-none -z-20">
-              <motion.div 
+              <motion.div
                 className="absolute inset-[-50%] opacity-30 group-hover:opacity-100 transition-opacity duration-500"
                 animate={{ rotate: 360 }}
                 transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
@@ -120,21 +112,18 @@ function FloatingServiceDeck() {
                 }}
               />
             </div>
-            
-            {/* Inner Solid Layer (makes the card opaque, masking the spinning gradient in the center) */}
+
             <div className="absolute inset-[1.5px] rounded-[calc(2rem-1.5px)] bg-[#050505] border border-zinc-800/40 -z-10 transition-colors duration-500" />
-            
-            {/* Ambient inner glow that activates on hover */}
             <div className="absolute inset-[1.5px] bg-gradient-to-br from-[#dc2626]/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[calc(2rem-1.5px)] pointer-events-none -z-10" />
-            
+
             <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center relative z-10 group-hover:border-[#dc2626]/50 group-hover:bg-[#dc2626]/15 transition-all duration-300">
               <Icon className="w-8 h-8 text-zinc-400 group-hover:text-[#dc2626] transition-colors duration-300" />
             </div>
-            
+
             <h3 className="font-display font-bold text-lg md:text-xl text-white relative z-10 text-center leading-tight">
               {service.title}
             </h3>
-            
+
             <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-8 h-1 rounded-full bg-zinc-800 group-hover:bg-[#dc2626]/80 group-hover:w-12 transition-all duration-300" />
           </motion.div>
         );
@@ -143,10 +132,6 @@ function FloatingServiceDeck() {
   );
 }
 
-
-/* ══════════════════════════════════════════════════════════
-   STATS
-   ══════════════════════════════════════════════════════════ */
 const stats = [
   { value: 3, suffix: "+", label: "Years" },
   { value: 50, suffix: "+", label: "Brands" },
@@ -154,20 +139,18 @@ const stats = [
   { value: 12, suffix: "", label: "Services" },
 ];
 
-/* ══════════════════════════════════════════════════════════
-   HERO
-   ══════════════════════════════════════════════════════════ */
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true });
+  const { isMobile, lowPerformanceMode } = useDeviceProfile();
 
-  // Mouse spotlight
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
   const sx = useSpring(mx, { stiffness: 30, damping: 20 });
   const sy = useSpring(my, { stiffness: 30, damping: 20 });
 
   useEffect(() => {
+    if (lowPerformanceMode) return;
     const el = ref.current;
     if (!el) return;
     const h = (e: MouseEvent) => {
@@ -177,17 +160,10 @@ export function Hero() {
     };
     el.addEventListener("mousemove", h);
     return () => el.removeEventListener("mousemove", h);
-  }, [mx, my]);
+  }, [lowPerformanceMode, mx, my]);
 
   return (
-    <section
-      ref={ref}
-      className="relative min-h-[100dvh] flex items-center px-4 md:px-6 overflow-hidden"
-    >
-      {/* ── Backgrounds ── */}
-      {/* Background is now fully transparent to show the WebGL fluid simulation underneath */}
-
-      {/* Grid */}
+    <section ref={ref} className="relative min-h-[92svh] md:min-h-[100dvh] flex items-center px-4 md:px-6 overflow-hidden">
       <div
         className="absolute inset-0 -z-20 opacity-[0.02] pointer-events-none"
         style={{
@@ -197,30 +173,28 @@ export function Hero() {
         }}
       />
 
-      {/* Mouse spot */}
+      {!lowPerformanceMode && (
+        <motion.div
+          className="absolute w-[500px] h-[500px] rounded-full -z-10 pointer-events-none hidden md:block"
+          style={{
+            x: sx,
+            y: sy,
+            translateX: "-50%",
+            translateY: "-50%",
+            background: "radial-gradient(circle, rgba(220,38,38,0.05) 0%, transparent 60%)",
+          }}
+        />
+      )}
+
       <motion.div
-        className="absolute w-[500px] h-[500px] rounded-full -z-10 pointer-events-none hidden md:block"
-        style={{
-          x: sx, y: sy,
-          translateX: "-50%", translateY: "-50%",
-          background: "radial-gradient(circle, rgba(220,38,38,0.05) 0%, transparent 60%)",
-        }}
+        animate={lowPerformanceMode ? undefined : { scale: [1, 1.25, 1], opacity: [0.06, 0.12, 0.06] }}
+        transition={lowPerformanceMode ? undefined : { duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-[5%] left-[10%] w-[320px] h-[320px] md:w-[500px] md:h-[500px] bg-[#dc2626]/15 blur-[120px] md:blur-[160px] rounded-full pointer-events-none -z-10"
       />
 
-      {/* Ambient */}
-      <motion.div
-        animate={{ scale: [1, 1.25, 1], opacity: [0.06, 0.12, 0.06] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-[5%] left-[10%] w-[500px] h-[500px] bg-[#dc2626]/15 blur-[160px] rounded-full pointer-events-none -z-10"
-      />
-
-      {/* ── Content ── */}
-      <div className="max-w-7xl mx-auto w-full relative z-10 py-28 md:py-0">
-        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-
-          {/* LEFT — Copy */}
+      <div className="max-w-7xl mx-auto w-full relative z-10 py-24 md:py-0">
+        <div className="flex flex-col lg:flex-row items-center gap-10 md:gap-12 lg:gap-20">
           <div className="flex-1 max-w-2xl">
-            {/* Badge */}
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -238,7 +212,6 @@ export function Hero() {
               </span>
             </motion.div>
 
-            {/* Headline */}
             <motion.h1
               className="font-display font-bold tracking-tight leading-[1.0] mb-6"
               initial={{ opacity: 0, y: 30 }}
@@ -248,12 +221,11 @@ export function Hero() {
               <span className="block text-[1.9rem] sm:text-5xl md:text-[3.5rem] lg:text-[4rem] text-white mb-2">
                 We make brands
               </span>
-              <span className="block text-[1.9rem] sm:text-5xl md:text-[3.5rem] lg:text-[4rem] whitespace-nowrap">
+              <span className="block text-[1.9rem] sm:text-5xl md:text-[3.5rem] lg:text-[4rem] sm:whitespace-nowrap">
                 impossible to <RotatingWord />
               </span>
             </motion.h1>
 
-            {/* Subtext */}
             <motion.p
               className="text-zinc-500 text-base md:text-lg leading-relaxed mb-8 max-w-lg"
               initial={{ opacity: 0, y: 15 }}
@@ -264,9 +236,8 @@ export function Hero() {
               We build everything your brand needs to win.
             </motion.p>
 
-            {/* CTAs */}
             <motion.div
-              className="flex flex-col sm:flex-row gap-3 mb-12"
+              className="flex flex-col sm:flex-row gap-3 mb-10 md:mb-12"
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
@@ -285,7 +256,6 @@ export function Hero() {
               </a>
             </motion.div>
 
-            {/* Stats row */}
             <motion.div
               className="flex flex-wrap items-center gap-x-6 gap-y-4 md:gap-10 pt-6 border-t border-zinc-900/80"
               initial={{ opacity: 0 }}
@@ -305,85 +275,80 @@ export function Hero() {
                       </div>
                       <span className="text-[9px] md:text-[10px] text-zinc-600 font-bold uppercase tracking-[0.2em]">{s.label}</span>
                     </div>
-                    {i < stats.length - 1 && (
-                      <div className="w-px h-6 bg-zinc-900 hidden sm:block" />
-                    )}
+                    {i < stats.length - 1 && <div className="w-px h-6 bg-zinc-900 hidden sm:block" />}
                   </div>
                 );
               })}
             </motion.div>
           </div>
 
-          {/* RIGHT — Interactive Service Deck */}
           <div className="flex-shrink-0 relative w-[300px] h-[300px] md:w-[420px] md:h-[420px] lg:w-[500px] lg:h-[500px] hidden lg:block" style={{ perspective: "1200px" }}>
             <FloatingServiceDeck />
           </div>
         </div>
 
-        {/* Brand Logos Marquee */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.9, duration: 0.8 }}
-          className="mt-16 pt-10 border-t border-zinc-900/60"
+          className="mt-14 md:mt-16 pt-8 md:pt-10 border-t border-zinc-900/60"
         >
           <p className="text-center text-[10px] md:text-[11px] font-bold text-zinc-600 uppercase tracking-[0.25em] mb-6">
             TRUSTED BY THE NEXT GENERATION OF HIGH-GROWTH BRANDS
           </p>
-          <div className="w-full overflow-hidden relative py-4">
-            {/* Soft fade masks on left and right edges */}
-            <div className="absolute inset-y-0 left-0 w-20 md:w-32 bg-gradient-to-r from-[#040404] to-transparent z-10 pointer-events-none" />
-            <div className="absolute inset-y-0 right-0 w-20 md:w-32 bg-gradient-to-l from-[#040404] to-transparent z-10 pointer-events-none" />
-            
-            <div className="flex w-[200%] animate-marquee gap-16 md:gap-24 whitespace-nowrap">
-              {/* Set of logos */}
-              {Array(2).fill(null).map((_, i) => (
-                <div key={i} className="flex justify-around items-center min-w-full shrink-0">
-                  {/* APEX */}
-                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 hover:text-white transition-all duration-300">
-                    <svg className="w-6 h-6 text-zinc-600 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
-                      <path d="M12 2L2 22h4l6-12 6 12h4z" />
-                    </svg>
-                    <span className="font-display font-bold text-xs md:text-sm tracking-[0.2em] group-hover:text-white transition-colors duration-300">APEX.LABS</span>
+          {!isMobile ? (
+            <div className="w-full overflow-hidden relative py-4">
+              <div className="absolute inset-y-0 left-0 w-20 md:w-32 bg-gradient-to-r from-[#040404] to-transparent z-10 pointer-events-none" />
+              <div className="absolute inset-y-0 right-0 w-20 md:w-32 bg-gradient-to-l from-[#040404] to-transparent z-10 pointer-events-none" />
+
+              <div className="flex w-[200%] animate-marquee gap-16 md:gap-24 whitespace-nowrap">
+                {Array(2).fill(null).map((_, i) => (
+                  <div key={i} className="flex justify-around items-center min-w-full shrink-0">
+                    <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 hover:text-white transition-all duration-300">
+                      <svg className="w-6 h-6 text-zinc-600 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
+                        <path d="M12 2L2 22h4l6-12 6 12h4z" />
+                      </svg>
+                      <span className="font-display font-bold text-xs md:text-sm tracking-[0.2em] group-hover:text-white transition-colors duration-300">APEX.LABS</span>
+                    </div>
+                    <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 hover:text-white transition-all duration-300">
+                      <svg className="w-6 h-6 text-zinc-600 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
+                        <path d="M12 2v20M12 12l8-8M12 12l8 8M4 4h4v16H4z" />
+                      </svg>
+                      <span className="font-display font-bold text-xs md:text-sm tracking-[0.2em] group-hover:text-white transition-colors duration-300">KRONOS</span>
+                    </div>
+                    <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 hover:text-white transition-all duration-300">
+                      <svg className="w-6 h-6 text-zinc-600 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
+                        <circle cx="9" cy="12" r="5" />
+                        <circle cx="15" cy="12" r="5" />
+                      </svg>
+                      <span className="font-display font-bold text-xs md:text-sm tracking-[0.2em] group-hover:text-white transition-colors duration-300">NEXUS.DIGITAL</span>
+                    </div>
+                    <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 hover:text-white transition-all duration-300">
+                      <svg className="w-6 h-6 text-zinc-600 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
+                        <path d="M4 12a8 8 0 018-8v8H4zM20 12a8 8 0 01-8 8v-8h8z" />
+                      </svg>
+                      <span className="font-display font-bold text-xs md:text-sm tracking-[0.2em] group-hover:text-white transition-colors duration-300">VORTEX.MEDIA</span>
+                    </div>
+                    <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 hover:text-white transition-all duration-300">
+                      <svg className="w-6 h-6 text-zinc-600 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
+                        <path d="M12 2l2 4 4 1-3 3 1 5-4-2-4 2 1-5-3-3 4-1z" />
+                        <circle cx="12" cy="12" r="9" />
+                      </svg>
+                      <span className="font-display font-bold text-xs md:text-sm tracking-[0.2em] group-hover:text-white transition-colors duration-300">ORION</span>
+                    </div>
                   </div>
-                  
-                  {/* KRONOS */}
-                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 hover:text-white transition-all duration-300">
-                    <svg className="w-6 h-6 text-zinc-600 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
-                      <path d="M12 2v20M12 12l8-8M12 12l8 8M4 4h4v16H4z" />
-                    </svg>
-                    <span className="font-display font-bold text-xs md:text-sm tracking-[0.2em] group-hover:text-white transition-colors duration-300">KRONOS</span>
-                  </div>
-                  
-                  {/* NEXUS */}
-                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 hover:text-white transition-all duration-300">
-                    <svg className="w-6 h-6 text-zinc-600 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
-                      <circle cx="9" cy="12" r="5" />
-                      <circle cx="15" cy="12" r="5" />
-                    </svg>
-                    <span className="font-display font-bold text-xs md:text-sm tracking-[0.2em] group-hover:text-white transition-colors duration-300">NEXUS.DIGITAL</span>
-                  </div>
-                  
-                  {/* VORTEX */}
-                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 hover:text-white transition-all duration-300">
-                    <svg className="w-6 h-6 text-zinc-600 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
-                      <path d="M4 12a8 8 0 018-8v8H4zM20 12a8 8 0 01-8 8v-8h8z" />
-                    </svg>
-                    <span className="font-display font-bold text-xs md:text-sm tracking-[0.2em] group-hover:text-white transition-colors duration-300">VORTEX.MEDIA</span>
-                  </div>
-                  
-                  {/* ORION */}
-                  <div className="flex items-center gap-2 group cursor-pointer text-zinc-600 hover:text-white transition-all duration-300">
-                    <svg className="w-6 h-6 text-zinc-600 group-hover:text-brand group-hover:drop-shadow-[0_0_8px_#dc2626] fill-none stroke-current stroke-2 transition-colors duration-300" viewBox="0 0 24 24">
-                      <path d="M12 2l2 4 4 1-3 3 1 5-4-2-4 2 1-5-3-3 4-1z" />
-                      <circle cx="12" cy="12" r="9" />
-                    </svg>
-                    <span className="font-display font-bold text-xs md:text-sm tracking-[0.2em] group-hover:text-white transition-colors duration-300">ORION</span>
-                  </div>
-                </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-4 py-2 text-zinc-500">
+              {["APEX.LABS", "KRONOS", "NEXUS.DIGITAL", "VORTEX.MEDIA", "ORION"].map((brand) => (
+                <span key={brand} className="font-display text-xs tracking-[0.18em] uppercase">
+                  {brand}
+                </span>
               ))}
             </div>
-          </div>
+          )}
         </motion.div>
       </div>
 
@@ -399,7 +364,6 @@ export function Hero() {
           animation-play-state: paused;
         }
       `}</style>
-
     </section>
   );
 }

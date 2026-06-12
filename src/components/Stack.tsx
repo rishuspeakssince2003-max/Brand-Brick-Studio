@@ -1,9 +1,7 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence, useInView } from "motion/react";
+import { useDeviceProfile } from "../lib/useDeviceProfile";
 
-/* ══════════════════════════════════════════════════════════
-   BRAND-STYLE SVG ICONS
-   ══════════════════════════════════════════════════════════ */
 const MetaIcon = () => (
   <svg viewBox="0 0 32 32" fill="none" className="w-full h-full">
     <path d="M7 16c0-5 3-9 5.5-9S16 11 16 16s3.5 9 5.5 9S27 21 27 16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -63,7 +61,7 @@ const tools = [
     metric: "4.2x",
     metricLabel: "Avg. ROAS",
     icon: <MetaIcon />,
-    color: "#dc2626", // Brand Red
+    color: "#dc2626",
   },
   {
     id: "google",
@@ -72,7 +70,7 @@ const tools = [
     metric: "320%",
     metricLabel: "Traffic Lift",
     icon: <GoogleIcon />,
-    color: "#dc2626", // Brand Red
+    color: "#dc2626",
   },
   {
     id: "wordpress",
@@ -81,7 +79,7 @@ const tools = [
     metric: "0.8s",
     metricLabel: "Avg. Load",
     icon: <WordPressIcon />,
-    color: "#dc2626", // Brand Red
+    color: "#dc2626",
   },
   {
     id: "landing",
@@ -90,7 +88,7 @@ const tools = [
     metric: "12%",
     metricLabel: "Conv. Rate",
     icon: <LandingPageIcon />,
-    color: "#dc2626", // Brand Red
+    color: "#dc2626",
   },
   {
     id: "crm",
@@ -99,7 +97,7 @@ const tools = [
     metric: "60%",
     metricLabel: "Time Saved",
     icon: <CRMIcon />,
-    color: "#dc2626", // Brand Red
+    color: "#dc2626",
   },
   {
     id: "seo",
@@ -108,11 +106,12 @@ const tools = [
     metric: "#1",
     metricLabel: "Page Rank",
     icon: <SEOIcon />,
-    color: "#dc2626", // Brand Red
+    color: "#dc2626",
   },
 ];
 
 export function Stack() {
+  const { isMobile, lowPerformanceMode } = useDeviceProfile();
   const [activeTool, setActiveTool] = useState(tools[0]);
   const [hoveredTool, setHoveredTool] = useState<string | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
@@ -121,18 +120,15 @@ export function Stack() {
   const displayTool = tools.find((t) => t.id === hoveredTool) || activeTool;
 
   return (
-    <section ref={sectionRef} className="relative py-32 bg-transparent overflow-hidden" id="stack">
-      {/* Subtle Background Glow tied to active tool color */}
-      <div 
+    <section ref={sectionRef} className="relative py-24 md:py-32 bg-transparent overflow-hidden px-4 md:px-0" id="stack">
+      <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] rounded-full blur-[150px] opacity-5 pointer-events-none transition-colors duration-1000"
         style={{ backgroundColor: displayTool.color }}
       />
 
       <div className="max-w-6xl mx-auto px-4 md:px-6 relative z-10 flex flex-col items-center">
-        
-        {/* Section Header */}
-        <motion.div 
-          className="text-center mb-16"
+        <motion.div
+          className="text-center mb-14 md:mb-16"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
@@ -145,21 +141,40 @@ export function Stack() {
           </h2>
         </motion.div>
 
-        {/* The Stage */}
-        <motion.div 
-          className="relative w-full max-w-4xl min-h-[460px] md:min-h-0 md:aspect-[21/9] rounded-3xl border-solid border-[1px] bg-[#050505]/80 backdrop-blur-3xl overflow-hidden flex flex-col md:flex-row items-center justify-between p-8 md:p-12"
+        <motion.div
+          className="relative w-full max-w-4xl min-h-[420px] md:min-h-0 md:aspect-[21/9] rounded-[2rem] md:rounded-3xl border-solid border-[1px] bg-[#050505]/80 backdrop-blur-2xl md:backdrop-blur-3xl overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between p-6 sm:p-8 md:p-12"
           initial={{ opacity: 0, scale: 0.95, borderColor: "rgba(220,38,38,0.1)", boxShadow: "0 20px 60px -15px rgba(0,0,0,0.8), 0 0 0px 0px rgba(220,38,38,0)" }}
-          animate={isInView ? { 
-            opacity: 1, 
-            scale: 1,
-            boxShadow: ["0 20px 60px -15px rgba(0,0,0,0.8), 0 0 10px 0px rgba(220,38,38,0.1)", "0 20px 60px -15px rgba(0,0,0,0.8), 0 0 20px 2px rgba(220,38,38,0.25)", "0 20px 60px -15px rgba(0,0,0,0.8), 0 0 10px 0px rgba(220,38,38,0.1)"],
-            borderColor: ["rgba(220,38,38,0.1)", "rgba(220,38,38,0.3)", "rgba(220,38,38,0.1)"]
-          } : {}}
-          transition={{ 
+          animate={
+            isInView
+              ? {
+                  opacity: 1,
+                  scale: 1,
+                  ...(lowPerformanceMode
+                    ? {}
+                    : {
+                        boxShadow: [
+                          "0 20px 60px -15px rgba(0,0,0,0.8), 0 0 10px 0px rgba(220,38,38,0.1)",
+                          "0 20px 60px -15px rgba(0,0,0,0.8), 0 0 20px 2px rgba(220,38,38,0.25)",
+                          "0 20px 60px -15px rgba(0,0,0,0.8), 0 0 10px 0px rgba(220,38,38,0.1)",
+                        ],
+                        borderColor: [
+                          "rgba(220,38,38,0.1)",
+                          "rgba(220,38,38,0.3)",
+                          "rgba(220,38,38,0.1)",
+                        ],
+                      }),
+                }
+              : {}
+          }
+          transition={{
             opacity: { duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] },
             scale: { duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] },
-            boxShadow: { duration: 3, repeat: Infinity, ease: "easeInOut" },
-            borderColor: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+            ...(lowPerformanceMode
+              ? {}
+              : {
+                  boxShadow: { duration: 3, repeat: Infinity, ease: "easeInOut" },
+                  borderColor: { duration: 3, repeat: Infinity, ease: "easeInOut" },
+                }),
           }}
         >
           <AnimatePresence mode="wait">
@@ -171,23 +186,21 @@ export function Stack() {
               transition={{ duration: 0.3 }}
               className="flex flex-col justify-center h-full max-w-md z-10 w-full"
             >
-              <div 
+              <div
                 className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 shadow-inner"
                 style={{ backgroundColor: `${displayTool.color}15`, color: displayTool.color }}
               >
-                <div className="w-6 h-6">
-                  {displayTool.icon}
-                </div>
+                <div className="w-6 h-6">{displayTool.icon}</div>
               </div>
-              <h3 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-white mb-4">
                 {displayTool.title}
               </h3>
-              <p className="text-zinc-400 text-lg md:text-xl leading-relaxed mb-8">
+              <p className="text-zinc-400 text-base sm:text-lg md:text-xl leading-relaxed mb-8 max-w-xl">
                 {displayTool.desc}
               </p>
-              
+
               <div>
-                <div 
+                <div
                   className="text-4xl md:text-5xl font-display font-bold tracking-tighter mb-1 transition-colors duration-500"
                   style={{ color: displayTool.color }}
                 >
@@ -200,84 +213,101 @@ export function Stack() {
             </motion.div>
           </AnimatePresence>
 
-          {/* Abstract visualizer on the right side of the stage */}
-          <div className="absolute right-[-10%] md:right-0 top-0 bottom-0 w-[80%] md:w-1/2 opacity-20 pointer-events-none overflow-hidden flex items-center justify-center">
+          <div className={`absolute right-[-10%] md:right-0 top-0 bottom-0 w-[80%] md:w-1/2 ${isMobile ? "opacity-10" : "opacity-20"} pointer-events-none overflow-hidden flex items-center justify-center`}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={displayTool.id}
-                initial={{ opacity: 0, scale: 0.8, rotate: -15 }}
+                initial={{ opacity: 0, scale: lowPerformanceMode ? 1 : 0.8, rotate: lowPerformanceMode ? 0 : -15 }}
                 animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                exit={{ opacity: 0, scale: 1.1, rotate: 15 }}
+                exit={{ opacity: 0, scale: lowPerformanceMode ? 1 : 1.1, rotate: lowPerformanceMode ? 0 : 15 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
                 className="relative flex items-center justify-center w-full h-full"
                 style={{ color: displayTool.color }}
               >
-                {/* Massive ghost icon */}
-                <div className="absolute w-[150%] h-[150%] blur-3xl opacity-30">
-                  {displayTool.icon}
-                </div>
-                <div className="absolute w-[80%] h-[80%] opacity-50 drop-shadow-[0_0_20px_currentColor]">
-                  {displayTool.icon}
-                </div>
+                <div className="absolute w-[150%] h-[150%] blur-3xl opacity-30">{displayTool.icon}</div>
+                <div className="absolute w-[80%] h-[80%] opacity-50 drop-shadow-[0_0_20px_currentColor]">{displayTool.icon}</div>
               </motion.div>
             </AnimatePresence>
           </div>
         </motion.div>
 
-        {/* The Dock */}
-        <motion.div 
+        <motion.div
           className="mt-12 md:mt-20 relative w-full md:w-auto"
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          {/* Scrollable container for mobile */}
-          <div className="flex items-center gap-6 md:gap-10 px-8 py-6 md:px-12 md:py-8 rounded-[2.5rem] border border-zinc-800/50 bg-[#050505]/40 backdrop-blur-2xl shadow-2xl overflow-x-auto hide-scrollbar w-full max-w-full">
+          <div className="flex items-center gap-4 md:gap-10 px-4 sm:px-6 md:px-12 py-4 md:py-8 rounded-[2rem] md:rounded-[2.5rem] border border-zinc-800/50 bg-[#050505]/40 backdrop-blur-2xl shadow-2xl overflow-x-auto hide-scrollbar w-full max-w-full">
             {tools.map((tool) => {
               const isHovered = hoveredTool === tool.id;
               const isActive = activeTool.id === tool.id && !hoveredTool;
-              
+
               return (
                 <button
                   key={tool.id}
-                  onMouseEnter={() => setHoveredTool(tool.id)}
-                  onMouseLeave={() => setHoveredTool(null)}
+                  onMouseEnter={() => !lowPerformanceMode && setHoveredTool(tool.id)}
+                  onMouseLeave={() => !lowPerformanceMode && setHoveredTool(null)}
                   onClick={() => setActiveTool(tool)}
                   className="relative group transition-all duration-300 outline-none shrink-0"
                 >
                   <motion.div
                     className="w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center relative z-10 border-solid border-[1px]"
                     animate={{
-                      scale: isHovered ? 1.25 : isActive ? 1.1 : 1,
-                      y: isHovered ? -8 : 0,
-                      boxShadow: isHovered || isActive 
-                        ? ["0 0 10px 0px rgba(220,38,38,0.3)", "0 0 20px 4px rgba(220,38,38,0.5)", "0 0 10px 0px rgba(220,38,38,0.3)"]
-                        : ["0 0 2px 0px rgba(220,38,38,0.1)", "0 0 5px 1px rgba(220,38,38,0.2)", "0 0 2px 0px rgba(220,38,38,0.1)"],
-                      borderColor: isHovered || isActive
-                        ? ["rgba(220,38,38,0.3)", "rgba(220,38,38,0.7)", "rgba(220,38,38,0.3)"]
-                        : ["rgba(220,38,38,0.1)", "rgba(220,38,38,0.3)", "rgba(220,38,38,0.1)"]
+                      scale: isHovered ? 1.18 : isActive ? 1.08 : 1,
+                      y: isHovered && !lowPerformanceMode ? -8 : 0,
+                      ...(lowPerformanceMode
+                        ? {
+                            boxShadow: isActive ? "0 0 18px 0 rgba(220,38,38,0.24)" : "0 0 0 0 rgba(220,38,38,0)",
+                            borderColor: isActive ? "rgba(220,38,38,0.55)" : "rgba(220,38,38,0.16)",
+                          }
+                        : {
+                            boxShadow: isHovered || isActive
+                              ? [
+                                  "0 0 10px 0px rgba(220,38,38,0.3)",
+                                  "0 0 20px 4px rgba(220,38,38,0.5)",
+                                  "0 0 10px 0px rgba(220,38,38,0.3)",
+                                ]
+                              : [
+                                  "0 0 2px 0px rgba(220,38,38,0.1)",
+                                  "0 0 5px 1px rgba(220,38,38,0.2)",
+                                  "0 0 2px 0px rgba(220,38,38,0.1)",
+                                ],
+                            borderColor: isHovered || isActive
+                              ? [
+                                  "rgba(220,38,38,0.3)",
+                                  "rgba(220,38,38,0.7)",
+                                  "rgba(220,38,38,0.3)",
+                                ]
+                              : [
+                                  "rgba(220,38,38,0.1)",
+                                  "rgba(220,38,38,0.3)",
+                                  "rgba(220,38,38,0.1)",
+                                ],
+                          }),
                     }}
                     transition={{
-                      boxShadow: { duration: 2, repeat: Infinity, ease: "easeInOut" },
-                      borderColor: { duration: 2, repeat: Infinity, ease: "easeInOut" },
-                      default: { type: "spring", stiffness: 300, damping: 20 }
+                      ...(lowPerformanceMode
+                        ? {}
+                        : {
+                            boxShadow: { duration: 2, repeat: Infinity, ease: "easeInOut" },
+                            borderColor: { duration: 2, repeat: Infinity, ease: "easeInOut" },
+                          }),
+                      default: { type: "spring", stiffness: 300, damping: 20 },
                     }}
                     style={{
                       backgroundColor: isHovered || isActive ? `${tool.color}15` : `${tool.color}08`,
                       color: isHovered || isActive ? tool.color : `${tool.color}70`,
                     }}
                   >
-                    <div className="w-6 h-6 md:w-7 md:h-7">
-                      {tool.icon}
-                    </div>
+                    <div className="w-6 h-6 md:w-7 md:h-7">{tool.icon}</div>
                   </motion.div>
-                  
-                  {/* Indicator dot */}
-                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full transition-all duration-300"
+
+                  <div
+                    className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full transition-all duration-300"
                     style={{
                       opacity: isActive ? 1 : 0,
                       backgroundColor: tool.color,
-                      boxShadow: `0 0 8px ${tool.color}`
+                      boxShadow: `0 0 8px ${tool.color}`,
                     }}
                   />
                 </button>
@@ -285,7 +315,6 @@ export function Stack() {
             })}
           </div>
         </motion.div>
-
       </div>
     </section>
   );

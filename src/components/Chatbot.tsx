@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { X, Send, Loader2, User, MessageCircle } from "lucide-react";
+import { useDeviceProfile } from "../lib/useDeviceProfile";
 
 interface Message {
   role: "user" | "model";
@@ -8,6 +9,7 @@ interface Message {
 }
 
 export function Chatbot() {
+  const { isMobile, lowPerformanceMode } = useDeviceProfile();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     { role: "model", text: "Hello. I am the Brand Brick Studio Intelligence. How can I assist you today?" }
@@ -90,7 +92,7 @@ export function Chatbot() {
       <AnimatePresence>
         {!isOpen && (
           <motion.button
-            className="fixed bottom-6 right-6 md:bottom-8 md:right-8 w-16 h-16 rounded-full flex items-center justify-center z-50 group"
+            className="fixed bottom-5 right-4 md:bottom-8 md:right-8 w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center z-50 group"
             onClick={() => setIsOpen(true)}
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -102,16 +104,18 @@ export function Chatbot() {
             <div className="absolute inset-0 bg-[#dc2626] rounded-full blur-xl opacity-40 group-hover:opacity-70 transition-opacity duration-500" />
             
             {/* Spinning gradient ring */}
-            <motion.div 
-              className="absolute inset-[-4px] rounded-full opacity-60"
-              style={{ background: "conic-gradient(from 0deg, transparent 70%, rgba(220,38,38,1) 100%)" }}
-              animate={{ rotate: 360 }}
-              transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-            />
+            {!lowPerformanceMode && (
+              <motion.div 
+                className="absolute inset-[-4px] rounded-full opacity-60"
+                style={{ background: "conic-gradient(from 0deg, transparent 70%, rgba(220,38,38,1) 100%)" }}
+                animate={{ rotate: 360 }}
+                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+              />
+            )}
 
             {/* Inner solid button */}
             <div className="absolute inset-[2px] bg-[#050505] rounded-full border border-white/10 flex items-center justify-center overflow-hidden">
-              <MessageCircle size={26} className="text-white group-hover:text-[#dc2626] transition-colors duration-300" />
+              <MessageCircle size={isMobile ? 22 : 26} className="text-white group-hover:text-[#dc2626] transition-colors duration-300" />
             </div>
           </motion.button>
         )}
@@ -135,7 +139,8 @@ export function Chatbot() {
               animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
               exit={{ opacity: 0, y: "100%", scale: 0.95, filter: "blur(10px)" }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="fixed bottom-0 right-0 w-full h-[85dvh] rounded-t-[2rem] rounded-b-none md:bottom-8 md:right-8 md:w-[420px] md:h-[650px] md:max-h-[85vh] md:rounded-[2rem] bg-[#050505]/70 backdrop-blur-3xl border-t border-white/10 md:border md:border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.8),inset_0_0_80px_rgba(220,38,38,0.03)] flex flex-col z-[100] overflow-hidden"
+              className="fixed bottom-0 right-0 w-full h-[78dvh] rounded-t-[1.75rem] rounded-b-none md:bottom-8 md:right-8 md:w-[420px] md:h-[650px] md:max-h-[85vh] md:rounded-[2rem] bg-[#050505]/78 backdrop-blur-2xl md:backdrop-blur-3xl border-t border-white/10 md:border md:border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.8),inset_0_0_80px_rgba(220,38,38,0.03)] flex flex-col z-[100] overflow-hidden"
+              style={{ paddingBottom: isMobile ? "env(safe-area-inset-bottom)" : undefined }}
             >
               {/* HEADER */}
               <div className="relative px-6 py-5 flex items-center justify-between border-b border-white/5 bg-gradient-to-b from-white/5 to-transparent shrink-0">
@@ -143,8 +148,8 @@ export function Chatbot() {
                   <div className="relative flex items-center justify-center w-10 h-10">
                     <motion.div 
                       className="absolute inset-0 bg-[#dc2626] blur-md opacity-50 rounded-full"
-                      animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
-                      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                      animate={lowPerformanceMode ? undefined : { scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
+                      transition={lowPerformanceMode ? undefined : { duration: 3, repeat: Infinity, ease: "easeInOut" }}
                     />
                     <div className="relative w-8 h-8 rounded-full bg-black border border-white/10 flex items-center justify-center p-1.5">
                       <img src="/logo.png" alt="BBS" className="w-[16px] h-auto" />
@@ -166,7 +171,7 @@ export function Chatbot() {
               </div>
 
               {/* MESSAGES */}
-              <div className="flex-1 overflow-y-auto px-5 py-6 flex flex-col gap-6 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+              <div className="flex-1 overflow-y-auto px-4 md:px-5 py-5 md:py-6 flex flex-col gap-5 md:gap-6 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
                 <AnimatePresence initial={false}>
                   {messages.map((msg, idx) => (
                     <motion.div 
@@ -188,7 +193,7 @@ export function Chatbot() {
                       )}
                       
                       <div 
-                        className={`max-w-[80%] p-4 text-[14px] leading-[1.6] shadow-xl ${
+                        className={`max-w-[86%] md:max-w-[80%] p-3.5 md:p-4 text-[14px] leading-[1.6] shadow-xl ${
                           msg.role === "user" 
                             ? "bg-gradient-to-br from-[#dc2626] to-[#991b1b] text-white rounded-2xl rounded-br-sm border border-[#dc2626]/50" 
                             : "bg-white/5 backdrop-blur-md text-zinc-200 rounded-2xl rounded-bl-sm border border-white/10"
@@ -222,7 +227,7 @@ export function Chatbot() {
               </div>
 
               {/* INPUT AREA */}
-              <div className="p-5 pb-8 md:pb-5 shrink-0 relative">
+              <div className="p-4 md:p-5 pb-6 md:pb-5 shrink-0 relative">
                 {/* Subtle gradient overlay above input to fade messages */}
                 <div className="absolute top-0 left-0 w-full h-8 -translate-y-full bg-gradient-to-t from-[#050505]/70 to-transparent pointer-events-none" />
                 
@@ -232,7 +237,7 @@ export function Chatbot() {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Type a message..."
-                    className="w-full bg-black/60 backdrop-blur-xl border border-white/10 text-white rounded-full pl-6 pr-14 py-4 text-[14px] focus:outline-none focus:border-[#dc2626]/50 focus:bg-black/80 transition-all placeholder:text-zinc-600 shadow-inner"
+                    className="w-full bg-black/60 backdrop-blur-xl border border-white/10 text-white rounded-full pl-5 pr-14 py-3.5 md:py-4 text-base md:text-[14px] focus:outline-none focus:border-[#dc2626]/50 focus:bg-black/80 transition-all placeholder:text-zinc-600 shadow-inner"
                   />
                   <button 
                     type="submit"

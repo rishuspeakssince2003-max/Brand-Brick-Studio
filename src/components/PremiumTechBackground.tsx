@@ -20,7 +20,13 @@ interface Particle {
   pulseSpeed: number;
 }
 
-export function PremiumTechBackground({ active = true }: { active?: boolean }) {
+export function PremiumTechBackground({
+  active = true,
+  reducedMotion = false,
+}: {
+  active?: boolean;
+  reducedMotion?: boolean;
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const activeRef = useRef(active);
@@ -30,6 +36,10 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
   }, [active]);
 
   useEffect(() => {
+    if (reducedMotion) {
+      return;
+    }
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -45,11 +55,12 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
       height = window.innerHeight;
       
       // Support high DPI screens
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       canvas.width = width * dpr;
       canvas.height = height * dpr;
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.scale(dpr, dpr);
     };
     setSize();
@@ -113,7 +124,7 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
     );
 
     // Particle/Ember Configuration
-    const particleCount = isMobileDevice ? 15 : Math.min(Math.floor((width * height) / 18000), 70);
+    const particleCount = isMobileDevice ? 8 : Math.min(Math.floor((width * height) / 22000), 55);
     const particles: Particle[] = [];
 
     for (let i = 0; i < particleCount; i++) {
@@ -137,6 +148,11 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
     let time = 0;
 
     const render = () => {
+      if (document.hidden) {
+        animationFrameId = requestAnimationFrame(render);
+        return;
+      }
+
       if (!activeRef.current) {
         ctx.fillStyle = "#040404";
         ctx.fillRect(0, 0, width, height);
@@ -351,7 +367,7 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
       window.removeEventListener("mouseleave", handleMouseLeave);
       cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  }, [reducedMotion]);
 
   return (
     <div
@@ -359,8 +375,15 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
       className="fixed inset-0 w-full h-full z-[-50] pointer-events-none overflow-hidden select-none bg-[#040404]"
       style={{ transform: "translateZ(0)" }}
     >
-      {/* Dynamic Canvas */}
-      <canvas ref={canvasRef} className="block w-full h-full" />
+      {!reducedMotion && <canvas ref={canvasRef} className="block w-full h-full" />}
+
+      {reducedMotion && (
+        <>
+          <div className="absolute inset-0 bg-[#040404]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(220,38,38,0.14),transparent_45%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.015),transparent_35%,transparent)]" />
+        </>
+      )}
 
       {/* Premium film grain overlay */}
       <div

@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { Check, Home, Coffee } from "lucide-react";
+import { useDeviceProfile } from "../lib/useDeviceProfile";
 
 const packages = [
   {
@@ -65,6 +66,8 @@ const featureVariants = {
 };
 
 export function Packages() {
+  const { lowPerformanceMode } = useDeviceProfile();
+
   return (
     <section className="py-24 md:py-32 px-4 md:px-6 max-w-7xl mx-auto relative overflow-hidden" id="packages">
       {/* Background glow behind pricing */}
@@ -126,7 +129,7 @@ export function Packages() {
                   background: pkg.popular 
                     ? "conic-gradient(from 0deg, transparent 40%, #dc2626 50%, transparent 60%, transparent 100%)"
                     : "conic-gradient(from 0deg, transparent 45%, #dc2626 50%, transparent 55%, transparent 100%)",
-                  animation: "card-border-spin 4s linear infinite",
+                  animation: lowPerformanceMode ? "none" : "card-border-spin 4s linear infinite",
                 }}
               />
               <div className="absolute inset-[1.5px] rounded-[calc(2rem-1.5px)] bg-[#050505]" />

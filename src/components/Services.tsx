@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { motion, useInView } from "motion/react";
+import { useDeviceProfile } from "../lib/useDeviceProfile";
 
 /* ══════════════════════════════════════════════════════════
    CUSTOM SVG ICONS — Animated stroke-draw on hover
@@ -105,6 +106,7 @@ const services = [
    ANIMATED SERVICE CARD
    ══════════════════════════════════════════════════════════ */
 function ServiceCard({ service, index }: { service: typeof services[number]; index: number; key?: any }) {
+  const { lowPerformanceMode } = useDeviceProfile();
   const [hovered, setHovered] = useState(false);
   const num = String(index + 1).padStart(2, "0");
 
@@ -119,14 +121,14 @@ function ServiceCard({ service, index }: { service: typeof services[number]; ind
           transition: { type: "spring", stiffness: 70, damping: 16 },
         },
       }}
-      whileHover={{ 
+      whileHover={lowPerformanceMode ? undefined : { 
         scale: 1.04,
         transition: { type: "spring", stiffness: 450, damping: 25 }
       }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      onMouseEnter={() => !lowPerformanceMode && setHovered(true)}
+      onMouseLeave={() => !lowPerformanceMode && setHovered(false)}
       className="group relative rounded-[1.75rem] overflow-hidden cursor-default md:col-span-1"
-      style={{ minHeight: 240, zIndex: hovered ? 20 : 1 }}
+      style={{ minHeight: 220, zIndex: hovered ? 20 : 1 }}
     >
       {/* ── Animated Border Trace ── */}
       <div className="absolute inset-0 rounded-[1.75rem] p-px overflow-hidden">
@@ -229,6 +231,7 @@ function FloatingOrb({ size, x, y, delay }: { size: number; x: string; y: string
 export function Services() {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
+  const { lowPerformanceMode } = useDeviceProfile();
 
   return (
     <section
@@ -237,10 +240,14 @@ export function Services() {
       id="services"
     >
       {/* ── Floating Background Orbs ── */}
-      <FloatingOrb size={350} x="5%" y="10%" delay={0} />
-      <FloatingOrb size={250} x="75%" y="60%" delay={2} />
-      <FloatingOrb size={200} x="40%" y="80%" delay={4} />
-      <FloatingOrb size={180} x="85%" y="15%" delay={1} />
+      {!lowPerformanceMode && (
+        <>
+          <FloatingOrb size={350} x="5%" y="10%" delay={0} />
+          <FloatingOrb size={250} x="75%" y="60%" delay={2} />
+          <FloatingOrb size={200} x="40%" y="80%" delay={4} />
+          <FloatingOrb size={180} x="85%" y="15%" delay={1} />
+        </>
+      )}
 
       {/* ── Subtle grid pattern overlay ── */}
       <div
@@ -303,7 +310,7 @@ export function Services() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-lg md:text-xl text-zinc-400 font-light leading-relaxed max-w-2xl"
+            className="text-base md:text-xl text-zinc-400 font-light leading-relaxed max-w-2xl"
           >
             12 core services under one roof, creative, content, digital, and
             technical execution built for brands that refuse to blend in.
@@ -326,7 +333,7 @@ export function Services() {
 
         {/* ── Bento Grid ── */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 auto-rows-[minmax(240px,auto)]"
+          className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 auto-rows-[minmax(220px,auto)]"
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
           variants={{
@@ -359,6 +366,14 @@ export function Services() {
         .group:hover .service-icon-svg {
           transform: scale(1.1);
           filter: drop-shadow(0 0 8px rgba(220, 38, 38, 0.4));
+        }
+
+        @media (pointer: coarse) {
+          .group:hover .service-icon-box,
+          .group:hover .service-icon-svg {
+            transform: none;
+            filter: none;
+          }
         }
       `}</style>
     </section>
