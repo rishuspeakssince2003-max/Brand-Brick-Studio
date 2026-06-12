@@ -193,9 +193,14 @@ const ServiceBentoCard: React.FC<{
       initial={{ opacity: 0, y: 30, scale: 0.97 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       whileHover={{
-        y: -6,
+        y: -4,
         scale: 1.015,
-        borderColor: "rgba(220, 38, 38, 0.15)",
+        boxShadow: "0 10px 0 #991b1b, 0 20px 30px rgba(220, 38, 38, 0.45)",
+      }}
+      whileTap={{
+        y: 4,
+        scale: 0.985,
+        boxShadow: "0 2px 0 #991b1b, 0 8px 12px rgba(220, 38, 38, 0.25)",
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
@@ -205,8 +210,8 @@ const ServiceBentoCard: React.FC<{
       viewport={{ once: true, margin: "-40px" }}
       transition={{
         type: "spring",
-        stiffness: 300,
-        damping: 20
+        stiffness: 400,
+        damping: 18
       }}
       onMouseMove={handleMouseMove}
       onClick={() => {
@@ -216,17 +221,17 @@ const ServiceBentoCard: React.FC<{
           document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
         }
       }}
-      className="group rounded-[2.25rem] border border-zinc-800/30 light:border-zinc-200 bg-[#1c1c1e]/40 light:bg-white backdrop-blur-xl p-6 sm:p-8 flex flex-col justify-between hover:bg-[#1c1c1e]/60 light:hover:bg-zinc-50/50 hover:shadow-[0_30px_70px_rgba(0,0,0,0.45)] light:hover:shadow-[0_20px_50px_rgba(0,0,0,0.04)] transition-all duration-500 relative overflow-hidden min-h-[300px] cursor-pointer"
+      className="group rounded-[2.25rem] border border-white/15 bg-[#dc2626] p-6 sm:p-8 flex flex-col justify-between shadow-[0_6px_0_#991b1b,0_12px_20px_rgba(220, 38, 38, 0.35)] relative overflow-hidden min-h-[300px] cursor-pointer"
     >
-      {/* Interactive Cursor Spotlight */}
+      {/* Glossy White Reflection Spotlight */}
       <motion.div
         className="pointer-events-none absolute -inset-px rounded-[2.25rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"
         style={{
           background: useMotionTemplate`
             radial-gradient(
               300px circle at ${mouseX}px ${mouseY}px,
-              rgba(220, 38, 38, 0.05),
-              rgba(220, 38, 38, 0.01) 50%,
+              rgba(255, 255, 255, 0.12),
+              rgba(255, 255, 255, 0.02) 50%,
               transparent 80%
             )
           `,
@@ -237,14 +242,14 @@ const ServiceBentoCard: React.FC<{
       <div className="relative z-10 h-full flex flex-col justify-between flex-grow">
         {/* Top row: Icon + Index */}
         <div className="flex items-start justify-between">
-          <div className="relative h-11 w-11 rounded-2xl bg-zinc-900 light:bg-zinc-50 border border-zinc-800/80 light:border-zinc-200 flex items-center justify-center
-            group-hover:bg-zinc-800/40 light:group-hover:bg-zinc-100 group-hover:scale-105 transition-all duration-300">
-            <div className="text-zinc-455 light:text-zinc-500 group-hover:text-[#dc2626] transition-colors duration-300 stroke-current">
+          <div className="relative h-11 w-11 rounded-2xl bg-white/10 border border-white/15 flex items-center justify-center
+            group-hover:bg-white/20 group-hover:scale-105 transition-all duration-300">
+            <div className="text-white transition-colors duration-300 stroke-current">
               {svgIcons[service.icon]}
             </div>
           </div>
 
-          <span className="text-[11px] font-mono font-medium text-zinc-500 light:text-zinc-400 tracking-wider mt-1">
+          <span className="text-[11px] font-mono font-medium text-white/60 tracking-wider mt-1">
             {num}
           </span>
         </div>
@@ -252,22 +257,22 @@ const ServiceBentoCard: React.FC<{
         {/* Bottom: Title + Description + Bullets */}
         <div className="mt-8 flex-grow flex flex-col justify-between">
           <div>
-            <h4 className="text-lg md:text-xl font-display font-semibold text-white light:text-zinc-900 mb-2.5 leading-tight group-hover:text-[#dc2626] transition-all duration-300">
+            <h4 className="text-lg md:text-xl font-display font-semibold text-white mb-2.5 leading-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]">
               {service.title}
             </h4>
-            <p className="text-zinc-450 light:text-zinc-600 text-xs sm:text-sm leading-relaxed mb-4 transition-colors duration-300">
+            <p className="text-white/85 text-xs sm:text-sm leading-relaxed mb-4">
               {service.desc}
             </p>
           </div>
 
           {/* Bullets + Interactive Arrow Button */}
-          <div className="flex items-center justify-between gap-3 mt-4 border-t border-zinc-800/30 light:border-zinc-100 pt-4">
+          <div className="flex items-center justify-between gap-3 mt-4 border-t border-white/10 pt-4">
             {service.bullets && (
               <div className="flex flex-wrap gap-1.5 flex-grow">
                 {service.bullets.map((bullet, bIdx) => (
                   <span
                     key={bIdx}
-                    className="px-2.5 py-0.5 rounded-full border border-zinc-800/60 light:border-zinc-200 bg-zinc-900/30 light:bg-zinc-50 text-zinc-400 light:text-zinc-650 text-[9px] font-medium group-hover:border-zinc-750 light:group-hover:border-zinc-300 group-hover:bg-zinc-900/50 light:group-hover:bg-zinc-100/50 group-hover:text-white light:group-hover:text-zinc-900 transition-all duration-300"
+                    className="px-2.5 py-0.5 rounded-full border border-white/10 bg-white/10 text-white/90 text-[9px] font-medium group-hover:border-white/30 group-hover:bg-white/20 transition-all duration-300"
                   >
                     {bullet}
                   </span>
@@ -275,7 +280,7 @@ const ServiceBentoCard: React.FC<{
               </div>
             )}
             {/* Minimal Circular Action Arrow Button */}
-            <div className="w-8 h-8 rounded-full border border-zinc-800/60 light:border-zinc-200 bg-zinc-900/30 light:bg-zinc-50 text-zinc-450 light:text-zinc-600 flex items-center justify-center shrink-0 group-hover:bg-[#dc2626] group-hover:border-[#dc2626] group-hover:text-white transition-all duration-300">
+            <div className="w-8 h-8 rounded-full border border-white/20 bg-white/10 text-white flex items-center justify-center shrink-0 group-hover:bg-white group-hover:text-[#dc2626] group-hover:border-white transition-all duration-300">
               <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform duration-300" />
             </div>
           </div>
