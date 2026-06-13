@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion, useInView, useMotionValue, useMotionTemplate } from "motion/react";
 import { ArrowRight } from "lucide-react";
 
@@ -188,19 +188,43 @@ const ServiceBentoCard: React.FC<{
     mouseY.set(e.clientY - rectRef.current.top);
   }
 
+  // Watch for light theme changes to adapt 3D shadows
+  const [isLight, setIsLight] = useState(false);
+  useEffect(() => {
+    const checkTheme = () => {
+      setIsLight(document.documentElement.classList.contains("light"));
+    };
+    checkTheme();
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+
+  const shadowDefault = isLight
+    ? "0 8px 0 #e4e4e7, 0 15px 30px rgba(0, 0, 0, 0.05)"
+    : "0 8px 0 #09090b, 0 15px 30px rgba(0, 0, 0, 0.4)";
+
+  const shadowHover = isLight
+    ? "0 4px 0 #e4e4e7, 0 8px 20px rgba(0, 0, 0, 0.04)"
+    : "0 4px 0 #09090b, 0 8px 20px rgba(0, 0, 0, 0.35)";
+
+  const shadowTap = isLight
+    ? "0 0px 0 #e4e4e7, 0 2px 8px rgba(0, 0, 0, 0.02)"
+    : "0 0px 0 #09090b, 0 2px 8px rgba(0, 0, 0, 0.2)";
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30, scale: 0.97 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       whileHover={{
-        y: -4,
-        scale: 1.015,
-        boxShadow: "0 10px 0 #991b1b, 0 20px 30px rgba(220, 38, 38, 0.45)",
+        y: 4, // push down slightly on hover
+        boxShadow: shadowHover,
+        borderColor: "rgba(220, 38, 38, 0.25)",
+        backgroundColor: isLight ? "#fcfcfd" : "#161619"
       }}
       whileTap={{
-        y: 4,
-        scale: 0.985,
-        boxShadow: "0 2px 0 #991b1b, 0 8px 12px rgba(220, 38, 38, 0.25)",
+        y: 8, // fully depress on tap
+        boxShadow: shadowTap
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
@@ -208,10 +232,13 @@ const ServiceBentoCard: React.FC<{
         rectRef.current = null;
       }}
       viewport={{ once: true, margin: "-40px" }}
+      style={{
+        boxShadow: shadowDefault
+      }}
       transition={{
         type: "spring",
-        stiffness: 400,
-        damping: 18
+        stiffness: 500,
+        damping: 25
       }}
       onMouseMove={handleMouseMove}
       onClick={() => {
