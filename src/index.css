@@ -187,7 +187,6 @@ html.light body {
    Content Rendering Optimizations (GPU/CPU offloading)
    ───────────────────────────────────────────────────────── */
 /* Tells the browser to bypass style, layout, and paint work for offscreen sections */
-#services,
 #approach,
 #why-us,
 #founder,

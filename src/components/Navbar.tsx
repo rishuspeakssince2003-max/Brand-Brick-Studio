@@ -5,7 +5,6 @@ import { LiquidButton } from "./ui/LiquidButton";
 import { MenuBar } from "./ui/animated-menu-bar";
 
 const navLinks = [
-  { name: "Services", href: "/#services" },
   { name: "Process", href: "/#process" },
   { name: "Why Us", href: "/#why-us" },
   { name: "Founder", href: "/#founder" },
@@ -22,7 +21,7 @@ export function Navbar({ theme, toggleTheme, currentPath }: { theme: "dark" | "l
       setScrolled(window.scrollY > 20);
 
       // Simple active section detection
-      const sections = ["services", "work", "process", "why-us", "founder", "contact"];
+      const sections = ["work", "process", "why-us", "founder", "contact"];
       const scrollPosition = window.scrollY + window.innerHeight / 3;
       let currentSection = "";
 
