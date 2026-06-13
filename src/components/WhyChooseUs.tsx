@@ -76,7 +76,7 @@ const PillarCard: React.FC<{
       onMouseMove={handleMouseMove}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.8, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
-      className="group relative p-8 md:p-10 rounded-[2.5rem] bg-zinc-950/40 border border-zinc-800 backdrop-blur-md overflow-hidden hover:bg-zinc-950/60 transition-colors duration-500 cursor-pointer light:bg-white light:border-zinc-200 light:hover:bg-zinc-50/50"
+      className="group relative p-8 md:p-10 rounded-[2.5rem] bg-white border border-zinc-200 overflow-hidden hover:bg-zinc-50/50 transition-colors duration-500 cursor-pointer shadow-sm"
     >
       {/* Interactive Cursor Spotlight */}
       <motion.div
@@ -85,8 +85,8 @@ const PillarCard: React.FC<{
           background: useMotionTemplate`
             radial-gradient(
               350px circle at ${mouseX}px ${mouseY}px,
-              rgba(220, 38, 38, 0.12),
-              rgba(220, 38, 38, 0.02) 40%,
+              rgba(220, 38, 38, 0.04),
+              rgba(220, 38, 38, 0.005) 50%,
               transparent 80%
             )
           `,
@@ -94,7 +94,7 @@ const PillarCard: React.FC<{
       />
 
       {/* Watermark Index Number */}
-      <span className="absolute -right-2 -top-4 text-[6rem] font-display font-bold leading-none text-white/[0.01] light:text-zinc-900/[0.01] group-hover:text-[#dc2626]/[0.03] transition-all duration-500 select-none pointer-events-none tracking-tighter group-hover:scale-110 group-hover:-translate-x-2 group-hover:translate-y-2">
+      <span className="absolute -right-2 -top-4 text-[6rem] font-display font-bold leading-none text-zinc-100/40 group-hover:text-zinc-200/50 transition-all duration-500 select-none pointer-events-none tracking-tighter group-hover:scale-110 group-hover:-translate-x-2 group-hover:translate-y-2">
         {num}
       </span>
 
@@ -115,7 +115,7 @@ const PillarCard: React.FC<{
             <div className="w-12 h-12 rounded-2xl bg-[#dc2626]/5 border border-[#dc2626]/20 flex items-center justify-center text-[#dc2626] group-hover:-translate-y-1.5 group-hover:scale-105 group-hover:rotate-3 transition-all duration-500">
               <Icon size={22} />
             </div>
-            <span className="px-2.5 py-0.5 rounded-md border border-[#dc2626]/20 bg-[#dc2626]/5 text-[#dc2626] text-[10px] font-mono font-bold uppercase tracking-wider transition-all duration-300">
+            <span className="px-2.5 py-0.5 rounded-md border border-zinc-200 bg-zinc-50 text-zinc-800 text-[10px] font-mono font-bold uppercase tracking-wider transition-all duration-300 group-hover:border-[#dc2626]/20 group-hover:bg-[#dc2626]/5 group-hover:text-[#dc2626]">
               Pillar {num}
             </span>
           </div>
@@ -124,7 +124,7 @@ const PillarCard: React.FC<{
             {pillar.title}
           </h3>
           
-          <p className="text-sm text-zinc-400 light:text-zinc-600 leading-relaxed group-hover:text-zinc-300 light:group-hover:text-zinc-800 transition-colors duration-300">
+          <p className="text-sm text-zinc-650 leading-relaxed group-hover:text-zinc-800 transition-colors duration-300 font-normal">
             {pillar.desc}
           </p>
         </div>

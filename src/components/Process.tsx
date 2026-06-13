@@ -85,7 +85,7 @@ const ProcessCard: React.FC<{
       style={{
         boxShadow: "0 10px 30px rgba(0, 0, 0, 0.02)"
       }}
-      className="group relative flex flex-col justify-between p-8 rounded-[2.5rem] border border-zinc-800 bg-zinc-950/40 backdrop-blur-md overflow-hidden hover:bg-zinc-950/60 transition-all duration-300 min-h-[340px] cursor-pointer light:bg-white light:border-zinc-200 light:hover:bg-zinc-50/50"
+      className="group relative flex flex-col justify-between p-8 rounded-[2.5rem] border border-zinc-200 bg-white overflow-hidden hover:bg-zinc-50/50 transition-all duration-300 min-h-[340px] cursor-pointer shadow-sm"
     >
       {/* Interactive Cursor Spotlight */}
       <motion.div
@@ -94,8 +94,8 @@ const ProcessCard: React.FC<{
           background: useMotionTemplate`
             radial-gradient(
               350px circle at ${mouseX}px ${mouseY}px,
-              rgba(220, 38, 38, 0.12),
-              rgba(220, 38, 38, 0.02) 40%,
+              rgba(220, 38, 38, 0.04),
+              rgba(220, 38, 38, 0.005) 50%,
               transparent 80%
             )
           `,
@@ -103,7 +103,7 @@ const ProcessCard: React.FC<{
       />
 
       {/* Watermark Index Number */}
-      <span className="absolute -right-2 -top-4 text-[6rem] font-display font-bold leading-none text-white/[0.01] light:text-zinc-900/[0.01] group-hover:text-[#dc2626]/[0.03] transition-all duration-500 select-none pointer-events-none tracking-tighter group-hover:scale-110 group-hover:-translate-x-2 group-hover:translate-y-2">
+      <span className="absolute -right-2 -top-4 text-[6rem] font-display font-bold leading-none text-zinc-100/40 group-hover:text-zinc-200/50 transition-all duration-500 select-none pointer-events-none tracking-tighter group-hover:scale-110 group-hover:-translate-x-2 group-hover:translate-y-2">
         {num}
       </span>
 
@@ -124,7 +124,7 @@ const ProcessCard: React.FC<{
           <div className="w-12 h-12 rounded-2xl bg-[#dc2626]/5 border border-[#dc2626]/20 flex items-center justify-center text-[#dc2626] group-hover:-translate-y-1.5 group-hover:scale-105 group-hover:rotate-3 transition-all duration-500">
             <IconComp size={20} className="transition-transform duration-300" />
           </div>
-          <span className="px-2.5 py-0.5 rounded-md border border-[#dc2626]/20 bg-[#dc2626]/5 text-[#dc2626] text-[10px] font-mono font-bold uppercase tracking-wider transition-all duration-300">
+          <span className="px-2.5 py-0.5 rounded-md border border-zinc-200 bg-zinc-50 text-zinc-800 text-[10px] font-mono font-bold uppercase tracking-wider transition-all duration-300 group-hover:border-[#dc2626]/20 group-hover:bg-[#dc2626]/5 group-hover:text-[#dc2626]">
             STEP {num}
           </span>
         </div>
@@ -133,13 +133,13 @@ const ProcessCard: React.FC<{
         <h3 className="text-xl md:text-2xl font-display font-bold text-[#dc2626] mb-3 leading-tight group-hover:translate-x-1.5 transition-all duration-400">
           {step.title}
         </h3>
-        <p className="text-sm text-zinc-400 light:text-zinc-600 leading-relaxed mb-6 font-normal group-hover:text-zinc-300 light:group-hover:text-zinc-800 transition-colors duration-300">
+        <p className="text-sm text-zinc-650 leading-relaxed mb-6 font-normal group-hover:text-zinc-800 transition-colors duration-300">
           {step.desc}
         </p>
       </div>
 
       {/* Deliverables tags */}
-      <div className="relative z-10 border-t border-zinc-800/60 light:border-zinc-200/60 pt-5 flex flex-wrap gap-2">
+      <div className="relative z-10 border-t border-zinc-100 pt-5 flex flex-wrap gap-2">
         {step.deliverables.map((del, dIdx) => (
           <span
             key={dIdx}
