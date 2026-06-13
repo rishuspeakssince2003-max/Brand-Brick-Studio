@@ -162,25 +162,7 @@ const services = [
 ];
 
 /* ══════════════════════════════════════════════════════════
-   BENTO LAYOUTS DEFINITIONS
-   ══════════════════════════════════════════════════════════ */
-const cardLayouts = [
-  "md:col-span-2 md:row-span-1", // Card 0: Horizontal wide (col 1-2, row 1)
-  "md:col-span-1 md:row-span-2", // Card 1: Vertical tall (col 3, row 1-2)
-  "md:col-span-1 md:row-span-1", // Card 2: Standard (col 1, row 2)
-  "md:col-span-1 md:row-span-1", // Card 3: Standard (col 2, row 2)
-  "md:col-span-1 md:row-span-2", // Card 4: Vertical tall (col 1, row 3-4)
-  "md:col-span-2 md:row-span-1", // Card 5: Horizontal wide (col 2-3, row 3)
-  "md:col-span-1 md:row-span-1", // Card 6: Standard (col 2, row 4)
-  "md:col-span-1 md:row-span-1", // Card 7: Standard (col 3, row 4)
-  "md:col-span-2 md:row-span-1", // Card 8: Horizontal wide (col 1-2, row 5)
-  "md:col-span-1 md:row-span-1", // Card 9: Standard (col 3, row 5)
-  "md:col-span-1 md:row-span-1", // Card 10: Standard (col 1, row 6)
-  "md:col-span-2 md:row-span-1", // Card 11: Horizontal wide (col 2-3, row 6)
-];
-
-/* ══════════════════════════════════════════════════════════
-   BENTO GRID SERVICE CARD
+   GRID SERVICE CARD
    ══════════════════════════════════════════════════════════ */
 const ServiceBentoCard: React.FC<{
   service: typeof services[number];
@@ -223,7 +205,7 @@ const ServiceBentoCard: React.FC<{
       onMouseMove={handleMouseMove}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.8, delay: (index % 4) * 0.06, ease: [0.16, 1, 0.3, 1] }}
-      className={`group relative p-8 md:p-10 rounded-[2.5rem] bg-zinc-950/40 border border-zinc-800 backdrop-blur-md overflow-hidden hover:bg-zinc-950/60 transition-colors duration-500 cursor-pointer light:bg-white light:border-zinc-200 light:hover:bg-zinc-50/50 ${cardLayouts[index] || ""}`}
+      className="group relative p-8 md:p-10 rounded-[2.5rem] bg-zinc-950/40 border border-zinc-800 backdrop-blur-md overflow-hidden hover:bg-zinc-950/60 transition-colors duration-500 cursor-pointer light:bg-white light:border-zinc-200 light:hover:bg-zinc-50/50"
     >
       {/* Interactive Cursor Spotlight */}
       <motion.div
