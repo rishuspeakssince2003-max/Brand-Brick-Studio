@@ -192,7 +192,7 @@ export function WhyChooseUs() {
           whileInView={{ opacity: 1, scale: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="relative rounded-[2.5rem] overflow-hidden border border-zinc-200 bg-white aspect-[16/10] flex items-center justify-center shadow-sm group cursor-pointer lg:col-span-1"
+          className="relative rounded-[2.5rem] overflow-hidden border border-zinc-200 bg-white aspect-square flex items-center justify-center shadow-sm group cursor-pointer lg:col-span-1"
         >
           <img 
             src="/strategic_leverage.png" 

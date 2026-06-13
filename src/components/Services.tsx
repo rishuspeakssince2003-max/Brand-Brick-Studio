@@ -270,7 +270,7 @@ const ServiceBentoCard: React.FC<{
           </p>
 
           {/* Service Mockup Image */}
-          <div className="my-6 relative rounded-2xl overflow-hidden border border-zinc-200 aspect-[16/10] bg-zinc-50 flex items-center justify-center shadow-sm select-none pointer-events-none">
+          <div className="my-6 relative rounded-2xl overflow-hidden border border-zinc-200 aspect-square bg-zinc-50 flex items-center justify-center shadow-sm select-none pointer-events-none">
             <img 
               src={service.image} 
               alt={service.title} 
