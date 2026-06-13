@@ -30,9 +30,9 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [theme, setTheme] = useState<"dark" | "light">(() => {
     if (typeof window !== "undefined") {
-      return (localStorage.getItem("theme") as "dark" | "light") || "light";
+      return (localStorage.getItem("theme") as "dark" | "light") || "dark";
     }
-    return "light";
+    return "dark";
   });
 
   const [path, setPath] = useState(() => (typeof window !== "undefined" ? window.location.pathname.replace(/\/$/, "") : "/"));
