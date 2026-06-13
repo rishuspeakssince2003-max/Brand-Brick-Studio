@@ -234,6 +234,7 @@ const ServiceBentoCard: React.FC<{
       style={{
         boxShadow: shadowDefault,
         backgroundColor: isLight ? "#ffffff" : "rgba(28, 28, 30, 0.4)",
+        borderColor: isLight ? "#e4e4e7" : "rgba(39, 39, 42, 0.3)",
       }}
       transition={{
         type: "spring",
@@ -248,7 +249,7 @@ const ServiceBentoCard: React.FC<{
           document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
         }
       }}
-      className="group rounded-[2.25rem] border border-zinc-800/30 light:border-zinc-200 p-6 sm:p-8 flex flex-col justify-between transition-colors duration-300 relative overflow-hidden min-h-[300px] cursor-pointer"
+      className="group rounded-[2.25rem] border p-6 sm:p-8 flex flex-col justify-between transition-colors duration-300 relative overflow-hidden min-h-[300px] cursor-pointer"
     >
       {/* Interactive Cursor Spotlight */}
       <motion.div
@@ -269,8 +270,13 @@ const ServiceBentoCard: React.FC<{
       <div className="relative z-10 h-full flex flex-col justify-between flex-grow">
         {/* Top row: Icon + Index */}
         <div className="flex items-start justify-between">
-          <div className="relative h-11 w-11 rounded-2xl bg-zinc-900 light:bg-zinc-50 border border-zinc-800/80 light:border-zinc-200 flex items-center justify-center
-            group-hover:border-[#dc2626]/20 light:group-hover:border-[#dc2626]/20 group-hover:bg-[#dc2626]/5 light:group-hover:bg-[#dc2626]/5 group-hover:scale-105 transition-all duration-300">
+          <div
+            style={{
+              backgroundColor: isLight ? "#fafafa" : "rgba(24, 24, 27, 1)",
+              borderColor: isLight ? "#e4e4e7" : "rgba(39, 39, 42, 0.8)",
+            }}
+            className="relative h-11 w-11 rounded-2xl border flex items-center justify-center
+            group-hover:border-[#dc2626]/20 group-hover:bg-[#dc2626]/5 group-hover:scale-105 transition-all duration-300">
             <div className="text-zinc-500 light:text-zinc-400 group-hover:text-[#dc2626] transition-colors duration-300 stroke-current">
               {svgIcons[service.icon]}
             </div>
@@ -284,22 +290,33 @@ const ServiceBentoCard: React.FC<{
         {/* Bottom: Title + Description + Bullets */}
         <div className="mt-8 flex-grow flex flex-col justify-between">
           <div>
-            <h4 className="text-lg md:text-xl font-display font-bold text-white light:text-zinc-900 mb-2.5 leading-tight group-hover:text-[#dc2626] transition-all duration-300">
+            <h4
+              style={{ color: isLight ? "#18181b" : "#ffffff" }}
+              className="text-lg md:text-xl font-display font-bold mb-2.5 leading-tight group-hover:text-[#dc2626] transition-all duration-300">
               {service.title}
             </h4>
-            <p className="text-zinc-450 light:text-zinc-550 text-xs sm:text-sm leading-relaxed mb-4 transition-colors duration-300">
+            <p
+              style={{ color: isLight ? "#52525b" : "#a1a1aa" }}
+              className="text-xs sm:text-sm leading-relaxed mb-4 transition-colors duration-300">
               {service.desc}
             </p>
           </div>
 
           {/* Bullets + Interactive Arrow Button */}
-          <div className="flex items-center justify-between gap-3 mt-4 border-t border-zinc-800/30 light:border-zinc-100 pt-4">
+          <div
+            style={{ borderColor: isLight ? "#f4f4f5" : "rgba(39, 39, 42, 0.3)" }}
+            className="flex items-center justify-between gap-3 mt-4 border-t pt-4">
             {service.bullets && (
               <div className="flex flex-wrap gap-1.5 flex-grow">
                 {service.bullets.map((bullet, bIdx) => (
                   <span
                     key={bIdx}
-                    className="px-2.5 py-0.5 rounded-full border border-zinc-800/60 light:border-zinc-200 bg-zinc-900/30 light:bg-zinc-50 text-zinc-400 light:text-zinc-500 text-[9px] font-bold uppercase tracking-wider group-hover:border-[#dc2626]/20 light:group-hover:border-[#dc2626]/20 group-hover:bg-[#dc2626]/5 light:group-hover:bg-[#dc2626]/5 group-hover:text-[#dc2626] light:group-hover:text-[#dc2626] transition-all duration-300"
+                    style={{
+                      backgroundColor: isLight ? "#fafafa" : "rgba(24, 24, 27, 0.3)",
+                      borderColor: isLight ? "#e4e4e7" : "rgba(39, 39, 42, 0.6)",
+                      color: isLight ? "#71717a" : "#a1a1aa",
+                    }}
+                    className="px-2.5 py-0.5 rounded-full border text-[9px] font-bold uppercase tracking-wider group-hover:border-[#dc2626]/20 group-hover:bg-[#dc2626]/5 group-hover:text-[#dc2626] transition-all duration-300"
                   >
                     {bullet}
                   </span>
@@ -307,7 +324,13 @@ const ServiceBentoCard: React.FC<{
               </div>
             )}
             {/* Minimal Circular Action Arrow Button */}
-            <div className="w-8 h-8 rounded-full border border-zinc-800/60 light:border-zinc-200 bg-zinc-900 light:bg-white text-zinc-400 light:text-zinc-650 flex items-center justify-center shrink-0 group-hover:bg-[#dc2626] group-hover:border-[#dc2626] group-hover:text-white transition-all duration-300">
+            <div
+              style={{
+                backgroundColor: isLight ? "#ffffff" : "rgba(24, 24, 27, 1)",
+                borderColor: isLight ? "#e4e4e7" : "rgba(39, 39, 42, 0.6)",
+                color: isLight ? "#52525b" : "#a1a1aa",
+              }}
+              className="w-8 h-8 rounded-full border flex items-center justify-center shrink-0 group-hover:bg-[#dc2626] group-hover:border-[#dc2626] group-hover:text-white transition-all duration-300">
               <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform duration-300" />
             </div>
           </div>
