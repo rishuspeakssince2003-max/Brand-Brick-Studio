@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { motion } from "motion/react";
 import { ArrowRight, CheckCircle2, ShieldCheck, Mail, MapPin } from "lucide-react";
 import { FinalCTA } from "./FinalCTA";
+import { Services } from "./Services";
 import { WhyChooseUs } from "./WhyChooseUs";
 import { LiquidButton } from "./ui/LiquidButton";
 
@@ -158,6 +159,13 @@ export function SeoLandingPage({ path }: { path: string }) {
               Initiate Growth
               <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
             </LiquidButton>
+            <LiquidButton
+              href="#services"
+              variant="outline"
+              className="inline-flex gap-2 items-center text-sm"
+            >
+              View Services
+            </LiquidButton>
           </motion.div>
         </div>
       </section>
@@ -243,6 +251,11 @@ export function SeoLandingPage({ path }: { path: string }) {
         </div>
       </motion.section>
 
+      {/* Reusable Core Sections */}
+      <div id="services">
+        <Services />
+      </div>
+      
       <WhyChooseUs />
       
       <div id="contact">

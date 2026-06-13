@@ -207,6 +207,7 @@ const stats = [
   { value: 3, suffix: "+", label: "Years" },
   { value: 50, suffix: "+", label: "Brands" },
   { value: 20, suffix: "+", label: "Team" },
+  { value: 12, suffix: "", label: "Services" },
 ];
 
 /* ══════════════════════════════════════════════════════════
