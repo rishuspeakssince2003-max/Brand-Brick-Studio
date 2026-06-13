@@ -98,18 +98,29 @@ const PillarCard: React.FC<{
         {num}
       </span>
 
+      {/* Subtle Red B Logo Watermark */}
+      <div className="absolute right-6 bottom-6 w-14 h-16 opacity-[0.06] pointer-events-none z-0 group-hover:opacity-[0.12] group-hover:scale-105 transition-all duration-500">
+        <svg viewBox="0 0 100 116" className="w-full h-full text-[#dc2626] fill-current" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 47.5 40 L 24 26.5 L 47.5 13 L 71 26.5 Z" />
+          <path d="M 22 30.5 L 45.5 43.5 L 45.5 93.5 L 22 80.5 Z" />
+          <path d="M 49.5 44.7 L 53.5 42.4 L 53.5 91.2 L 49.5 93.5 Z" />
+          <path d="M 57 40.4 L 74 30.6 C 83.5 36.1, 83.5 50.1, 74 55.5 L 57 65.3 Z" />
+          <path d="M 57 68.8 L 74 59.0 C 83.5 64.5, 83.5 78.4, 74 83.9 L 57 93.7 Z" />
+        </svg>
+      </div>
+
       <div className="relative z-10 flex flex-col h-full justify-between">
         <div>
           <div className="flex items-start justify-between mb-8">
-            <div className="w-12 h-12 rounded-2xl bg-zinc-900/80 border border-zinc-800 flex items-center justify-center text-zinc-400 group-hover:text-[#dc2626] group-hover:border-[#dc2626]/20 group-hover:-translate-y-1.5 group-hover:scale-105 group-hover:rotate-3 transition-all duration-500 light:bg-zinc-50 light:border-zinc-200">
+            <div className="w-12 h-12 rounded-2xl bg-[#dc2626]/5 border border-[#dc2626]/20 flex items-center justify-center text-[#dc2626] group-hover:-translate-y-1.5 group-hover:scale-105 group-hover:rotate-3 transition-all duration-500">
               <Icon size={22} />
             </div>
-            <span className="px-2.5 py-0.5 rounded-md border border-zinc-800 bg-zinc-900/40 text-zinc-400 text-[10px] font-mono font-bold uppercase tracking-wider transition-all duration-300 group-hover:border-[#dc2626]/20 group-hover:bg-[#dc2626]/5 group-hover:text-[#dc2626] light:border-zinc-200 light:bg-zinc-50 light:text-zinc-500">
+            <span className="px-2.5 py-0.5 rounded-md border border-[#dc2626]/20 bg-[#dc2626]/5 text-[#dc2626] text-[10px] font-mono font-bold uppercase tracking-wider transition-all duration-300">
               Pillar {num}
             </span>
           </div>
 
-          <h3 className="text-xl font-display font-bold text-white light:text-zinc-900 mb-3 group-hover:text-[#dc2626] group-hover:translate-x-1.5 transition-all duration-400">
+          <h3 className="text-xl font-display font-bold text-[#dc2626] mb-3 group-hover:translate-x-1.5 transition-all duration-400">
             {pillar.title}
           </h3>
           

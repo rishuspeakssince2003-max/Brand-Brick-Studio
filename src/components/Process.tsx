@@ -69,13 +69,10 @@ const ProcessCard: React.FC<{
       initial={{ opacity: 0, y: 40, scale: 0.95 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       whileHover={{
-        y: -6,
-        boxShadow: "0 20px 40px rgba(0, 0, 0, 0.04)",
-        borderColor: "rgba(220, 38, 38, 0.15)"
-      }}
-      whileTap={{
-        y: -2,
-        boxShadow: "0 10px 20px rgba(0, 0, 0, 0.02)"
+        y: -8,
+        scale: 1.02,
+        borderColor: "rgba(220, 38, 38, 0.25)",
+        boxShadow: "0 20px 40px rgba(220, 38, 38, 0.05)"
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
@@ -86,11 +83,9 @@ const ProcessCard: React.FC<{
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.8, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
       style={{
-        boxShadow: "0 10px 30px rgba(0, 0, 0, 0.02)",
-        backgroundColor: "#ffffff",
-        borderColor: "#e4e4e7"
+        boxShadow: "0 10px 30px rgba(0, 0, 0, 0.02)"
       }}
-      className="group relative flex flex-col justify-between p-8 rounded-[2.5rem] border overflow-hidden transition-all duration-300 min-h-[340px] cursor-pointer"
+      className="group relative flex flex-col justify-between p-8 rounded-[2.5rem] border border-zinc-800 bg-zinc-950/40 backdrop-blur-md overflow-hidden hover:bg-zinc-950/60 transition-all duration-300 min-h-[340px] cursor-pointer light:bg-white light:border-zinc-200 light:hover:bg-zinc-50/50"
     >
       {/* Interactive Cursor Spotlight */}
       <motion.div
@@ -99,45 +94,56 @@ const ProcessCard: React.FC<{
           background: useMotionTemplate`
             radial-gradient(
               350px circle at ${mouseX}px ${mouseY}px,
-              rgba(220, 38, 38, 0.03),
-              rgba(220, 38, 38, 0.005) 50%,
+              rgba(220, 38, 38, 0.12),
+              rgba(220, 38, 38, 0.02) 40%,
               transparent 80%
             )
           `,
         }}
       />
 
-      {/* Giant Faint Watermark Number behind STEP */}
-      <span className="absolute right-4 -top-2 text-[5.5rem] font-display font-black leading-none text-zinc-100/40 select-none pointer-events-none tracking-tighter group-hover:scale-105 group-hover:text-zinc-200/50 transition-all duration-500">
+      {/* Watermark Index Number */}
+      <span className="absolute -right-2 -top-4 text-[6rem] font-display font-bold leading-none text-white/[0.01] light:text-zinc-900/[0.01] group-hover:text-[#dc2626]/[0.03] transition-all duration-500 select-none pointer-events-none tracking-tighter group-hover:scale-110 group-hover:-translate-x-2 group-hover:translate-y-2">
         {num}
       </span>
+
+      {/* Subtle Red B Logo Watermark */}
+      <div className="absolute right-6 bottom-6 w-14 h-16 opacity-[0.06] pointer-events-none z-0 group-hover:opacity-[0.12] group-hover:scale-105 transition-all duration-500">
+        <svg viewBox="0 0 100 116" className="w-full h-full text-[#dc2626] fill-current" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 47.5 40 L 24 26.5 L 47.5 13 L 71 26.5 Z" />
+          <path d="M 22 30.5 L 45.5 43.5 L 45.5 93.5 L 22 80.5 Z" />
+          <path d="M 49.5 44.7 L 53.5 42.4 L 53.5 91.2 L 49.5 93.5 Z" />
+          <path d="M 57 40.4 L 74 30.6 C 83.5 36.1, 83.5 50.1, 74 55.5 L 57 65.3 Z" />
+          <path d="M 57 68.8 L 74 59.0 C 83.5 64.5, 83.5 78.4, 74 83.9 L 57 93.7 Z" />
+        </svg>
+      </div>
 
       <div className="relative z-10">
         {/* Step Index & Icon */}
         <div className="flex items-center justify-between mb-8">
-          <div className="w-12 h-12 rounded-[1.25rem] border border-[#e4e4e7] bg-[#f8f9fa] flex items-center justify-center text-[#dc2626] group-hover:border-[#dc2626]/20 group-hover:bg-[#dc2626]/5 group-hover:scale-105 transition-all duration-300">
-            <IconComp size={20} className="group-hover:scale-110 transition-transform duration-300" />
+          <div className="w-12 h-12 rounded-2xl bg-[#dc2626]/5 border border-[#dc2626]/20 flex items-center justify-center text-[#dc2626] group-hover:-translate-y-1.5 group-hover:scale-105 group-hover:rotate-3 transition-all duration-500">
+            <IconComp size={20} className="transition-transform duration-300" />
           </div>
-          <span className="text-[11px] font-display font-bold text-zinc-800 tracking-wider">
+          <span className="px-2.5 py-0.5 rounded-md border border-[#dc2626]/20 bg-[#dc2626]/5 text-[#dc2626] text-[10px] font-mono font-bold uppercase tracking-wider transition-all duration-300">
             STEP {num}
           </span>
         </div>
 
         {/* Content */}
-        <h3 className="text-xl md:text-2xl font-display font-bold text-zinc-900 mb-3 leading-tight group-hover:text-[#dc2626] transition-colors duration-300">
+        <h3 className="text-xl md:text-2xl font-display font-bold text-[#dc2626] mb-3 leading-tight group-hover:translate-x-1.5 transition-all duration-400">
           {step.title}
         </h3>
-        <p className="text-zinc-600 text-sm leading-relaxed mb-6 font-normal">
+        <p className="text-sm text-zinc-400 light:text-zinc-600 leading-relaxed mb-6 font-normal group-hover:text-zinc-300 light:group-hover:text-zinc-800 transition-colors duration-300">
           {step.desc}
         </p>
       </div>
 
       {/* Deliverables tags */}
-      <div className="relative z-10 border-t border-[#f1f1f1] pt-5 flex flex-wrap gap-2">
+      <div className="relative z-10 border-t border-zinc-800/60 light:border-zinc-200/60 pt-5 flex flex-wrap gap-2">
         {step.deliverables.map((del, dIdx) => (
           <span
             key={dIdx}
-            className="px-3 py-1 rounded-[0.5rem] border border-[#e4e4e7] bg-[#fafafa] text-zinc-700 text-[10px] font-bold uppercase tracking-wider group-hover:border-[#dc2626]/20 group-hover:bg-[#dc2626]/5 group-hover:text-[#dc2626] transition-all duration-300"
+            className="px-3 py-1 rounded-[0.5rem] border border-[#dc2626]/20 bg-[#dc2626]/5 text-[#dc2626] text-[10px] font-bold uppercase tracking-wider transition-all duration-300"
           >
             {del}
           </span>
