@@ -201,29 +201,28 @@ const ServiceBentoCard: React.FC<{
   }, []);
 
   const shadowDefault = isLight
-    ? "0 8px 0 #e4e4e7, 0 15px 30px rgba(0, 0, 0, 0.05)"
+    ? "0 8px 0 #e4e4e7, 0 15px 30px rgba(0, 0, 0, 0.03)"
     : "0 8px 0 #09090b, 0 15px 30px rgba(0, 0, 0, 0.4)";
 
   const shadowHover = isLight
-    ? "0 4px 0 #e4e4e7, 0 8px 20px rgba(0, 0, 0, 0.04)"
-    : "0 4px 0 #09090b, 0 8px 20px rgba(0, 0, 0, 0.35)";
+    ? "0 4px 0 #fca5a5, 0 8px 20px rgba(220, 38, 38, 0.06)"
+    : "0 4px 0 #991b1b, 0 8px 20px rgba(220, 38, 38, 0.25)";
 
   const shadowTap = isLight
-    ? "0 0px 0 #e4e4e7, 0 2px 8px rgba(0, 0, 0, 0.02)"
-    : "0 0px 0 #09090b, 0 2px 8px rgba(0, 0, 0, 0.2)";
+    ? "0 0px 0 #fca5a5, 0 2px 8px rgba(220, 38, 38, 0.02)"
+    : "0 0px 0 #991b1b, 0 2px 8px rgba(0, 0, 0, 0.2)";
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 30, scale: 0.97 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       whileHover={{
-        y: 4, // push down slightly on hover
+        y: 4,
         boxShadow: shadowHover,
-        borderColor: "rgba(220, 38, 38, 0.25)",
-        backgroundColor: isLight ? "#fcfcfd" : "#161619"
+        borderColor: "rgba(220, 38, 38, 0.4)",
       }}
       whileTap={{
-        y: 8, // fully depress on tap
+        y: 8,
         boxShadow: shadowTap
       }}
       onMouseEnter={() => setIsHovered(true)}
@@ -248,17 +247,17 @@ const ServiceBentoCard: React.FC<{
           document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
         }
       }}
-      className="group rounded-[2.25rem] border border-white/15 bg-[#dc2626] p-6 sm:p-8 flex flex-col justify-between shadow-[0_6px_0_#991b1b,0_12px_20px_rgba(220, 38, 38, 0.35)] relative overflow-hidden min-h-[300px] cursor-pointer"
+      className="group rounded-[2.25rem] border border-zinc-800/30 light:border-zinc-100 bg-[#1c1c1e]/40 light:bg-white p-6 sm:p-8 flex flex-col justify-between transition-colors duration-300 relative overflow-hidden min-h-[300px] cursor-pointer"
     >
-      {/* Glossy White Reflection Spotlight */}
+      {/* Interactive Cursor Spotlight */}
       <motion.div
         className="pointer-events-none absolute -inset-px rounded-[2.25rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"
         style={{
           background: useMotionTemplate`
             radial-gradient(
               300px circle at ${mouseX}px ${mouseY}px,
-              rgba(255, 255, 255, 0.12),
-              rgba(255, 255, 255, 0.02) 50%,
+              rgba(220, 38, 38, 0.04),
+              rgba(220, 38, 38, 0.01) 50%,
               transparent 80%
             )
           `,
@@ -269,14 +268,14 @@ const ServiceBentoCard: React.FC<{
       <div className="relative z-10 h-full flex flex-col justify-between flex-grow">
         {/* Top row: Icon + Index */}
         <div className="flex items-start justify-between">
-          <div className="relative h-11 w-11 rounded-2xl bg-white/10 border border-white/15 flex items-center justify-center
-            group-hover:bg-white/20 group-hover:scale-105 transition-all duration-300">
-            <div className="text-white transition-colors duration-300 stroke-current">
+          <div className="relative h-11 w-11 rounded-2xl bg-zinc-900 light:bg-zinc-50 border border-zinc-800/80 light:border-zinc-200 flex items-center justify-center
+            group-hover:border-[#dc2626]/20 light:group-hover:border-[#dc2626]/20 group-hover:bg-[#dc2626]/5 light:group-hover:bg-[#dc2626]/5 group-hover:scale-105 transition-all duration-300">
+            <div className="text-zinc-500 light:text-zinc-400 group-hover:text-[#dc2626] transition-colors duration-300 stroke-current">
               {svgIcons[service.icon]}
             </div>
           </div>
 
-          <span className="text-[11px] font-mono font-medium text-white/60 tracking-wider mt-1">
+          <span className="text-[11px] font-mono font-bold text-zinc-500 light:text-zinc-400 group-hover:text-[#dc2626]/80 transition-colors duration-300 tracking-wider mt-1">
             {num}
           </span>
         </div>
@@ -284,22 +283,22 @@ const ServiceBentoCard: React.FC<{
         {/* Bottom: Title + Description + Bullets */}
         <div className="mt-8 flex-grow flex flex-col justify-between">
           <div>
-            <h4 className="text-lg md:text-xl font-display font-semibold text-white mb-2.5 leading-tight drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]">
+            <h4 className="text-lg md:text-xl font-display font-bold text-white light:text-zinc-900 mb-2.5 leading-tight group-hover:text-[#dc2626] transition-all duration-300">
               {service.title}
             </h4>
-            <p className="text-white/85 text-xs sm:text-sm leading-relaxed mb-4">
+            <p className="text-zinc-450 light:text-zinc-550 text-xs sm:text-sm leading-relaxed mb-4 transition-colors duration-300">
               {service.desc}
             </p>
           </div>
 
           {/* Bullets + Interactive Arrow Button */}
-          <div className="flex items-center justify-between gap-3 mt-4 border-t border-white/10 pt-4">
+          <div className="flex items-center justify-between gap-3 mt-4 border-t border-zinc-800/30 light:border-zinc-100 pt-4">
             {service.bullets && (
               <div className="flex flex-wrap gap-1.5 flex-grow">
                 {service.bullets.map((bullet, bIdx) => (
                   <span
                     key={bIdx}
-                    className="px-2.5 py-0.5 rounded-full border border-white/10 bg-white/10 text-white/90 text-[9px] font-medium group-hover:border-white/30 group-hover:bg-white/20 transition-all duration-300"
+                    className="px-2.5 py-0.5 rounded-full border border-zinc-800/60 light:border-zinc-200 bg-zinc-900/30 light:bg-zinc-50 text-zinc-400 light:text-zinc-500 text-[9px] font-bold uppercase tracking-wider group-hover:border-[#dc2626]/20 light:group-hover:border-[#dc2626]/20 group-hover:bg-[#dc2626]/5 light:group-hover:bg-[#dc2626]/5 group-hover:text-[#dc2626] light:group-hover:text-[#dc2626] transition-all duration-300"
                   >
                     {bullet}
                   </span>
