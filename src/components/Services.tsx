@@ -193,13 +193,13 @@ const ServiceBentoCard: React.FC<{
       initial={{ opacity: 0, y: 30, scale: 0.97 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       whileHover={{
-        y: 4,
-        boxShadow: "var(--service-card-shadow-hover)",
-        borderColor: "rgba(220, 38, 38, 0.4)",
+        y: -6,
+        boxShadow: "0 20px 40px rgba(0, 0, 0, 0.04)",
+        borderColor: "rgba(220, 38, 38, 0.15)",
       }}
       whileTap={{
-        y: 8,
-        boxShadow: "var(--service-card-shadow-tap)"
+        y: -2,
+        boxShadow: "0 10px 20px rgba(0, 0, 0, 0.02)"
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
@@ -208,9 +208,9 @@ const ServiceBentoCard: React.FC<{
       }}
       viewport={{ once: true, margin: "-40px" }}
       style={{
-        boxShadow: "var(--service-card-shadow-default)",
-        backgroundColor: "var(--service-card-bg)",
-        borderColor: "var(--service-card-border)",
+        boxShadow: "0 10px 30px rgba(0, 0, 0, 0.02)",
+        backgroundColor: "#ffffff",
+        borderColor: "#e4e4e7",
       }}
       transition={{
         type: "spring",
@@ -218,113 +218,70 @@ const ServiceBentoCard: React.FC<{
         damping: 25
       }}
       onMouseMove={handleMouseMove}
-      onClick={() => {
-        if ((window as any).lenis) {
-          (window as any).lenis.scrollTo("#contact");
-        } else {
-          document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-        }
-      }}
-      className="group rounded-[2.25rem] border p-6 sm:p-8 flex flex-col justify-between transition-colors duration-300 relative overflow-hidden min-h-[300px] cursor-pointer"
+      className="group rounded-[2.5rem] border p-8 flex flex-col justify-between transition-all duration-300 relative overflow-hidden min-h-[320px] cursor-pointer"
     >
       {/* Interactive Cursor Spotlight */}
       <motion.div
-        className="pointer-events-none absolute -inset-px rounded-[2.25rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"
+        className="pointer-events-none absolute -inset-px rounded-[2.5rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"
         style={{
           background: useMotionTemplate`
             radial-gradient(
               300px circle at ${mouseX}px ${mouseY}px,
-              rgba(220, 38, 38, 0.04),
-              rgba(220, 38, 38, 0.01) 50%,
+              rgba(220, 38, 38, 0.03),
+              rgba(220, 38, 38, 0.005) 50%,
               transparent 80%
             )
           `,
         }}
       />
 
-      {/* Subtle Red B Logo Watermark */}
-      <div className="absolute right-6 bottom-16 w-14 h-16 opacity-[0.06] pointer-events-none z-0 group-hover:opacity-[0.12] group-hover:scale-105 transition-all duration-500">
-        <svg viewBox="0 0 100 116" className="w-full h-full text-[#dc2626] fill-current" xmlns="http://www.w3.org/2000/svg">
-          {/* Top Face */}
-          <path d="M 47.5 40 L 24 26.5 L 47.5 13 L 71 26.5 Z" />
-          {/* Left Face */}
-          <path d="M 22 30.5 L 45.5 43.5 L 45.5 93.5 L 22 80.5 Z" />
-          {/* Center Stem */}
-          <path d="M 49.5 44.7 L 53.5 42.4 L 53.5 91.2 L 49.5 93.5 Z" />
-          {/* Top Lobe */}
-          <path d="M 57 40.4 L 74 30.6 C 83.5 36.1, 83.5 50.1, 74 55.5 L 57 65.3 Z" />
-          {/* Bottom Lobe */}
-          <path d="M 57 68.8 L 74 59.0 C 83.5 64.5, 83.5 78.4, 74 83.9 L 57 93.7 Z" />
-        </svg>
-      </div>
+      {/* Giant Faint Watermark Number behind STEP */}
+      <span className="absolute right-4 -top-2 text-[5.5rem] font-display font-black leading-none text-zinc-100/40 select-none pointer-events-none tracking-tighter group-hover:scale-105 group-hover:text-zinc-200/50 transition-all duration-500">
+        {num}
+      </span>
 
       {/* Card Content container */}
       <div className="relative z-10 h-full flex flex-col justify-between flex-grow">
         {/* Top row: Icon + Index */}
-        <div className="flex items-start justify-between">
+        <div className="flex items-center justify-between">
           <div
-            style={{
-              backgroundColor: "var(--service-card-icon-bg)",
-              borderColor: "var(--service-card-icon-border)",
-            }}
-            className="relative h-11 w-11 rounded-2xl border flex items-center justify-center
-            group-hover:border-[#dc2626]/20 group-hover:bg-[#dc2626]/5 group-hover:scale-105 transition-all duration-300">
-            <div className="text-zinc-500 light:text-zinc-400 group-hover:text-[#dc2626] transition-colors duration-300 stroke-current">
+            className="relative h-12 w-12 rounded-[1.25rem] border border-[#e4e4e7] bg-[#f8f9fa] flex items-center justify-center
+            group-hover:border-[#dc2626]/20 group-hover:bg-[#dc2626]/5 group-hover:scale-105 transition-all duration-300 animate-[fade-in_0.5s_ease-out]">
+            <div className="text-[#dc2626] transition-colors duration-300 stroke-current flex items-center justify-center">
               {svgIcons[service.icon]}
             </div>
           </div>
 
-          <span className="text-[11px] font-mono font-bold text-zinc-500 light:text-zinc-400 group-hover:text-[#dc2626]/80 transition-colors duration-300 tracking-wider mt-1">
-            {num}
+          <span className="text-[11px] font-display font-bold text-zinc-800 tracking-wider">
+            SERVICE {num}
           </span>
         </div>
 
         {/* Bottom: Title + Description + Bullets */}
         <div className="mt-8 flex-grow flex flex-col justify-between">
           <div>
-            <h4
-              style={{ color: "var(--service-card-title-color)" }}
-              className="text-lg md:text-xl font-display font-bold mb-2.5 leading-tight group-hover:text-[#dc2626] transition-all duration-300">
+            <h4 className="text-xl md:text-2xl font-display font-bold text-zinc-900 mb-3 leading-tight group-hover:text-[#dc2626] transition-colors duration-300">
               {service.title}
             </h4>
-            <p
-              style={{ color: "var(--service-card-desc-color)" }}
-              className="text-xs sm:text-sm leading-relaxed mb-4 transition-colors duration-300">
+            <p className="text-zinc-600 text-sm leading-relaxed mb-6 font-normal">
               {service.desc}
             </p>
           </div>
 
-          {/* Bullets + Interactive Arrow Button */}
-          <div
-            style={{ borderColor: "var(--service-card-divider-border)" }}
-            className="flex items-center justify-between gap-3 mt-4 border-t pt-4">
+          {/* Bullets */}
+          <div className="flex items-center justify-between gap-3 mt-4 border-t border-[#f1f1f1] pt-5">
             {service.bullets && (
-              <div className="flex flex-wrap gap-1.5 flex-grow">
+              <div className="flex flex-wrap gap-2 flex-grow">
                 {service.bullets.map((bullet, bIdx) => (
                   <span
                     key={bIdx}
-                    style={{
-                      backgroundColor: "var(--service-card-bullet-bg)",
-                      borderColor: "var(--service-card-bullet-border)",
-                      color: "var(--service-card-bullet-text)",
-                    }}
-                    className="px-2.5 py-0.5 rounded-full border text-[9px] font-bold uppercase tracking-wider group-hover:border-[#dc2626]/20 group-hover:bg-[#dc2626]/5 group-hover:text-[#dc2626] transition-all duration-300"
+                    className="px-3 py-1 rounded-[0.5rem] border border-[#e4e4e7] bg-[#fafafa] text-zinc-700 text-[10px] font-bold uppercase tracking-wider group-hover:border-[#dc2626]/20 group-hover:bg-[#dc2626]/5 group-hover:text-[#dc2626] transition-all duration-300"
                   >
                     {bullet}
                   </span>
                 ))}
               </div>
             )}
-            {/* Minimal Circular Action Arrow Button */}
-            <div
-              style={{
-                backgroundColor: "var(--service-card-arrow-bg)",
-                borderColor: "var(--service-card-arrow-border)",
-                color: "var(--service-card-arrow-text)",
-              }}
-              className="w-8 h-8 rounded-full border flex items-center justify-center shrink-0 group-hover:bg-[#dc2626] group-hover:border-[#dc2626] group-hover:text-white transition-all duration-300">
-              <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform duration-300" />
-            </div>
           </div>
         </div>
       </div>

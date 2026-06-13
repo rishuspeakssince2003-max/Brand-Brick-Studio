@@ -69,10 +69,13 @@ const ProcessCard: React.FC<{
       initial={{ opacity: 0, y: 40, scale: 0.95 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       whileHover={{
-        y: -8,
-        scale: 1.02,
-        borderColor: "rgba(220, 38, 38, 0.25)",
-        boxShadow: "0 20px 40px rgba(220, 38, 38, 0.05)"
+        y: -6,
+        boxShadow: "0 20px 40px rgba(0, 0, 0, 0.04)",
+        borderColor: "rgba(220, 38, 38, 0.15)"
+      }}
+      whileTap={{
+        y: -2,
+        boxShadow: "0 10px 20px rgba(0, 0, 0, 0.02)"
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
@@ -82,7 +85,12 @@ const ProcessCard: React.FC<{
       onMouseMove={handleMouseMove}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.8, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
-      className="group relative flex flex-col justify-between p-8 rounded-[2.5rem] bg-zinc-950/40 border border-zinc-800 backdrop-blur-md overflow-hidden hover:bg-zinc-950/60 transition-colors duration-500 shadow-lg min-h-[340px] cursor-pointer light:bg-white light:border-zinc-200 light:hover:bg-zinc-50/50"
+      style={{
+        boxShadow: "0 10px 30px rgba(0, 0, 0, 0.02)",
+        backgroundColor: "#ffffff",
+        borderColor: "#e4e4e7"
+      }}
+      className="group relative flex flex-col justify-between p-8 rounded-[2.5rem] border overflow-hidden transition-all duration-300 min-h-[340px] cursor-pointer"
     >
       {/* Interactive Cursor Spotlight */}
       <motion.div
@@ -91,45 +99,45 @@ const ProcessCard: React.FC<{
           background: useMotionTemplate`
             radial-gradient(
               350px circle at ${mouseX}px ${mouseY}px,
-              rgba(220, 38, 38, 0.12),
-              rgba(220, 38, 38, 0.02) 40%,
+              rgba(220, 38, 38, 0.03),
+              rgba(220, 38, 38, 0.005) 50%,
               transparent 80%
             )
           `,
         }}
       />
 
-      {/* Watermark Index Number */}
-      <span className="absolute -right-2 -top-4 text-[6rem] font-display font-bold leading-none text-white/[0.01] light:text-zinc-900/[0.01] group-hover:text-[#dc2626]/[0.03] transition-all duration-500 select-none pointer-events-none tracking-tighter group-hover:scale-110 group-hover:-translate-x-2 group-hover:translate-y-2">
+      {/* Giant Faint Watermark Number behind STEP */}
+      <span className="absolute right-4 -top-2 text-[5.5rem] font-display font-black leading-none text-zinc-100/40 select-none pointer-events-none tracking-tighter group-hover:scale-105 group-hover:text-zinc-200/50 transition-all duration-500">
         {num}
       </span>
 
       <div className="relative z-10">
         {/* Step Index & Icon */}
         <div className="flex items-center justify-between mb-8">
-          <div className="w-12 h-12 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-[#dc2626] shadow-[0_0_15px_rgba(220,38,38,0.1)] group-hover:bg-[#dc2626]/10 group-hover:border-[#dc2626]/30 group-hover:-translate-y-1.5 group-hover:scale-105 group-hover:rotate-3 transition-all duration-500 light:bg-zinc-100 light:border-zinc-200">
+          <div className="w-12 h-12 rounded-[1.25rem] border border-[#e4e4e7] bg-[#f8f9fa] flex items-center justify-center text-[#dc2626] group-hover:border-[#dc2626]/20 group-hover:bg-[#dc2626]/5 group-hover:scale-105 transition-all duration-300">
             <IconComp size={20} className="group-hover:scale-110 transition-transform duration-300" />
           </div>
-          <span className="text-[10px] font-mono font-bold text-zinc-600 uppercase tracking-widest transition-colors duration-300 group-hover:text-[#dc2626]/80">
-            Step {num}
+          <span className="text-[11px] font-display font-bold text-zinc-800 tracking-wider">
+            STEP {num}
           </span>
         </div>
 
         {/* Content */}
-        <h3 className="text-xl font-display font-bold text-white light:text-zinc-900 mb-4 group-hover:text-[#dc2626] group-hover:translate-x-1.5 transition-all duration-400">
+        <h3 className="text-xl md:text-2xl font-display font-bold text-zinc-900 mb-3 leading-tight group-hover:text-[#dc2626] transition-colors duration-300">
           {step.title}
         </h3>
-        <p className="text-sm text-zinc-400 light:text-zinc-600 leading-relaxed mb-6 group-hover:text-zinc-300 light:group-hover:text-zinc-800 transition-colors duration-300">
+        <p className="text-zinc-600 text-sm leading-relaxed mb-6 font-normal">
           {step.desc}
         </p>
       </div>
 
       {/* Deliverables tags */}
-      <div className="relative z-10 border-t border-zinc-900/60 pt-4 flex flex-wrap gap-2 light:border-zinc-200">
+      <div className="relative z-10 border-t border-[#f1f1f1] pt-5 flex flex-wrap gap-2">
         {step.deliverables.map((del, dIdx) => (
           <span
             key={dIdx}
-            className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-zinc-900/80 border border-zinc-800 text-zinc-500 transition-all duration-300 group-hover:border-[#dc2626]/20 group-hover:bg-[#dc2626]/5 group-hover:text-[#dc2626] light:bg-zinc-100 light:border-zinc-200 light:text-zinc-600"
+            className="px-3 py-1 rounded-[0.5rem] border border-[#e4e4e7] bg-[#fafafa] text-zinc-700 text-[10px] font-bold uppercase tracking-wider group-hover:border-[#dc2626]/20 group-hover:bg-[#dc2626]/5 group-hover:text-[#dc2626] transition-all duration-300"
           >
             {del}
           </span>
