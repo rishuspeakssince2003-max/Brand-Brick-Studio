@@ -232,7 +232,8 @@ const ServiceBentoCard: React.FC<{
       }}
       viewport={{ once: true, margin: "-40px" }}
       style={{
-        boxShadow: shadowDefault
+        boxShadow: shadowDefault,
+        backgroundColor: isLight ? "#ffffff" : "rgba(28, 28, 30, 0.4)",
       }}
       transition={{
         type: "spring",
@@ -247,7 +248,7 @@ const ServiceBentoCard: React.FC<{
           document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
         }
       }}
-      className="group rounded-[2.25rem] border border-zinc-800/30 light:border-zinc-100 bg-[#1c1c1e]/40 light:bg-white p-6 sm:p-8 flex flex-col justify-between transition-colors duration-300 relative overflow-hidden min-h-[300px] cursor-pointer"
+      className="group rounded-[2.25rem] border border-zinc-800/30 light:border-zinc-200 p-6 sm:p-8 flex flex-col justify-between transition-colors duration-300 relative overflow-hidden min-h-[300px] cursor-pointer"
     >
       {/* Interactive Cursor Spotlight */}
       <motion.div
