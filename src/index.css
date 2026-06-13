@@ -93,6 +93,24 @@ html.light body {
   --btn-3d-outline-glow-active: rgba(0, 0, 0, 0.2);
   --btn-3d-outline-text: #a1a1aa;
   --btn-3d-outline-text-hover: #ffffff;
+
+  /* Services Card Variables */
+  --service-card-bg: rgba(28, 28, 30, 0.4);
+  --service-card-border: rgba(39, 39, 42, 0.3);
+  --service-card-shadow-default: 0 8px 0 #09090b, 0 15px 30px rgba(0, 0, 0, 0.4);
+  --service-card-shadow-hover: 0 4px 0 #991b1b, 0 8px 20px rgba(220, 38, 38, 0.25);
+  --service-card-shadow-tap: 0 0px 0 #991b1b, 0 2px 8px rgba(0, 0, 0, 0.2);
+  --service-card-title-color: #ffffff;
+  --service-card-desc-color: #a1a1aa;
+  --service-card-icon-bg: rgba(24, 24, 27, 1);
+  --service-card-icon-border: rgba(39, 39, 42, 0.8);
+  --service-card-divider-border: rgba(39, 39, 42, 0.3);
+  --service-card-bullet-bg: rgba(24, 24, 27, 0.3);
+  --service-card-bullet-border: rgba(39, 39, 42, 0.6);
+  --service-card-bullet-text: #a1a1aa;
+  --service-card-arrow-bg: rgba(24, 24, 27, 1);
+  --service-card-arrow-border: rgba(39, 39, 42, 0.6);
+  --service-card-arrow-text: #a1a1aa;
 }
 
 .light {
@@ -104,6 +122,24 @@ html.light body {
   --btn-3d-outline-glow-active: rgba(0, 0, 0, 0.05);
   --btn-3d-outline-text: #4b5563;
   --btn-3d-outline-text-hover: #111827;
+
+  /* Services Card Light Theme Overrides */
+  --service-card-bg: #ffffff;
+  --service-card-border: #e4e4e7;
+  --service-card-shadow-default: 0 8px 0 #e4e4e7, 0 15px 30px rgba(0, 0, 0, 0.03);
+  --service-card-shadow-hover: 0 4px 0 #fca5a5, 0 8px 20px rgba(220, 38, 38, 0.06);
+  --service-card-shadow-tap: 0 0px 0 #fca5a5, 0 2px 8px rgba(220, 38, 38, 0.02);
+  --service-card-title-color: #18181b;
+  --service-card-desc-color: #52525b;
+  --service-card-icon-bg: #fafafa;
+  --service-card-icon-border: #e4e4e7;
+  --service-card-divider-border: #f4f4f5;
+  --service-card-bullet-bg: #fafafa;
+  --service-card-bullet-border: #e4e4e7;
+  --service-card-bullet-text: #71717a;
+  --service-card-arrow-bg: #ffffff;
+  --service-card-arrow-border: #e4e4e7;
+  --service-card-arrow-text: #52525b;
 }
 
 /* ─────────────────────────────────────────────────────────

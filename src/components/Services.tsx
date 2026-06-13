@@ -188,42 +188,18 @@ const ServiceBentoCard: React.FC<{
     mouseY.set(e.clientY - rectRef.current.top);
   }
 
-  // Watch for light theme changes to adapt 3D shadows
-  const [isLight, setIsLight] = useState(false);
-  useEffect(() => {
-    const checkTheme = () => {
-      setIsLight(document.documentElement.classList.contains("light"));
-    };
-    checkTheme();
-    const observer = new MutationObserver(checkTheme);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-    return () => observer.disconnect();
-  }, []);
-
-  const shadowDefault = isLight
-    ? "0 8px 0 #e4e4e7, 0 15px 30px rgba(0, 0, 0, 0.03)"
-    : "0 8px 0 #09090b, 0 15px 30px rgba(0, 0, 0, 0.4)";
-
-  const shadowHover = isLight
-    ? "0 4px 0 #fca5a5, 0 8px 20px rgba(220, 38, 38, 0.06)"
-    : "0 4px 0 #991b1b, 0 8px 20px rgba(220, 38, 38, 0.25)";
-
-  const shadowTap = isLight
-    ? "0 0px 0 #fca5a5, 0 2px 8px rgba(220, 38, 38, 0.02)"
-    : "0 0px 0 #991b1b, 0 2px 8px rgba(0, 0, 0, 0.2)";
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 30, scale: 0.97 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       whileHover={{
         y: 4,
-        boxShadow: shadowHover,
+        boxShadow: "var(--service-card-shadow-hover)",
         borderColor: "rgba(220, 38, 38, 0.4)",
       }}
       whileTap={{
         y: 8,
-        boxShadow: shadowTap
+        boxShadow: "var(--service-card-shadow-tap)"
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
@@ -232,9 +208,9 @@ const ServiceBentoCard: React.FC<{
       }}
       viewport={{ once: true, margin: "-40px" }}
       style={{
-        boxShadow: shadowDefault,
-        backgroundColor: isLight ? "#ffffff" : "rgba(28, 28, 30, 0.4)",
-        borderColor: isLight ? "#e4e4e7" : "rgba(39, 39, 42, 0.3)",
+        boxShadow: "var(--service-card-shadow-default)",
+        backgroundColor: "var(--service-card-bg)",
+        borderColor: "var(--service-card-border)",
       }}
       transition={{
         type: "spring",
@@ -272,8 +248,8 @@ const ServiceBentoCard: React.FC<{
         <div className="flex items-start justify-between">
           <div
             style={{
-              backgroundColor: isLight ? "#fafafa" : "rgba(24, 24, 27, 1)",
-              borderColor: isLight ? "#e4e4e7" : "rgba(39, 39, 42, 0.8)",
+              backgroundColor: "var(--service-card-icon-bg)",
+              borderColor: "var(--service-card-icon-border)",
             }}
             className="relative h-11 w-11 rounded-2xl border flex items-center justify-center
             group-hover:border-[#dc2626]/20 group-hover:bg-[#dc2626]/5 group-hover:scale-105 transition-all duration-300">
@@ -291,12 +267,12 @@ const ServiceBentoCard: React.FC<{
         <div className="mt-8 flex-grow flex flex-col justify-between">
           <div>
             <h4
-              style={{ color: isLight ? "#18181b" : "#ffffff" }}
+              style={{ color: "var(--service-card-title-color)" }}
               className="text-lg md:text-xl font-display font-bold mb-2.5 leading-tight group-hover:text-[#dc2626] transition-all duration-300">
               {service.title}
             </h4>
             <p
-              style={{ color: isLight ? "#52525b" : "#a1a1aa" }}
+              style={{ color: "var(--service-card-desc-color)" }}
               className="text-xs sm:text-sm leading-relaxed mb-4 transition-colors duration-300">
               {service.desc}
             </p>
@@ -304,7 +280,7 @@ const ServiceBentoCard: React.FC<{
 
           {/* Bullets + Interactive Arrow Button */}
           <div
-            style={{ borderColor: isLight ? "#f4f4f5" : "rgba(39, 39, 42, 0.3)" }}
+            style={{ borderColor: "var(--service-card-divider-border)" }}
             className="flex items-center justify-between gap-3 mt-4 border-t pt-4">
             {service.bullets && (
               <div className="flex flex-wrap gap-1.5 flex-grow">
@@ -312,9 +288,9 @@ const ServiceBentoCard: React.FC<{
                   <span
                     key={bIdx}
                     style={{
-                      backgroundColor: isLight ? "#fafafa" : "rgba(24, 24, 27, 0.3)",
-                      borderColor: isLight ? "#e4e4e7" : "rgba(39, 39, 42, 0.6)",
-                      color: isLight ? "#71717a" : "#a1a1aa",
+                      backgroundColor: "var(--service-card-bullet-bg)",
+                      borderColor: "var(--service-card-bullet-border)",
+                      color: "var(--service-card-bullet-text)",
                     }}
                     className="px-2.5 py-0.5 rounded-full border text-[9px] font-bold uppercase tracking-wider group-hover:border-[#dc2626]/20 group-hover:bg-[#dc2626]/5 group-hover:text-[#dc2626] transition-all duration-300"
                   >
@@ -326,9 +302,9 @@ const ServiceBentoCard: React.FC<{
             {/* Minimal Circular Action Arrow Button */}
             <div
               style={{
-                backgroundColor: isLight ? "#ffffff" : "rgba(24, 24, 27, 1)",
-                borderColor: isLight ? "#e4e4e7" : "rgba(39, 39, 42, 0.6)",
-                color: isLight ? "#52525b" : "#a1a1aa",
+                backgroundColor: "var(--service-card-arrow-bg)",
+                borderColor: "var(--service-card-arrow-border)",
+                color: "var(--service-card-arrow-text)",
               }}
               className="w-8 h-8 rounded-full border flex items-center justify-center shrink-0 group-hover:bg-[#dc2626] group-hover:border-[#dc2626] group-hover:text-white transition-all duration-300">
               <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform duration-300" />
