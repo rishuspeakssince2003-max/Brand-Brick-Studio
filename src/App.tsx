@@ -5,7 +5,6 @@ import { Loader } from "./components/Loader";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
 import { BrandStatement } from "./components/BrandStatement";
-import { Services } from "./components/Services";
 import { Process } from "./components/Process";
 import { WhyChooseUs } from "./components/WhyChooseUs";
 import { FounderStory } from "./components/FounderStory";
@@ -199,7 +198,6 @@ export default function App() {
             >
               <Hero />
               <BrandStatement />
-              <Services />
               <Process />
               <WhyChooseUs />
               <FounderStory />

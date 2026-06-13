@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { motion } from "motion/react";
 import { ArrowRight, CheckCircle2, ShieldCheck, Mail, MapPin } from "lucide-react";
 import { FinalCTA } from "./FinalCTA";
-import { Services } from "./Services";
 import { WhyChooseUs } from "./WhyChooseUs";
 import { LiquidButton } from "./ui/LiquidButton";
 
@@ -251,11 +250,6 @@ export function SeoLandingPage({ path }: { path: string }) {
         </div>
       </motion.section>
 
-      {/* Reusable Core Sections */}
-      <div id="services">
-        <Services />
-      </div>
-      
       <WhyChooseUs />
       
       <div id="contact">

@@ -3,7 +3,6 @@ import { ArrowUpRight, Mail, Instagram, MapPin } from "lucide-react";
 import { LiquidButton } from "./ui/LiquidButton";
 
 const links = [
-  { name: "Services", href: "/#services" },
   { name: "Process", href: "/#process" },
   { name: "Why Us", href: "/#why-us" },
   { name: "Founder", href: "/#founder" },
