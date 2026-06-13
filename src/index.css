@@ -94,23 +94,23 @@ html.light body {
   --btn-3d-outline-text: #a1a1aa;
   --btn-3d-outline-text-hover: #ffffff;
 
-  /* Services Card Variables (Transparent in Dark, White in Light) */
-  --service-card-bg: transparent;
-  --service-card-border: rgba(63, 63, 70, 0.4);
-  --service-card-shadow-default: none;
-  --service-card-shadow-hover: 0 4px 20px rgba(220, 38, 38, 0.15);
-  --service-card-shadow-tap: none;
-  --service-card-title-color: #ffffff;
-  --service-card-desc-color: #a1a1aa;
-  --service-card-icon-bg: rgba(24, 24, 27, 1);
-  --service-card-icon-border: rgba(63, 63, 70, 0.4);
-  --service-card-divider-border: rgba(63, 63, 70, 0.2);
-  --service-card-bullet-bg: rgba(24, 24, 27, 0.3);
-  --service-card-bullet-border: rgba(63, 63, 70, 0.3);
-  --service-card-bullet-text: #a1a1aa;
-  --service-card-arrow-bg: rgba(24, 24, 27, 1);
-  --service-card-arrow-border: rgba(63, 63, 70, 0.4);
-  --service-card-arrow-text: #a1a1aa;
+  /* Services Card Variables (Always White with Dark Text, matching Mockup) */
+  --service-card-bg: #ffffff;
+  --service-card-border: #e4e4e7;
+  --service-card-shadow-default: 0 8px 0 #e4e4e7, 0 15px 30px rgba(0, 0, 0, 0.03);
+  --service-card-shadow-hover: 0 4px 0 #fca5a5, 0 8px 20px rgba(220, 38, 38, 0.06);
+  --service-card-shadow-tap: 0 0px 0 #fca5a5, 0 2px 8px rgba(220, 38, 38, 0.02);
+  --service-card-title-color: #18181b;
+  --service-card-desc-color: #52525b;
+  --service-card-icon-bg: #fafafa;
+  --service-card-icon-border: #e4e4e7;
+  --service-card-divider-border: #f4f4f5;
+  --service-card-bullet-bg: #fafafa;
+  --service-card-bullet-border: #e4e4e7;
+  --service-card-bullet-text: #71717a;
+  --service-card-arrow-bg: #ffffff;
+  --service-card-arrow-border: #e4e4e7;
+  --service-card-arrow-text: #52525b;
 }
 
 .light {
