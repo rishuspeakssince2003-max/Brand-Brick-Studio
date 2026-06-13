@@ -112,6 +112,17 @@ function FloatingServiceDeck() {
   const [offset, setOffset] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
+  const [isLight, setIsLight] = useState(false);
+  useEffect(() => {
+    const checkTheme = () => {
+      setIsLight(document.documentElement.classList.contains("light"));
+    };
+    checkTheme();
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+
   useEffect(() => {
     if (isHovered) return;
     const interval = setInterval(() => {
@@ -124,7 +135,9 @@ function FloatingServiceDeck() {
     <div 
       className="relative w-full h-full flex items-center justify-center cursor-pointer z-10 perspective-[1200px]"
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+      }}
       onClick={() => setOffset((prev) => (prev + 1) % servicesList.length)}
     >
       {servicesList.map((service, idx) => {
@@ -142,7 +155,9 @@ function FloatingServiceDeck() {
               scale: isHovered ? 1.04 : 1 - visualIdx * 0.05,
               x: isHovered ? (visualIdx - 1.5) * 42 : visualIdx * 10,
               zIndex: servicesList.length - visualIdx,
-              boxShadow: isHovered ? "0 0 40px rgba(220,38,38,0.15)" : "0 0 50px rgba(0,0,0,0.5)"
+              boxShadow: isHovered 
+                ? (isLight ? "0 10px 30px rgba(0,0,0,0.06), 0 0 20px rgba(220,38,38,0.05)" : "0 0 40px rgba(220,38,38,0.15)") 
+                : (isLight ? "0 5px 20px rgba(0,0,0,0.04)" : "0 0 50px rgba(0,0,0,0.5)")
             }}
             transition={{ type: "spring", stiffness: isHovered ? 300 : 120, damping: isHovered ? 25 : 18 }}
             className="absolute w-[200px] h-[280px] sm:w-[240px] sm:h-[340px] md:w-[260px] md:h-[360px] rounded-[2rem] flex flex-col items-center justify-center gap-6 p-6 group light:shadow-sm"

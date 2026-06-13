@@ -76,7 +76,7 @@ const PillarCard: React.FC<{
       onMouseMove={handleMouseMove}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.8, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
-      className="group relative p-8 md:p-10 rounded-[2.5rem] bg-zinc-950/40 border border-zinc-855 backdrop-blur-md overflow-hidden hover:bg-zinc-950/60 transition-colors duration-500 cursor-pointer light:bg-white light:border-zinc-200 light:hover:bg-zinc-50/50"
+      className="group relative p-8 md:p-10 rounded-[2.5rem] bg-zinc-950/40 border border-zinc-800 backdrop-blur-md overflow-hidden hover:bg-zinc-950/60 transition-colors duration-500 cursor-pointer light:bg-white light:border-zinc-200 light:hover:bg-zinc-50/50"
     >
       {/* Interactive Cursor Spotlight */}
       <motion.div
@@ -104,7 +104,7 @@ const PillarCard: React.FC<{
             <div className="w-12 h-12 rounded-2xl bg-zinc-900/80 border border-zinc-800 flex items-center justify-center text-zinc-400 group-hover:text-[#dc2626] group-hover:border-[#dc2626]/20 group-hover:-translate-y-1.5 group-hover:scale-105 group-hover:rotate-3 transition-all duration-500 light:bg-zinc-50 light:border-zinc-200">
               <Icon size={22} />
             </div>
-            <span className="px-2.5 py-0.5 rounded-md border border-zinc-850 bg-zinc-900/40 text-zinc-450 text-[10px] font-mono font-bold uppercase tracking-wider transition-all duration-300 group-hover:border-[#dc2626]/20 group-hover:bg-[#dc2626]/5 group-hover:text-[#dc2626] light:border-zinc-200 light:bg-zinc-50 light:text-zinc-500">
+            <span className="px-2.5 py-0.5 rounded-md border border-zinc-800 bg-zinc-900/40 text-zinc-400 text-[10px] font-mono font-bold uppercase tracking-wider transition-all duration-300 group-hover:border-[#dc2626]/20 group-hover:bg-[#dc2626]/5 group-hover:text-[#dc2626] light:border-zinc-200 light:bg-zinc-50 light:text-zinc-500">
               Pillar {num}
             </span>
           </div>
@@ -113,7 +113,7 @@ const PillarCard: React.FC<{
             {pillar.title}
           </h3>
           
-          <p className="text-sm text-zinc-400 light:text-zinc-650 leading-relaxed group-hover:text-zinc-300 light:group-hover:text-zinc-800 transition-colors duration-300">
+          <p className="text-sm text-zinc-400 light:text-zinc-600 leading-relaxed group-hover:text-zinc-300 light:group-hover:text-zinc-800 transition-colors duration-300">
             {pillar.desc}
           </p>
         </div>
@@ -170,7 +170,7 @@ export function WhyChooseUs() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="text-base md:text-lg text-zinc-400 light:text-zinc-650 leading-relaxed font-light lg:col-span-1"
+          className="text-base md:text-lg text-zinc-400 light:text-zinc-600 leading-relaxed font-light lg:col-span-1"
         >
           "We don't just create designs. We create brand experiences that help businesses grow." We align strategy, creativity, and business focus under one unified execution team.
         </motion.p>

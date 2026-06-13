@@ -481,7 +481,7 @@ export function Services() {
             initial={{ opacity: 0, y: 20 }}
             animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-sm md:text-base text-zinc-400 light:text-zinc-655 font-light leading-relaxed max-w-2xl mt-4"
+            className="text-sm md:text-base text-zinc-400 light:text-zinc-600 font-light leading-relaxed max-w-2xl mt-4"
           >
             12 core services under one roof, creative, content, digital, and
             technical execution built for brands that refuse to blend in.

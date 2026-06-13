@@ -26,7 +26,7 @@ export function FounderStory() {
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full lg:w-1/2 relative aspect-[4/5] max-w-md lg:max-w-none rounded-[2.5rem] overflow-hidden border border-zinc-850 bg-zinc-950/40 backdrop-blur-md flex items-center justify-center light:border-zinc-200 light:bg-white/50 light:shadow-lg"
+          className="w-full lg:w-1/2 relative aspect-[4/5] max-w-md lg:max-w-none rounded-[2.5rem] overflow-hidden border border-zinc-800 bg-zinc-950/40 backdrop-blur-md flex items-center justify-center light:border-zinc-200 light:bg-white/50 light:shadow-lg"
         >
           {/* Founder Image */}
           <img 
@@ -92,7 +92,7 @@ export function FounderStory() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="space-y-6 text-zinc-400 light:text-zinc-650 leading-relaxed"
+            className="space-y-6 text-zinc-400 light:text-zinc-600 leading-relaxed"
           >
             <p className="text-lg font-light">
               I started Brand Brick Studio because I saw tremendous opportunities for businesses to grow through{" "}
@@ -176,7 +176,7 @@ export function FounderStory() {
                   rectRef.current = null;
                 }}
                 onMouseMove={handleMouseMove}
-                className="group flex gap-4 p-8 rounded-3xl bg-zinc-950/40 border border-zinc-850 backdrop-blur-md relative overflow-hidden transition-all duration-500 hover:border-[#dc2626]/20 light:bg-zinc-50 light:border-zinc-200"
+                className="group flex gap-4 p-8 rounded-3xl bg-zinc-950/40 border border-zinc-800 backdrop-blur-md relative overflow-hidden transition-all duration-500 hover:border-[#dc2626]/20 light:bg-zinc-50 light:border-zinc-200"
               >
                 {/* Interactive Spotlight */}
                 <motion.div

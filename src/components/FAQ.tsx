@@ -49,7 +49,7 @@ const FAQItem: React.FC<{ question: string; answer: string; isOpen: boolean; onT
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
             className="overflow-hidden"
           >
-            <p className="text-sm md:text-base text-zinc-400 light:text-zinc-655 leading-relaxed max-w-3xl">
+            <p className="text-sm md:text-base text-zinc-400 light:text-zinc-600 leading-relaxed max-w-3xl">
               {answer}
             </p>
           </motion.div>
@@ -109,7 +109,7 @@ export function FAQ() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-60px" }}
         transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-        className="bg-zinc-950/40 border border-zinc-850 p-8 md:p-12 rounded-[2.5rem] backdrop-blur-md shadow-lg light:bg-white/50 light:border-zinc-200"
+        className="bg-zinc-950/40 border border-zinc-800 p-8 md:p-12 rounded-[2.5rem] backdrop-blur-md shadow-lg light:bg-white/50 light:border-zinc-200"
       >
         {faqs.map((faq, idx) => (
           <FAQItem

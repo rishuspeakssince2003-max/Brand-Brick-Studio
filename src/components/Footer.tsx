@@ -12,7 +12,7 @@ const links = [
 
 export function Footer() {
   return (
-    <footer className="bg-transparent pt-12 md:pt-16 pb-8 px-4 md:px-6 border-t border-zinc-900 relative" id="contact">
+    <footer className="bg-transparent pt-12 md:pt-16 pb-8 px-4 md:px-6 border-t border-zinc-900 light:border-zinc-200 relative" id="contact">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-px bg-gradient-to-r from-transparent via-brand/50 to-transparent"></div>
       
       <div className="max-w-7xl mx-auto">

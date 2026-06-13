@@ -403,13 +403,13 @@ export function Admin() {
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-[#dc2626]/5 blur-[50px] pointer-events-none" />
             <div className="flex justify-between items-start mb-4">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-550">Total Pipeline Leads</span>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Total Pipeline Leads</span>
               <div className="p-2 bg-[#dc2626]/10 text-brand rounded-lg">
                 <BarChart3 size={16} />
               </div>
             </div>
             <h4 className="text-3xl font-display font-bold text-white tracking-tight mb-1">{totalLeads}</h4>
-            <p className="text-zinc-550 text-xs flex items-center gap-1.5 font-light">
+            <p className="text-zinc-500 text-xs flex items-center gap-1.5 font-light">
               <TrendingUp size={12} className="text-green-500" />
               Accumulated in database
             </p>
@@ -423,13 +423,13 @@ export function Admin() {
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/5 blur-[50px] pointer-events-none" />
             <div className="flex justify-between items-start mb-4">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-550">Transmissions Today</span>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Transmissions Today</span>
               <div className="p-2 bg-green-500/10 text-green-400 rounded-lg">
                 <Calendar size={16} />
               </div>
             </div>
             <h4 className="text-3xl font-display font-bold text-white tracking-tight mb-1">{leadsToday}</h4>
-            <p className="text-zinc-550 text-xs flex items-center gap-1.5 font-light">
+            <p className="text-zinc-500 text-xs flex items-center gap-1.5 font-light">
               <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
               Real-time tracker active
             </p>
@@ -443,7 +443,7 @@ export function Admin() {
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-[#dc2626]/5 blur-[50px] pointer-events-none" />
             <div className="flex justify-between items-start mb-4">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-550">Dominant Pipeline</span>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Dominant Pipeline</span>
               <div className="p-2 bg-[#dc2626]/10 text-brand rounded-lg">
                 <TrendingUp size={16} />
               </div>
@@ -451,7 +451,7 @@ export function Admin() {
             <h4 className="text-lg font-bold text-white tracking-tight truncate mb-1" title={getMostPopularService()}>
               {getMostPopularService()}
             </h4>
-            <p className="text-zinc-550 text-xs font-light">Most requested service category</p>
+            <p className="text-zinc-500 text-xs font-light">Most requested service category</p>
           </motion.div>
 
           <motion.div 
@@ -462,13 +462,13 @@ export function Admin() {
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 blur-[50px] pointer-events-none" />
             <div className="flex justify-between items-start mb-4">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-550">Sheet Sync Integration</span>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Sheet Sync Integration</span>
               <div className="p-2 bg-blue-500/10 text-blue-400 rounded-lg">
                 <Database size={16} />
               </div>
             </div>
             <h4 className="text-3xl font-display font-bold text-white tracking-tight mb-1">Active</h4>
-            <p className="text-zinc-550 text-xs flex items-center gap-1.5 font-light">
+            <p className="text-zinc-500 text-xs flex items-center gap-1.5 font-light">
               <Check size={12} className="text-green-500" />
               Direct Google Forms bridge
             </p>

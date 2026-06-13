@@ -82,7 +82,7 @@ const ProcessCard: React.FC<{
       onMouseMove={handleMouseMove}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.8, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
-      className="group relative flex flex-col justify-between p-8 rounded-[2.5rem] bg-zinc-950/40 border border-zinc-855 backdrop-blur-md overflow-hidden hover:bg-zinc-950/60 transition-colors duration-500 shadow-lg min-h-[340px] cursor-pointer light:bg-white light:border-zinc-200 light:hover:bg-zinc-50/50"
+      className="group relative flex flex-col justify-between p-8 rounded-[2.5rem] bg-zinc-950/40 border border-zinc-800 backdrop-blur-md overflow-hidden hover:bg-zinc-950/60 transition-colors duration-500 shadow-lg min-h-[340px] cursor-pointer light:bg-white light:border-zinc-200 light:hover:bg-zinc-50/50"
     >
       {/* Interactive Cursor Spotlight */}
       <motion.div
@@ -107,7 +107,7 @@ const ProcessCard: React.FC<{
       <div className="relative z-10">
         {/* Step Index & Icon */}
         <div className="flex items-center justify-between mb-8">
-          <div className="w-12 h-12 rounded-2xl bg-zinc-900 border border-zinc-850 flex items-center justify-center text-[#dc2626] shadow-[0_0_15px_rgba(220,38,38,0.1)] group-hover:bg-[#dc2626]/10 group-hover:border-[#dc2626]/30 group-hover:-translate-y-1.5 group-hover:scale-105 group-hover:rotate-3 transition-all duration-500 light:bg-zinc-100 light:border-zinc-200">
+          <div className="w-12 h-12 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-[#dc2626] shadow-[0_0_15px_rgba(220,38,38,0.1)] group-hover:bg-[#dc2626]/10 group-hover:border-[#dc2626]/30 group-hover:-translate-y-1.5 group-hover:scale-105 group-hover:rotate-3 transition-all duration-500 light:bg-zinc-100 light:border-zinc-200">
             <IconComp size={20} className="group-hover:scale-110 transition-transform duration-300" />
           </div>
           <span className="text-[10px] font-mono font-bold text-zinc-600 uppercase tracking-widest transition-colors duration-300 group-hover:text-[#dc2626]/80">
@@ -129,7 +129,7 @@ const ProcessCard: React.FC<{
         {step.deliverables.map((del, dIdx) => (
           <span
             key={dIdx}
-            className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-zinc-900/80 border border-zinc-800 text-zinc-500 transition-all duration-300 group-hover:border-[#dc2626]/20 group-hover:bg-[#dc2626]/5 group-hover:text-[#dc2626] light:bg-zinc-100 light:border-zinc-200 light:text-zinc-650"
+            className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-zinc-900/80 border border-zinc-800 text-zinc-500 transition-all duration-300 group-hover:border-[#dc2626]/20 group-hover:bg-[#dc2626]/5 group-hover:text-[#dc2626] light:bg-zinc-100 light:border-zinc-200 light:text-zinc-600"
           >
             {del}
           </span>
