@@ -176,7 +176,7 @@ export function FounderStory() {
                   rectRef.current = null;
                 }}
                 onMouseMove={handleMouseMove}
-                className="group flex gap-4 p-8 rounded-3xl bg-zinc-950/40 border border-zinc-800 backdrop-blur-md relative overflow-hidden transition-all duration-500 hover:border-[#dc2626]/20 light:bg-zinc-50 light:border-zinc-200"
+                className="group flex gap-4 p-8 rounded-3xl bg-white border border-zinc-200 hover:bg-zinc-50/50 shadow-sm relative overflow-hidden transition-all duration-500 hover:border-[#dc2626]/20 cursor-pointer"
               >
                 {/* Interactive Spotlight */}
                 <motion.div
@@ -185,8 +185,8 @@ export function FounderStory() {
                     background: useMotionTemplate`
                       radial-gradient(
                         250px circle at ${mouseX}px ${mouseY}px,
-                        rgba(220, 38, 38, 0.12),
-                        rgba(220, 38, 38, 0.02) 40%,
+                        rgba(220, 38, 38, 0.04),
+                        rgba(220, 38, 38, 0.005) 40%,
                         transparent 80%
                       )
                     `,
@@ -194,7 +194,7 @@ export function FounderStory() {
                 />
                 <Quote size={36} className="text-[#dc2626] shrink-0 opacity-40 mt-1 relative z-10 group-hover:scale-110 transition-transform duration-300" />
                 <div className="flex flex-col gap-2 relative z-10">
-                  <p className="text-white light:text-zinc-900 font-medium italic text-lg leading-relaxed group-hover:text-zinc-100 light:group-hover:text-zinc-950 transition-colors duration-300">
+                  <p className="text-zinc-800 font-medium italic text-lg leading-relaxed group-hover:text-zinc-950 transition-colors duration-300">
                     "I started Brand Brick Studio because I saw tremendous opportunities for businesses to grow through strong branding, powerful websites, and a strategic digital presence."
                   </p>
                   <span className="text-xs font-mono font-bold text-zinc-500 uppercase tracking-widest mt-2 group-hover:text-[#dc2626] transition-colors duration-300">

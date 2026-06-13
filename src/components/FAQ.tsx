@@ -27,15 +27,15 @@ const faqs = [
 
 const FAQItem: React.FC<{ question: string; answer: string; isOpen: boolean; onToggle: () => void }> = ({ question, answer, isOpen, onToggle }) => {
   return (
-    <div className="border-b border-zinc-900/60 pb-6 pt-6 first:pt-0 last:border-b-0 light:border-zinc-200">
+    <div className="border-b border-zinc-100 pb-6 pt-6 first:pt-0 last:border-b-0">
       <button
         onClick={onToggle}
         className="w-full flex items-center justify-between text-left group cursor-pointer focus:outline-none"
       >
-        <span className="text-lg md:text-xl font-display font-bold text-white light:text-zinc-900 group-hover:text-[#dc2626] transition-colors duration-300">
+        <span className="text-lg md:text-xl font-display font-bold text-zinc-900 group-hover:text-[#dc2626] transition-colors duration-300">
           {question}
         </span>
-        <div className={`w-8 h-8 rounded-full border border-zinc-800 flex items-center justify-center text-zinc-400 transition-all duration-300 group-hover:border-[#dc2626]/30 group-hover:text-white group-hover:bg-[#dc2626]/5 ${isOpen ? "bg-[#dc2626]/10 border-[#dc2626]/40 text-[#dc2626]" : ""} light:border-zinc-200 light:bg-zinc-50`}>
+        <div className={`w-8 h-8 rounded-full border border-zinc-200 bg-zinc-50 flex items-center justify-center text-zinc-500 transition-all duration-300 group-hover:border-[#dc2626] group-hover:text-white group-hover:bg-[#dc2626] ${isOpen ? "bg-[#dc2626] border-[#dc2626] text-white" : ""}`}>
           {isOpen ? <Minus size={14} /> : <Plus size={14} />}
         </div>
       </button>
@@ -49,7 +49,7 @@ const FAQItem: React.FC<{ question: string; answer: string; isOpen: boolean; onT
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
             className="overflow-hidden"
           >
-            <p className="text-sm md:text-base text-zinc-400 light:text-zinc-600 leading-relaxed max-w-3xl">
+            <p className="text-sm md:text-base text-zinc-650 leading-relaxed max-w-3xl font-normal">
               {answer}
             </p>
           </motion.div>
@@ -109,7 +109,7 @@ export function FAQ() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-60px" }}
         transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-        className="bg-zinc-950/40 border border-zinc-800 p-8 md:p-12 rounded-[2.5rem] backdrop-blur-md shadow-lg light:bg-white/50 light:border-zinc-200"
+        className="bg-white border border-zinc-200 p-8 md:p-12 rounded-[2.5rem] shadow-sm"
       >
         {faqs.map((faq, idx) => (
           <FAQItem

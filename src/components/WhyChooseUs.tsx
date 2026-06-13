@@ -137,54 +137,70 @@ export function WhyChooseUs() {
     <section className="py-16 md:py-24 px-4 md:px-6 max-w-7xl mx-auto scroll-mt-24 md:scroll-mt-28" id="why-us">
       {/* Header with Strategic Leverage 3D Render Asset */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center mb-16 md:mb-24">
-        <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="lg:col-span-1"
-        >
-          <span className="inline-block px-4 py-1.5 rounded-full border border-zinc-800 bg-zinc-900/50 text-[#dc2626] text-xs font-bold tracking-[0.2em] uppercase mb-6 backdrop-blur-md light:border-zinc-200 light:bg-white/50">
-            Why Brand Brick Studio
-          </span>
-          <motion.h2 
-            initial="hidden"
-            whileInView="visible"
+        <div className="flex flex-col gap-6 lg:col-span-1">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
-            variants={{
-              hidden: {},
-              visible: {
-                transition: {
-                  staggerChildren: 0.08
-                }
-              }
-            }}
-            className="text-4xl md:text-6xl font-display font-bold text-white light:text-zinc-900 tracking-tight leading-none"
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            {["Strategic", "Leverage."].map((w, idx) => (
-              <motion.span
-                key={idx}
-                variants={{
-                  hidden: { y: 30, opacity: 0, filter: "blur(6px)" },
-                  visible: { y: 0, opacity: 1, filter: "blur(0px)", transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
-                }}
-                className="inline-block mr-[0.25em]"
-              >
-                {w}
-              </motion.span>
-            ))}
-          </motion.h2>
-        </motion.div>
+            <span className="inline-block px-4 py-1.5 rounded-full border border-zinc-800 bg-zinc-900/50 text-[#dc2626] text-xs font-bold tracking-[0.2em] uppercase mb-6 backdrop-blur-md light:border-zinc-200 light:bg-white/50">
+              Why Brand Brick Studio
+            </span>
+            <motion.h2 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={{
+                hidden: {},
+                visible: {
+                  transition: {
+                    staggerChildren: 0.08
+                  }
+                }
+              }}
+              className="text-4xl md:text-6xl font-display font-bold text-white light:text-zinc-900 tracking-tight leading-none"
+            >
+              {["Strategic", "Leverage."].map((w, idx) => (
+                <motion.span
+                  key={idx}
+                  variants={{
+                    hidden: { y: 30, opacity: 0, filter: "blur(6px)" },
+                    visible: { y: 0, opacity: 1, filter: "blur(0px)", transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+                  }}
+                  className="inline-block mr-[0.25em]"
+                >
+                  {w}
+                </motion.span>
+              ))}
+            </motion.h2>
+          </motion.div>
+          
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="text-base md:text-lg text-zinc-400 light:text-zinc-600 leading-relaxed font-light"
+          >
+            "We don't just create designs. We create brand experiences that help businesses grow." We align strategy, creativity, and business focus under one unified execution team.
+          </motion.p>
+        </div>
         
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95, y: 30 }}
+          whileInView={{ opacity: 1, scale: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="text-base md:text-lg text-zinc-400 light:text-zinc-600 leading-relaxed font-light lg:col-span-1"
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="relative rounded-[2.5rem] overflow-hidden border border-zinc-200 bg-white aspect-[16/10] flex items-center justify-center shadow-sm group cursor-pointer lg:col-span-1"
         >
-          "We don't just create designs. We create brand experiences that help businesses grow." We align strategy, creativity, and business focus under one unified execution team.
-        </motion.p>
+          <img 
+            src="/strategic_leverage.png" 
+            alt="Strategic Leverage Mockup" 
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/20 via-transparent to-transparent pointer-events-none" />
+        </motion.div>
       </div>
 
       {/* Pillars Grid */}

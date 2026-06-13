@@ -256,20 +256,13 @@ export function Hero() {
       ref={ref}
       className="relative min-h-[100dvh] flex flex-col justify-between pt-32 pb-16 px-4 md:px-6 overflow-hidden"
     >
-      {/* ── Background Video & Fallback Overlay ── */}
-      <video 
-        autoplay 
-        loop 
-        muted 
-        playsinline 
-        poster="hero-poster.webp"
-        className="absolute inset-0 w-full h-full object-cover -z-25 pointer-events-none"
-      >
-        <source src="hero-loop.webm" type="video/webm" />
-        <source src="hero-loop.mp4" type="video/mp4" />
-      </video>
+      {/* ── Premium Background Image ── */}
+      <div 
+        className="absolute inset-0 w-full h-full bg-cover bg-center -z-25 pointer-events-none opacity-50 light:opacity-15 transition-opacity duration-700"
+        style={{ backgroundImage: "url('/lava_smoke_bg.png')" }}
+      />
 
-      {/* 60% Dark Overlay over video */}
+      {/* 60% Dark Overlay over background */}
       <div className="absolute inset-0 bg-[#050505]/65 light:bg-[#ffffff]/85 -z-20 pointer-events-none" />
 
       {/* Subtle WebGL fluid / lava container backdrop glow fallbacks */}

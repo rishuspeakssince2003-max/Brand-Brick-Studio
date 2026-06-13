@@ -12,6 +12,39 @@ const navLinks = [
   { name: "Contact", href: "/#contact" },
 ];
 
+const mobileContainerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.06,
+      delayChildren: 0.1
+    }
+  },
+  exit: {
+    opacity: 0,
+    transition: {
+      staggerChildren: 0.04,
+      staggerDirection: -1
+    }
+  }
+};
+
+const mobileItemVariants = {
+  hidden: { opacity: 0, y: 15, filter: "blur(3px)" },
+  show: { 
+    opacity: 1, 
+    y: 0, 
+    filter: "blur(0px)",
+    transition: { 
+      type: "spring",
+      stiffness: 280,
+      damping: 22
+    } 
+  },
+  exit: { opacity: 0, y: -10, filter: "blur(3px)" }
+};
+
 export function Navbar({ theme, toggleTheme, currentPath }: { theme: "dark" | "light"; toggleTheme: () => void; currentPath: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -120,32 +153,43 @@ export function Navbar({ theme, toggleTheme, currentPath }: { theme: "dark" | "l
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 z-40 bg-[#050505] light:bg-[#ffffff] pt-28 px-6 pb-6 overflow-y-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35 }}
+            className="fixed inset-0 z-40 bg-[#050505]/95 backdrop-blur-xl light:bg-[#ffffff]/95 pt-28 px-6 pb-6 overflow-y-auto"
+            style={{ transform: "translateZ(0)" }}
           >
-            <div className="flex flex-col gap-6">
+            <motion.div 
+              variants={mobileContainerVariants}
+              initial="hidden"
+              animate="show"
+              exit="exit"
+              className="flex flex-col gap-6"
+            >
               {navLinks.map((link) => (
-                <a
+                <motion.a
+                  variants={mobileItemVariants}
                   key={link.name}
                   href={link.href}
                   onClick={() => setIsOpen(false)}
-                  className="text-2xl font-display font-medium text-zinc-300 hover:text-white light:text-zinc-700 light:hover:text-zinc-950 transition-colors border-b border-zinc-900 light:border-zinc-100 pb-4"
+                  className="text-2xl font-display font-medium text-zinc-300 hover:text-white light:text-zinc-700 light:hover:text-zinc-950 transition-colors border-b border-zinc-905/30 light:border-zinc-100 pb-4"
                 >
                   {link.name}
-                </a>
+                </motion.a>
               ))}
-              <LiquidButton
-                href="https://wa.me/917383386318"
-                target="_blank"
-                rel="noreferrer"
-                onClick={() => setIsOpen(false)}
-                className="mt-4 self-start w-full text-center"
-              >
-                Start Chat
-              </LiquidButton>
-            </div>
+              <motion.div variants={mobileItemVariants}>
+                <LiquidButton
+                  href="https://wa.me/917383386318"
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={() => setIsOpen(false)}
+                  className="mt-4 self-start w-full text-center"
+                >
+                  Start Chat
+                </LiquidButton>
+              </motion.div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

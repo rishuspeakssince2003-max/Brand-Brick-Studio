@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { motion, useMotionValue, useMotionTemplate } from "motion/react";
-import { Building2, UtensilsCrossed, Coffee, Hotel, Sparkles } from "lucide-react";
+import { Building2, UtensilsCrossed, Coffee, Hotel, Sparkles, ShoppingBag } from "lucide-react";
 
 const industriesList = [
   {
@@ -26,6 +26,12 @@ const industriesList = [
     desc: "We engineer premium boutique resort branding, immersive spatial website layouts, and high-end volumetric campaign video shoots that command luxury bookings.",
     icon: Hotel,
     tag: "Luxury Positioning"
+  },
+  {
+    title: "E-commerce & D2C Brands",
+    desc: "We craft high-yield D2C digital storefronts, premium product packaging designs, and conversion-optimized ad creatives that scale transaction volumes and repeat acquisitions.",
+    icon: ShoppingBag,
+    tag: "Scale & Volume"
   },
   {
     title: "Ambitious Growth Businesses",

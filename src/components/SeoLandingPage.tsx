@@ -187,7 +187,7 @@ export function SeoLandingPage({ path }: { path: string }) {
         }}
         className="py-12 px-4 md:px-6 max-w-7xl mx-auto"
       >
-        <div className="bg-zinc-950/40 border border-zinc-800 p-8 md:p-12 lg:p-16 rounded-[2.5rem] backdrop-blur-md light:bg-white/50 light:border-zinc-200">
+        <div className="bg-white border border-zinc-200 p-8 md:p-12 lg:p-16 rounded-[2.5rem] shadow-sm">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
             <motion.div
               variants={{
@@ -209,7 +209,7 @@ export function SeoLandingPage({ path }: { path: string }) {
                     }
                   }
                 }}
-                className="text-3xl md:text-4xl font-display font-bold text-white light:text-zinc-900 tracking-tight leading-none mb-6"
+                className="text-3xl md:text-4xl font-display font-bold text-[#dc2626] tracking-tight leading-none mb-6"
               >
                 {"Premium visual execution for Surat and Gujarat's leading enterprises.".split(" ").map((w, idx) => (
                   <motion.span
@@ -224,7 +224,7 @@ export function SeoLandingPage({ path }: { path: string }) {
                   </motion.span>
                 ))}
               </motion.h2>
-              <p className="text-zinc-400 light:text-zinc-600 leading-relaxed">
+              <p className="text-zinc-650 leading-relaxed font-normal text-sm">
                 {config.description}
               </p>
             </motion.div>
@@ -234,13 +234,13 @@ export function SeoLandingPage({ path }: { path: string }) {
                 hidden: { opacity: 0, y: 20 },
                 visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
               }}
-              className="p-8 rounded-[2rem] bg-zinc-900/60 border border-zinc-800 flex flex-col gap-6 light:bg-zinc-100 light:border-zinc-200"
+              className="p-8 rounded-[2rem] bg-white border border-zinc-200 flex flex-col gap-6 shadow-sm"
             >
               <div className="flex items-center gap-3">
                 <MapPin size={18} className="text-[#dc2626]" />
-                <span className="text-sm font-bold text-white light:text-zinc-900 uppercase tracking-widest">Surat / Gujarat Operations</span>
+                <span className="text-sm font-bold text-[#dc2626] uppercase tracking-widest">Surat / Gujarat Operations</span>
               </div>
-              <p className="text-xs text-zinc-400 light:text-zinc-600 leading-relaxed">
+              <p className="text-xs text-zinc-650 leading-relaxed font-normal">
                 We set up digital and physical content operations directly matching the compliance standards, accounting requirements, and brand standards of businesses in Gujarat.
               </p>
               <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#dc2626]">
@@ -255,7 +255,7 @@ export function SeoLandingPage({ path }: { path: string }) {
 
       <WhyChooseUs />
       
-      <div id="contact">
+      <div>
         <FinalCTA />
       </div>
 

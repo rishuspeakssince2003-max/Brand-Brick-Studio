@@ -146,31 +146,25 @@ html.light body {
    Mobile Performance Optimizations
    ───────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  /* Disable expensive backdrop filters on mobile viewports */
+  /* Allow backdrop-filters but ensure GPU layer promotion */
   .backdrop-blur-md,
   .backdrop-blur-lg,
   .backdrop-blur-xl,
   .backdrop-blur-2xl,
   .backdrop-blur-3xl {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
+    will-change: backdrop-filter;
+    transform: translateZ(0);
   }
   
-  /* Semi-opaque fallback backgrounds for mobile readability */
+  /* Semi-opaque backgrounds for mobile readability overlay safety */
   .bg-zinc-950\/40 {
-    background-color: rgba(9, 9, 11, 0.88) !important;
+    background-color: rgba(9, 9, 11, 0.75) !important;
   }
   .light .bg-white\/50 {
-    background-color: rgba(255, 255, 255, 0.94) !important;
-  }
-  .bg-zinc-900\/40 {
-    background-color: rgba(24, 24, 27, 0.9) !important;
-  }
-  .bg-zinc-900\/60 {
-    background-color: rgba(24, 24, 27, 0.92) !important;
+    background-color: rgba(255, 255, 255, 0.82) !important;
   }
 
-  /* Disable heavy hover translations/scales on mobile touch triggers */
+  /* Disable heavy hover transformations/scales on mobile touch triggers */
   .group:hover .group-hover\:scale-110,
   .group:hover .group-hover\:-translate-x-2,
   .group:hover .group-hover\:translate-y-2 {
@@ -179,7 +173,8 @@ html.light body {
   
   /* Optimize canvas styling */
   canvas {
-    will-change: opacity;
+    will-change: transform, opacity;
+    transform: translateZ(0);
   }
 }
 
@@ -188,7 +183,7 @@ html.light body {
    ───────────────────────────────────────────────────────── */
 /* Tells the browser to bypass style, layout, and paint work for offscreen sections */
 #services,
-#approach,
+#process,
 #why-us,
 #founder,
 #industries,

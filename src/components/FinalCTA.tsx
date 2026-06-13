@@ -4,8 +4,7 @@ import { LiquidButton } from "./ui/LiquidButton";
 
 export function FinalCTA() {
   return (
-    <section className="py-16 md:py-24 px-4 md:px-6 bg-transparent relative overflow-hidden flex items-center justify-center min-h-[30vh] scroll-mt-24 md:scroll-mt-28" id="contact">
-      {/* Background spotlights */}
+    <section className="py-16 md:py-24 px-4 md:px-6 bg-transparent relative overflow-hidden flex items-center justify-center min-h-[30vh] scroll-mt-24 md:scroll-mt-28">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#dc2626]/5 rounded-full blur-[150px] pointer-events-none" />
       
       <div className="max-w-4xl text-center relative z-10">
