@@ -306,7 +306,7 @@ const ServiceBentoCard: React.FC<{
               </div>
             )}
             {/* Minimal Circular Action Arrow Button */}
-            <div className="w-8 h-8 rounded-full border border-white/20 bg-white/10 text-white flex items-center justify-center shrink-0 group-hover:bg-white group-hover:text-[#dc2626] group-hover:border-white transition-all duration-300">
+            <div className="w-8 h-8 rounded-full border border-zinc-800/60 light:border-zinc-200 bg-zinc-900 light:bg-white text-zinc-400 light:text-zinc-650 flex items-center justify-center shrink-0 group-hover:bg-[#dc2626] group-hover:border-[#dc2626] group-hover:text-white transition-all duration-300">
               <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform duration-300" />
             </div>
           </div>
