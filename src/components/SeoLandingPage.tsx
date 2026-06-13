@@ -3,6 +3,7 @@ import { motion } from "motion/react";
 import { ArrowRight, CheckCircle2, ShieldCheck, Mail, MapPin } from "lucide-react";
 import { FinalCTA } from "./FinalCTA";
 import { WhyChooseUs } from "./WhyChooseUs";
+import { Services } from "./Services";
 import { LiquidButton } from "./ui/LiquidButton";
 
 interface SeoPageConfig {
@@ -249,6 +250,8 @@ export function SeoLandingPage({ path }: { path: string }) {
           </div>
         </div>
       </motion.section>
+
+      <Services />
 
       <WhyChooseUs />
       
