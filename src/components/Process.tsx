@@ -7,37 +7,43 @@ const steps = [
     icon: Compass,
     title: "Discovery",
     desc: "We dive deep into your business objectives, audit brand assets, map out competitor landscapes, and uncover customer psychographics.",
-    deliverables: ["Brand audit report", "Competitor matrix", "Audience research"]
+    deliverables: ["Brand audit report", "Competitor matrix", "Audience research"],
+    image: "/process_discovery.png"
   },
   {
     icon: Target,
     title: "Strategy",
     desc: "We define your brand positioning, formulate marketing campaigns, design a vertical video strategy, and outline an SEO roadmap.",
-    deliverables: ["Positioning blueprint", "Reels calendar", "SEO & Ads playbook"]
+    deliverables: ["Positioning blueprint", "Reels calendar", "SEO & Playbook"],
+    image: "/process_strategy.png"
   },
   {
     icon: PenTool,
     title: "Design",
     desc: "We translate strategic direction into high-fidelity premium visual assets, corporate brand systems, and sleek UI layouts.",
-    deliverables: ["Brand identity guidelines", "Figma UI/UX layouts", "Volumetric campaign mockups"]
+    deliverables: ["Brand guidelines", "Figma UI/UX layouts", "Campaign mockups"],
+    image: "/process_design.png"
   },
   {
     icon: Code,
     title: "Development",
     desc: "We construct custom frontend experiences in React/Next.js, ensuring smooth micro-animations, lightning-fast loading speeds, and robust SEO tags.",
-    deliverables: ["React / Next.js code", "Analytics & Tracking", "Domain DNS deployment"]
+    deliverables: ["React / Next.js code", "Analytics & Tracking", "Domain deployment"],
+    image: "/process_development.png"
   },
   {
     icon: Rocket,
     title: "Launch",
     desc: "We test across viewports, run accessibility audits, verify page speeds, and push the campaign/website live with zero downtime.",
-    deliverables: ["Cross-browser QA check", "Production build", "Live launch validation"]
+    deliverables: ["Cross-browser QA check", "Production build", "Live launch validation"],
+    image: "/process_launch.png"
   },
   {
     icon: BarChart3,
     title: "Growth",
     desc: "We scale your client acquisitions through continuous conversion audits, creative A/B testing, and data-driven updates.",
-    deliverables: ["Conversion rate audit", "A/B test logs", "Monthly expansion sprints"]
+    deliverables: ["Conversion rate audit", "A/B test logs", "Expansion sprints"],
+    image: "/process_growth.png"
   }
 ];
 
@@ -85,7 +91,7 @@ const ProcessCard: React.FC<{
       style={{
         boxShadow: "0 10px 30px rgba(0, 0, 0, 0.02)"
       }}
-      className="group relative flex flex-col justify-between p-8 rounded-[2.5rem] border border-zinc-200 bg-white overflow-hidden hover:bg-zinc-50/50 transition-all duration-300 min-h-[340px] cursor-pointer shadow-sm"
+      className="group relative flex flex-col justify-between p-8 rounded-[2.5rem] border border-zinc-200 bg-white overflow-hidden hover:bg-zinc-50/50 transition-all duration-300 cursor-pointer shadow-sm"
     >
       {/* Interactive Cursor Spotlight */}
       <motion.div
@@ -118,24 +124,36 @@ const ProcessCard: React.FC<{
         </svg>
       </div>
 
-      <div className="relative z-10">
-        {/* Step Index & Icon */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="w-12 h-12 rounded-2xl bg-[#dc2626]/5 border border-[#dc2626]/20 flex items-center justify-center text-[#dc2626] group-hover:-translate-y-1.5 group-hover:scale-105 group-hover:rotate-3 transition-all duration-500">
-            <IconComp size={20} className="transition-transform duration-300" />
+      <div className="relative z-10 flex flex-col h-full justify-between">
+        <div>
+          {/* Step Index & Icon */}
+          <div className="flex items-center justify-between mb-8">
+            <div className="w-12 h-12 rounded-2xl bg-[#dc2626]/5 border border-[#dc2626]/20 flex items-center justify-center text-[#dc2626] group-hover:-translate-y-1.5 group-hover:scale-105 group-hover:rotate-3 transition-all duration-500">
+              <IconComp size={20} className="transition-transform duration-300" />
+            </div>
+            <span className="px-2.5 py-0.5 rounded-md border border-zinc-200 bg-zinc-50 text-zinc-800 text-[10px] font-mono font-bold uppercase tracking-wider transition-all duration-300 group-hover:border-[#dc2626]/20 group-hover:bg-[#dc2626]/5 group-hover:text-[#dc2626]">
+              STEP {num}
+            </span>
           </div>
-          <span className="px-2.5 py-0.5 rounded-md border border-zinc-200 bg-zinc-50 text-zinc-800 text-[10px] font-mono font-bold uppercase tracking-wider transition-all duration-300 group-hover:border-[#dc2626]/20 group-hover:bg-[#dc2626]/5 group-hover:text-[#dc2626]">
-            STEP {num}
-          </span>
-        </div>
 
-        {/* Content */}
-        <h3 className="text-xl md:text-2xl font-display font-bold text-[#dc2626] mb-3 leading-tight group-hover:translate-x-1.5 transition-all duration-400">
-          {step.title}
-        </h3>
-        <p className="text-sm text-zinc-650 leading-relaxed mb-6 font-normal group-hover:text-zinc-800 transition-colors duration-300">
-          {step.desc}
-        </p>
+          {/* Content */}
+          <h3 className="text-xl md:text-2xl font-display font-bold text-[#dc2626] mb-3 leading-tight group-hover:translate-x-1.5 transition-all duration-400">
+            {step.title}
+          </h3>
+          <p className="text-sm text-zinc-650 leading-relaxed mb-6 font-normal group-hover:text-zinc-800 transition-colors duration-300">
+            {step.desc}
+          </p>
+
+          {/* Step Mockup Image */}
+          <div className="my-6 relative rounded-2xl overflow-hidden border border-zinc-200 aspect-square bg-zinc-50 flex items-center justify-center shadow-sm select-none pointer-events-none">
+            <img 
+              src={step.image} 
+              alt={step.title} 
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-transparent pointer-events-none" />
+          </div>
+        </div>
       </div>
 
       {/* Deliverables tags */}

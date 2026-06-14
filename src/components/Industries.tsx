@@ -7,37 +7,43 @@ const industriesList = [
     title: "Real Estate Developers",
     desc: "We design premium property branding, immersive physical sales brochures, and high-performance digital pre-launch portals to accelerate booking cycles.",
     icon: Building2,
-    tag: "High-Ticket Lead Gen"
+    tag: "High-Ticket Lead Gen",
+    image: "/industry_real_estate.png"
   },
   {
     title: "Restaurants & Dining",
     desc: "We craft visual menus, produce cinematic culinary content, and implement local map SEO strategies that turn digital foot traffic into packed dining rooms.",
     icon: UtensilsCrossed,
-    tag: "Foot Traffic Engine"
+    tag: "Foot Traffic Engine",
+    image: "/industry_restaurants.png"
   },
   {
     title: "Specialty Cafés",
     desc: "We develop sleek, modern packaging designs, clear brand guidelines, and high-retention social media reels that turn coffee drinkers into brand evangelists.",
     icon: Coffee,
-    tag: "Community Building"
+    tag: "Community Building",
+    image: "/industry_cafes.png"
   },
   {
     title: "Hospitality Brands",
     desc: "We engineer premium boutique resort branding, immersive spatial website layouts, and high-end volumetric campaign video shoots that command luxury bookings.",
     icon: Hotel,
-    tag: "Luxury Positioning"
+    tag: "Luxury Positioning",
+    image: "/industry_hospitality.png"
   },
   {
     title: "E-commerce & D2C Brands",
     desc: "We craft high-yield D2C digital storefronts, premium product packaging designs, and conversion-optimized ad creatives that scale transaction volumes and repeat acquisitions.",
     icon: ShoppingBag,
-    tag: "Scale & Volume"
+    tag: "Scale & Volume",
+    image: "/industry_ecommerce.png"
   },
   {
     title: "Ambitious Growth Businesses",
     desc: "We provide strategy-first visual design, high-converting React software builds, and multi-channel performance marketing structures to scale conversions.",
     icon: Sparkles,
-    tag: "Full-Stack Scale"
+    tag: "Full-Stack Scale",
+    image: "/industry_growth.png"
   }
 ];
 
@@ -130,9 +136,19 @@ const IndustryCard: React.FC<{
             {ind.title}
           </h4>
           
-          <p className="text-sm text-zinc-650 leading-relaxed group-hover:text-zinc-800 transition-colors duration-300 font-normal">
+          <p className="text-sm text-zinc-650 leading-relaxed mb-6 group-hover:text-zinc-800 transition-colors duration-300 font-normal">
             {ind.desc}
           </p>
+
+          {/* Industry Mockup Image */}
+          <div className="my-6 relative rounded-2xl overflow-hidden border border-zinc-200 aspect-square bg-zinc-50 flex items-center justify-center shadow-sm select-none pointer-events-none">
+            <img 
+              src={ind.image} 
+              alt={ind.title} 
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-transparent pointer-events-none" />
+          </div>
         </div>
       </div>
     </motion.div>

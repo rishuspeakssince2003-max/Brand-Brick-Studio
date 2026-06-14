@@ -91,73 +91,85 @@ const services = [
     title: "Video Editing",
     desc: "Cinematic, high-retention editing that turns raw footage into viral gold.",
     icon: "videoEdit",
-    bullets: ["Cinematic Cuts", "Sound Design", "Color Grading"]
+    bullets: ["Cinematic Cuts", "Sound Design", "Color Grading"],
+    image: "/video_editing.png"
   },
   {
     title: "Video Shoot",
     desc: "Premium on-site production with expert direction and cinematic quality.",
     icon: "videoShoot",
-    bullets: ["4K Volumetric", "Professional Lighting", "Expert Direction"]
+    bullets: ["4K Volumetric", "Professional Lighting", "Expert Direction"],
+    image: "/video_shoot.png"
   },
   {
     title: "Reels Creation",
     desc: "Short-form vertical content engineered for maximum virality and engagement.",
     icon: "reels",
-    bullets: ["Viral Hooks", "Subtitles & SFX", "Daily Workflows"]
+    bullets: ["Viral Hooks", "Subtitles & SFX", "Daily Workflows"],
+    image: "/reels_creation.png"
   },
   {
     title: "Thumbnail Design",
     desc: "Bold visual hooks designed to break scroll patterns and steal clicks.",
     icon: "thumbnail",
-    bullets: ["CTR Optimization", "Scroll Stoppers", "A/B Testing"]
+    bullets: ["CTR Optimization", "Scroll Stoppers", "A/B Testing"],
+    image: "/thumbnail_design.png"
   },
   {
     title: "Graphic Design",
     desc: "Sleek, memorable visual identity systems that position your brand as premium.",
     icon: "graphic",
-    bullets: ["Sleek Identity", "Brand Guidelines", "Premium Systems"]
+    bullets: ["Sleek Identity", "Brand Guidelines", "Premium Systems"],
+    image: "/graphic_design.png"
   },
   {
     title: "Website Development",
     desc: "Lightning-fast, conversion-optimized digital experiences built to dominate.",
     icon: "website",
-    bullets: ["Speed Under 200ms", "WebGL Particles", "Lenis Smooth Scroll"]
+    bullets: ["Speed Under 200ms", "WebGL Particles", "Lenis Smooth Scroll"],
+    image: "/website_development.png"
   },
   {
     title: "3D Design",
     desc: "Spatial modeling, photorealistic renders, and spatial visuals that wow audiences.",
     icon: "threeD",
-    bullets: ["Spatial Modeling", "Premium Renders", "3D Animation"]
+    bullets: ["Spatial Modeling", "Premium Renders", "3D Animation"],
+    image: "/three_d_design.png"
   },
   {
     title: "Software Development",
     desc: "Custom tech solutions, digital workflows, and automation at scale.",
     icon: "software",
-    bullets: ["Custom WebApps", "Automations", "API Integration"]
+    bullets: ["Custom WebApps", "Automations", "API Integration"],
+    image: "/software_development.png"
   },
   {
     title: "SEO Optimization",
     desc: "Data-driven strategies to own search results and drive organic revenue.",
     icon: "seo",
-    bullets: ["Rank #1 Strategy", "High-Intent Traffic", "Authority Boost"]
+    bullets: ["Rank #1 Strategy", "High-Intent Traffic", "Authority Boost"],
+    image: "/seo_optimization.png"
   },
   {
     title: "Social Media Management",
     desc: "Community building, brand authority, and an undeniable social presence.",
     icon: "social",
-    bullets: ["Post Scheduling", "Community Growth", "Acquisition Funnels"]
+    bullets: ["Post Scheduling", "Community Growth", "Acquisition Funnels"],
+    image: "/social_media_management.png"
   },
   {
     title: "Content Strategy",
     desc: "Master plans that align brand voice, audience psychology, and business goals.",
     icon: "content",
-    bullets: ["Psychology", "Brand Blueprint", "ROI Focus"]
+    bullets: ["Psychology", "Brand Blueprint", "ROI Focus"],
+    image: "/content_strategy.png"
   },
   {
     title: "Ad Creatives",
     desc: "Scroll-stopping ads rigorously designed for high ROAS on Meta & Google.",
     icon: "ads",
-    bullets: ["High ROAS Focus", "Creative Testing", "Meta/Google Ads"]
+    bullets: ["High ROAS Focus", "Creative Testing", "Meta/Google Ads"],
+    image: "/ad_creatives.png"
   }
 ];
 
@@ -256,6 +268,16 @@ const ServiceBentoCard: React.FC<{
           <p className="text-sm text-zinc-650 leading-relaxed mb-6 group-hover:text-zinc-800 transition-colors duration-300 font-normal">
             {service.desc}
           </p>
+
+          {/* Service Mockup Image */}
+          <div className="my-6 relative rounded-2xl overflow-hidden border border-zinc-200 aspect-square bg-zinc-50 flex items-center justify-center shadow-sm select-none pointer-events-none">
+            <img 
+              src={service.image} 
+              alt={service.title} 
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-transparent pointer-events-none" />
+          </div>
         </div>
 
         {/* Bullets */}

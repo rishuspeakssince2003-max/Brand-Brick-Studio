@@ -6,32 +6,38 @@ const pillars = [
   {
     title: "Strategy-First Approach",
     desc: "We don't just push pixels or run cookie-cutter templates. We dissect your business model and engineer strategic brand assets.",
-    icon: Compass
+    icon: Compass,
+    image: "/why_us_strategy.png"
   },
   {
     title: "One-Stop Solution",
     desc: "We deliver everything from naming blueprints and premium brand identities to custom Next.js software setups and high-yield acquisition funnels.",
-    icon: Layers
+    icon: Layers,
+    image: "/why_us_solution.png"
   },
   {
     title: "Local Market Understanding",
     desc: "We maintain a deep understanding of regional business dynamics, customer psychographics, and local competitive densities.",
-    icon: MapPin
+    icon: MapPin,
+    image: "/why_us_market.png"
   },
   {
     title: "Global Creative Standards",
     desc: "We produce world-class campaign aesthetics inspired by global design hubs to attract international clients.",
-    icon: Award
+    icon: Award,
+    image: "/why_us_standards.png"
   },
   {
     title: "Founder-Led Execution",
     desc: "You will coordinate and plan strategy directly with founder Rishu Tripathi, ensuring zero account managers and pure alignment.",
-    icon: UserCheck
+    icon: UserCheck,
+    image: "/why_us_founder.png"
   },
   {
     title: "Business-Focused Thinking",
     desc: "We put creativity in service of commercial growth, designing visual experiences specifically configured to drive revenue.",
-    icon: BarChart3
+    icon: BarChart3,
+    image: "/why_us_business.png"
   }
 ];
 
@@ -124,9 +130,19 @@ const PillarCard: React.FC<{
             {pillar.title}
           </h3>
           
-          <p className="text-sm text-zinc-650 leading-relaxed group-hover:text-zinc-800 transition-colors duration-300 font-normal">
+          <p className="text-sm text-zinc-650 leading-relaxed mb-6 group-hover:text-zinc-800 transition-colors duration-300 font-normal">
             {pillar.desc}
           </p>
+
+          {/* Pillar Mockup Image */}
+          <div className="my-6 relative rounded-2xl overflow-hidden border border-zinc-200 aspect-square bg-zinc-50 flex items-center justify-center shadow-sm select-none pointer-events-none">
+            <img 
+              src={pillar.image} 
+              alt={pillar.title} 
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-transparent pointer-events-none" />
+          </div>
         </div>
       </div>
     </motion.div>
@@ -192,7 +208,7 @@ export function WhyChooseUs() {
           whileInView={{ opacity: 1, scale: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="relative rounded-[2.5rem] overflow-hidden border border-zinc-200 bg-white aspect-[16/10] flex items-center justify-center shadow-sm group cursor-pointer lg:col-span-1"
+          className="relative rounded-[2.5rem] overflow-hidden border border-zinc-200 bg-white aspect-square flex items-center justify-center shadow-sm group cursor-pointer lg:col-span-1"
         >
           <img 
             src="/strategic_leverage.png" 
