@@ -177,7 +177,7 @@ export function WhyChooseUs() {
               }}
               className="text-4xl md:text-6xl font-display font-bold text-white light:text-zinc-900 tracking-tight leading-none"
             >
-              {["Strategic", "Leverage."].map((w, idx) => (
+              {["Why", "Us?"].map((w, idx) => (
                 <motion.span
                   key={idx}
                   variants={{
@@ -211,8 +211,8 @@ export function WhyChooseUs() {
           className="relative rounded-[2.5rem] overflow-hidden border border-zinc-200 bg-white aspect-square flex items-center justify-center shadow-sm group cursor-pointer lg:col-span-1"
         >
           <img 
-            src="/strategic_leverage.png" 
-            alt="Strategic Leverage Mockup" 
+            src="/web_design_showcase.png" 
+            alt="Why Us Mockup" 
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/20 via-transparent to-transparent pointer-events-none" />
