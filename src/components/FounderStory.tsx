@@ -26,7 +26,7 @@ export function FounderStory() {
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full lg:w-1/2 relative aspect-[4/5] max-w-md lg:max-w-none rounded-[2.5rem] overflow-hidden border border-zinc-800 bg-zinc-950/40 backdrop-blur-md flex items-center justify-center light:border-zinc-200 light:bg-white/50 light:shadow-lg"
+          className="w-full lg:w-1/2 relative aspect-[657/1024] max-w-md lg:max-w-none rounded-[2.5rem] overflow-hidden border border-zinc-800 bg-zinc-950/40 backdrop-blur-md flex items-center justify-center light:border-zinc-200 light:bg-white/50 light:shadow-lg"
         >
           {/* Founder Image */}
           <img 
@@ -36,11 +36,11 @@ export function FounderStory() {
           />
           
           {/* Dark gradient vignette */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/90 via-[#050505]/20 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/50 via-transparent to-transparent pointer-events-none" />
           
-          <div className="absolute bottom-8 left-8 right-8 z-10 flex flex-col text-left">
-            <span className="text-2xl font-display font-bold text-white">Rishu Tripathi</span>
-            <span className="text-xs font-mono text-zinc-300 uppercase tracking-widest mt-1">Founder & Lead Strategist</span>
+          <div className="absolute bottom-8 left-8 right-8 z-10 flex flex-col items-end text-right">
+            <span className="text-2xl font-display font-bold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">Rishu Tripathi</span>
+            <span className="text-xs font-mono text-zinc-300 uppercase tracking-widest mt-1 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">Founder & Lead Strategist</span>
           </div>
         </motion.div>
 
