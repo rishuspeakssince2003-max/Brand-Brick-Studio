@@ -40,7 +40,7 @@ export function BrandStatement() {
   );
 
   // Fallback to static values if light theme mode is enabled
-  const finalBg = isLight ? "#ffffff" : bg;
+  const finalBg = isLight ? "transparent" : bg;
   const finalTextColor = isLight ? "#09090b" : text;
 
   return (

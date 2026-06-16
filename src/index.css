@@ -34,7 +34,7 @@ body {
 }
 
 html.light body {
-  @apply bg-[#ffffff] text-zinc-900;
+  @apply bg-[#faf9f9] text-zinc-900;
 }
 
 /* Hide scrollbars but keep functionality */
@@ -199,7 +199,7 @@ html.light body {
 }
 
 html.light .vignette-overlay {
-  background: radial-gradient(circle at center, transparent 60%, rgba(255, 255, 255, 0.5) 100%);
+  background: none;
 }
 
 

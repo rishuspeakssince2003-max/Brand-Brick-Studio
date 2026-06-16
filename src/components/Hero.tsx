@@ -256,31 +256,7 @@ export function Hero() {
       ref={ref}
       className="relative min-h-[100dvh] flex flex-col justify-between pt-32 pb-16 px-4 md:px-6 overflow-hidden"
     >
-      {/* ── Premium Background Image ── */}
-      <div 
-        className="absolute inset-0 w-full h-full bg-cover bg-center -z-25 pointer-events-none opacity-50 light:opacity-15 transition-opacity duration-700"
-        style={{ backgroundImage: "url('/lava_smoke_bg.png')" }}
-      />
 
-      {/* 60% Dark Overlay over background */}
-      <div className="absolute inset-0 bg-[#050505]/65 light:bg-[#ffffff]/85 -z-20 pointer-events-none" />
-
-      {/* Subtle WebGL fluid / lava container backdrop glow fallbacks */}
-      <motion.div
-        animate={{ scale: [1, 1.2, 1], opacity: [0.03, 0.08, 0.03] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#dc2626]/20 blur-[180px] rounded-full pointer-events-none -z-10"
-      />
-
-      {/* Faint dot pattern grid overlay */}
-      <div
-        className="absolute inset-0 -z-15 opacity-[0.015] pointer-events-none"
-        style={{
-          backgroundImage: `linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px),
-                            linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px)`,
-          backgroundSize: "72px 72px",
-        }}
-      />
 
       {/* ── Main Content Container ── */}
       <motion.div 

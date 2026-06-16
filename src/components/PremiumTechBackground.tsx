@@ -1,13 +1,5 @@
 import { useEffect, useRef } from "react";
 
-interface Wave {
-  y: number;
-  amplitude: number;
-  frequency: number;
-  color: string;
-  phase: number;
-}
-
 interface Particle {
   x: number;
   y: number;
@@ -29,69 +21,45 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
     let width = window.innerWidth;
     let height = window.innerHeight;
 
-    // Static waves configuration
-    const waves: Wave[] = [
-      {
-        y: height * 0.4,
-        amplitude: 140,
-        frequency: 0.0015,
-        color: "rgba(220, 38, 38, 0.06)", // Brand Red
-        phase: Math.PI / 6,
-      },
-      {
-        y: height * 0.5,
-        amplitude: 180,
-        frequency: 0.001,
-        color: "rgba(153, 27, 27, 0.04)", // Dark Ruby Red
-        phase: Math.PI / 3,
-      },
-      {
-        y: height * 0.6,
-        amplitude: 120,
-        frequency: 0.002,
-        color: "rgba(239, 68, 68, 0.03)", // Bright Coral Red
-        phase: Math.PI / 2,
-      },
-    ];
-
     const isMobileDevice = typeof window !== "undefined" && (
       window.innerWidth < 768
     );
 
-    // Static embers / particles
-    const particleCount = isMobileDevice ? 15 : Math.min(Math.floor((width * height) / 18000), 70);
+    // Static red/coral ambient particles representing the soft glowing specks in the screenshot
+    const particleCount = isMobileDevice ? 8 : 15;
     const particles: Particle[] = [];
     for (let i = 0; i < particleCount; i++) {
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        radius: Math.random() * 2 + 1,
-        alpha: Math.random() * 0.4 + 0.1,
+        // radius between 12px and 24px for a nice, soft radial bokeh blur
+        radius: Math.random() * 12 + 12,
+        // extremely soft transparency to match the subtle background detail
+        alpha: Math.random() * 0.25 + 0.15,
       });
     }
-
-    const gridSize = 100;
 
     const draw = () => {
       const isLight = document.documentElement.classList.contains("light");
 
-      // 1. Draw base background
-      ctx.fillStyle = isLight ? "#ffffff" : "#040404";
+      // 1. Draw base off-white canvas (perfect match for the premium screenshot color)
+      ctx.fillStyle = isLight ? "#faf9f9" : "#040404";
       ctx.fillRect(0, 0, width, height);
 
-      // 2. Draw subtle radial background vignette
+      // 2. Draw subtle, giant center-bottom ambient red/coral radial glow
       const centerGlow = ctx.createRadialGradient(
         width / 2,
-        height / 2,
+        height * 0.7, // Positioned lower on the screen for a natural bottom horizon glow
         0,
         width / 2,
-        height / 2,
-        Math.max(width, height) * 0.8
+        height * 0.7,
+        Math.max(width, height) * 0.7
       );
       if (isLight) {
-        centerGlow.addColorStop(0, "rgba(255, 230, 230, 0.3)");
-        centerGlow.addColorStop(0.5, "rgba(255, 255, 255, 0.9)");
-        centerGlow.addColorStop(1, "rgba(255, 255, 255, 1)");
+        // Soft peach/pink glow fading to the main off-white background
+        centerGlow.addColorStop(0, "rgba(220, 38, 38, 0.03)");
+        centerGlow.addColorStop(0.5, "rgba(255, 245, 245, 0.4)");
+        centerGlow.addColorStop(1, "#faf9f9");
       } else {
         centerGlow.addColorStop(0, "rgba(24, 4, 4, 1)");
         centerGlow.addColorStop(0.5, "rgba(8, 2, 2, 1)");
@@ -100,64 +68,25 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
       ctx.fillStyle = centerGlow;
       ctx.fillRect(0, 0, width, height);
 
-      // 3. Draw Organic Aurora Waves (Static)
-      const activeWaves = isMobileDevice ? waves.slice(0, 1) : waves;
-      activeWaves.forEach((wave) => {
-        ctx.beginPath();
-        const startY = wave.y + Math.sin(wave.phase) * wave.amplitude;
-        ctx.moveTo(0, startY);
-
-        const step = isMobileDevice ? 45 : 35;
-        for (let x = 0; x <= width; x += step) {
-          const currentY =
-            wave.y +
-            Math.sin(x * wave.frequency + wave.phase) *
-              wave.amplitude *
-              Math.cos(x * 0.0005);
-          ctx.lineTo(x, currentY);
-        }
-
-        ctx.lineTo(width, height);
-        ctx.lineTo(0, height);
-        ctx.closePath();
-
-        const grad = ctx.createLinearGradient(0, wave.y - wave.amplitude, 0, height);
-        grad.addColorStop(0, wave.color);
-        if (isLight) {
-          grad.addColorStop(0.6, "rgba(255, 255, 255, 0.0)");
-          grad.addColorStop(1, "rgba(255, 255, 255, 0)");
-        } else {
-          grad.addColorStop(0.6, "rgba(10, 2, 2, 0.0)");
-          grad.addColorStop(1, "rgba(4, 4, 4, 0)");
-        }
-        ctx.fillStyle = grad;
-        ctx.fill();
-      });
-
-      // 4. Draw Static Grid
-      if (!isMobileDevice) {
-        const gridCols = Math.ceil(width / gridSize) + 1;
-        const gridRows = Math.ceil(height / gridSize) + 1;
-
-        for (let c = 0; c < gridCols; c++) {
-          for (let r = 0; r < gridRows; r++) {
-            const gridX = c * gridSize;
-            const gridY = r * gridSize;
-
-            ctx.beginPath();
-            ctx.arc(gridX, gridY, 1, 0, Math.PI * 2);
-            ctx.fillStyle = isLight ? "rgba(100, 100, 100, 0.08)" : "rgba(100, 100, 100, 0.05)";
-            ctx.fill();
-          }
-        }
-      }
-
-      // 5. Draw static embers
+      // 3. Draw static soft blurry bokeh lights/specks (same to same with screenshot)
       particles.forEach((p) => {
+        const x = p.x;
+        const y = p.y;
+        const radius = isMobileDevice ? p.radius * 0.8 : p.radius;
+
         ctx.beginPath();
-        const drawRadius = isMobileDevice ? p.radius * 2 : p.radius * 2.5;
-        ctx.arc(p.x, p.y, drawRadius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(220, 38, 38, ${p.alpha * (isLight ? 0.75 : 0.65)})`;
+        const particleGlow = ctx.createRadialGradient(x, y, 0, x, y, radius);
+        if (isLight) {
+          // Soft coral glow fading to fully transparent at the particle boundary
+          particleGlow.addColorStop(0, `rgba(220, 38, 38, ${p.alpha * 0.08})`);
+          particleGlow.addColorStop(0.4, `rgba(220, 38, 38, ${p.alpha * 0.03})`);
+          particleGlow.addColorStop(1, "rgba(220, 38, 38, 0)");
+        } else {
+          particleGlow.addColorStop(0, `rgba(220, 38, 38, ${p.alpha * 0.12})`);
+          particleGlow.addColorStop(1, "rgba(220, 38, 38, 0)");
+        }
+        ctx.fillStyle = particleGlow;
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
         ctx.fill();
       });
     };
@@ -193,10 +122,10 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 w-full h-full z-[-50] pointer-events-none overflow-hidden select-none bg-[#040404] light:bg-[#ffffff]"
+      className="fixed inset-0 w-full h-full z-[-50] pointer-events-none overflow-hidden select-none bg-[#040404] light:bg-[#faf9f9]"
       style={{ transform: "translateZ(0)" }}
     >
-      {/* Static Canvas */}
+      {/* Canvas */}
       <canvas ref={canvasRef} className="block w-full h-full" />
 
       {/* Premium film grain overlay */}
@@ -209,7 +138,7 @@ export function PremiumTechBackground({ active = true }: { active?: boolean }) {
         }}
       />
 
-      {/* Vignette styling for a deep, cinematic contrast */}
+      {/* Vignette overlay */}
       <div className="absolute inset-0 pointer-events-none vignette-overlay" />
     </div>
   );
