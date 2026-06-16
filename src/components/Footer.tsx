@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { motion } from "motion/react";
-import { ArrowUpRight, Mail, Instagram, MapPin } from "lucide-react";
+import { ArrowUpRight, Mail, Instagram, MapPin, User, Phone, MessageSquare, Check, AlertCircle } from "lucide-react";
 import { LiquidButton } from "./ui/LiquidButton";
 
 const links = [
@@ -11,12 +12,64 @@ const links = [
 ];
 
 export function Footer() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: ""
+  });
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.name || !formData.email) {
+      setStatus("error");
+      setErrorMessage("Please fill out both Name and Email.");
+      return;
+    }
+    setStatus("submitting");
+    try {
+      const response = await fetch("/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message,
+          service: "General Inquiry"
+        })
+      });
+      if (response.ok) {
+        setStatus("success");
+        setFormData({ name: "", email: "", phone: "", message: "" });
+      } else {
+        const data = await response.json();
+        setStatus("error");
+        setErrorMessage(data.error || "Failed to submit enquiry. Please try again.");
+      }
+    } catch (err) {
+      setStatus("error");
+      setErrorMessage("Network error. Please verify your connection and try again.");
+    }
+  };
+
   return (
     <footer className="bg-transparent pt-12 md:pt-16 pb-8 px-4 md:px-6 border-t border-zinc-900 light:border-zinc-200 relative" id="contact">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-px bg-gradient-to-r from-transparent via-brand/50 to-transparent"></div>
       
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-24">
+          
+          {/* Left Column - Information & Brand Strategy */}
           <div>
             <span className="inline-block px-4 py-1.5 rounded-full border border-zinc-800 bg-zinc-900/50 text-brand text-xs font-bold tracking-widest uppercase mb-8 light:border-zinc-200 light:bg-white/50">
               Start Your Project
@@ -108,10 +161,33 @@ export function Footer() {
                 <ArrowUpRight size={14} className="text-zinc-500 group-hover:text-white light:group-hover:text-zinc-900 transition-colors duration-300" />
               </LiquidButton>
             </motion.div>
+
+            {/* Quick Contact Details */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="mt-12 flex flex-col space-y-4 text-zinc-500 light:text-zinc-500 text-sm border-t border-zinc-900 pt-8 light:border-zinc-200 max-w-md"
+            >
+              <div className="flex items-center gap-3">
+                <Mail size={16} className="text-zinc-600 light:text-zinc-400" />
+                <a href="mailto:brandbrickstudio@gmail.com" className="hover:underline hover:text-white light:hover:text-zinc-900">brandbrickstudio@gmail.com</a>
+              </div>
+              <div className="flex items-center gap-3">
+                <Instagram size={16} className="text-zinc-600 light:text-zinc-400" />
+                <a href="https://instagram.com/brandbrickstudio" target="_blank" rel="noreferrer" className="hover:underline hover:text-white light:hover:text-zinc-900">@brandbrickstudio</a>
+              </div>
+              <div className="flex items-center gap-3">
+                <MapPin size={16} className="text-zinc-600 light:text-zinc-400" />
+                <span>Silvassa, India</span>
+              </div>
+            </motion.div>
           </div>
           
-          <div className="flex flex-col lg:items-end gap-14">
-            <div className="flex flex-col space-y-2 lg:items-end text-left lg:text-right">
+          {/* Right Column - Brand Logo and Enquiry Form */}
+          <div className="flex flex-col lg:items-end gap-8">
+            <div className="flex flex-col space-y-2 lg:items-end text-left lg:text-right w-full">
               <div className="flex items-center gap-3 lg:flex-row-reverse">
                 <img src="/logo.png" alt="Brand Brick Logo" className="w-[34px] md:w-10 h-auto shrink-0" />
                 <div className="flex flex-col lg:items-end">
@@ -125,67 +201,104 @@ export function Footer() {
               </div>
             </div>
 
-            {/* Contact Bricks Column */}
-            <div className="flex flex-col gap-6 w-full max-w-lg lg:ml-auto">
-              
-              {/* Card 1: Email */}
-              <a 
-                href="mailto:brandbrickstudio@gmail.com"
-                className="group relative flex items-center gap-6 p-6 md:p-7 rounded-[2rem] bg-zinc-950/40 backdrop-blur-md border border-zinc-800/40 hover:border-brand/40 hover:bg-zinc-950/80 transition-all duration-300 overflow-hidden shadow-lg light:bg-white/40 light:border-zinc-200 light:hover:bg-red-50 light:hover:border-red-200"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-brand/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="relative w-12 h-12 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center shrink-0 group-hover:bg-brand/15 group-hover:border-brand/40 group-hover:shadow-[0_0_15px_rgba(220,38,38,0.2)] transition-all duration-300 light:bg-zinc-100 light:border-zinc-200">
-                  <Mail size={20} className="text-zinc-500 group-hover:text-brand transition-colors duration-300" />
+            {/* Interactive Enquiry Form */}
+            <div className="w-full max-w-lg lg:ml-auto rounded-[2.5rem] bg-zinc-950/40 backdrop-blur-md border border-zinc-800/40 p-8 md:p-10 shadow-lg light:bg-white/40 light:border-zinc-200 relative overflow-hidden">
+              {status === "success" ? (
+                <div className="flex flex-col items-center justify-center text-center py-12">
+                  <div className="w-16 h-16 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center text-green-500 mb-6 animate-pulse">
+                    <Check size={28} />
+                  </div>
+                  <h3 className="font-display font-bold text-2xl text-white light:text-zinc-900 mb-3">Enquiry Sent</h3>
+                  <p className="text-zinc-400 light:text-zinc-600 text-sm leading-relaxed max-w-sm mb-8">
+                    Thank you for reaching out! We've received your request and will contact you directly within 24 hours.
+                  </p>
+                  <button 
+                    onClick={() => setStatus("idle")}
+                    className="text-xs font-mono font-bold uppercase tracking-widest text-[#dc2626] hover:underline cursor-pointer"
+                  >
+                    Send another message
+                  </button>
                 </div>
-                <div className="flex-grow min-w-0">
-                  <span className="text-[10px] md:text-xs font-bold text-[#dc2626] uppercase tracking-[0.2em] block mb-1">Direct Channel</span>
-                  <span className="text-base md:text-lg lg:text-xl font-display font-bold text-zinc-300 light:text-zinc-700 block truncate group-hover:text-white light:group-hover:text-zinc-900 transition-colors duration-300">
-                    brandbrickstudio@gmail.com
-                  </span>
-                </div>
-                <ArrowUpRight size={18} className="text-zinc-600 group-hover:text-brand group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300 shrink-0" />
-              </a>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div>
+                    <h3 className="font-display font-bold text-xl md:text-2xl text-white light:text-zinc-900 mb-1">Tell Us About Your Project</h3>
+                    <p className="text-xs text-zinc-500 light:text-zinc-400 mb-6">Fill out the details below and we will contact you directly.</p>
+                  </div>
 
-              {/* Card 2: Instagram */}
-              <a 
-                href="https://instagram.com/brandbrickstudio"
-                target="_blank"
-                rel="noreferrer"
-                className="group relative flex items-center gap-6 p-6 md:p-7 rounded-[2rem] bg-zinc-950/40 backdrop-blur-md border border-zinc-800/40 hover:border-brand/40 hover:bg-zinc-950/80 transition-all duration-300 overflow-hidden shadow-lg light:bg-white/40 light:border-zinc-200 light:hover:bg-red-50 light:hover:border-red-200"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-brand/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="relative w-12 h-12 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center shrink-0 group-hover:bg-brand/15 group-hover:border-brand/40 group-hover:shadow-[0_0_15px_rgba(220,38,38,0.2)] transition-all duration-300 light:bg-zinc-100 light:border-zinc-200">
-                  <Instagram size={20} className="text-zinc-500 group-hover:text-brand transition-colors duration-300" />
-                </div>
-                <div className="flex-grow min-w-0">
-                  <span className="text-[10px] md:text-xs font-bold text-[#dc2626] uppercase tracking-[0.2em] block mb-1">Social Engine</span>
-                  <span className="text-base md:text-lg lg:text-xl font-display font-bold text-zinc-300 light:text-zinc-700 block truncate group-hover:text-white light:group-hover:text-zinc-900 transition-colors duration-300">
-                    @brandbrickstudio
-                  </span>
-                </div>
-                <ArrowUpRight size={18} className="text-zinc-600 group-hover:text-brand group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300 shrink-0" />
-              </a>
+                  {status === "error" && (
+                    <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-500 text-xs flex items-center gap-2">
+                      <AlertCircle size={16} className="shrink-0" />
+                      <span>{errorMessage}</span>
+                    </div>
+                  )}
 
-              {/* Card 3: Location */}
-              <div 
-                className="group relative flex items-center gap-6 p-6 md:p-7 rounded-[2rem] bg-zinc-950/40 backdrop-blur-md border border-zinc-800/40 hover:border-brand/40 hover:bg-zinc-950/80 transition-all duration-300 overflow-hidden shadow-lg light:bg-white/40 light:border-zinc-200 light:hover:bg-red-50 light:hover:border-red-200"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-brand/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="relative w-12 h-12 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center shrink-0 group-hover:bg-brand/15 group-hover:border-brand/40 group-hover:shadow-[0_0_15px_rgba(220,38,38,0.2)] transition-all duration-300 light:bg-zinc-100 light:border-zinc-200">
-                  <MapPin size={20} className="text-zinc-500 group-hover:text-brand transition-colors duration-300" />
-                </div>
-                <div className="flex-grow min-w-0">
-                  <span className="text-[10px] md:text-xs font-bold text-[#dc2626] uppercase tracking-[0.2em] block mb-1">Creative Base</span>
-                  <span className="text-base md:text-lg lg:text-xl font-display font-bold text-zinc-300 light:text-zinc-700 block truncate group-hover:text-white light:group-hover:text-zinc-900 transition-colors duration-300">
-                    Silvassa, India
-                  </span>
-                </div>
-              </div>
+                  <div className="relative">
+                    <User className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 w-4 h-4" />
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      placeholder="Your Name *"
+                      required
+                      className="w-full pl-11 pr-4 py-3.5 bg-zinc-900/50 border border-zinc-800/80 rounded-2xl text-white placeholder:text-zinc-500 text-sm focus:outline-none focus:border-[#dc2626]/50 focus:bg-zinc-900 transition-all light:bg-zinc-50 light:border-zinc-200 light:text-zinc-900 light:placeholder:text-zinc-400 light:focus:bg-white"
+                    />
+                  </div>
 
+                  <div className="relative">
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 w-4 h-4" />
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="Email Address *"
+                      required
+                      className="w-full pl-11 pr-4 py-3.5 bg-zinc-900/50 border border-zinc-800/80 rounded-2xl text-white placeholder:text-zinc-500 text-sm focus:outline-none focus:border-[#dc2626]/50 focus:bg-zinc-900 transition-all light:bg-zinc-50 light:border-zinc-200 light:text-zinc-900 light:placeholder:text-zinc-400 light:focus:bg-white"
+                    />
+                  </div>
+
+                  <div className="relative">
+                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 w-4 h-4" />
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="Phone Number"
+                      className="w-full pl-11 pr-4 py-3.5 bg-zinc-900/50 border border-zinc-800/80 rounded-2xl text-white placeholder:text-zinc-500 text-sm focus:outline-none focus:border-[#dc2626]/50 focus:bg-zinc-900 transition-all light:bg-zinc-50 light:border-zinc-200 light:text-zinc-900 light:placeholder:text-zinc-400 light:focus:bg-white"
+                    />
+                  </div>
+
+                  <div className="relative">
+                    <MessageSquare className="absolute left-4 top-4 text-zinc-500 w-4 h-4" />
+                    <textarea
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      placeholder="How can we help you? Describe your requirements..."
+                      rows={4}
+                      className="w-full pl-11 pr-4 py-3.5 bg-zinc-900/50 border border-zinc-800/80 rounded-2xl text-white placeholder:text-zinc-500 text-sm focus:outline-none focus:border-[#dc2626]/50 focus:bg-zinc-900 transition-all light:bg-zinc-50 light:border-zinc-200 light:text-zinc-900 light:placeholder:text-zinc-400 light:focus:bg-white resize-none"
+                    />
+                  </div>
+
+                  <LiquidButton 
+                    type="submit" 
+                    variant="solid" 
+                    className="w-full cursor-pointer"
+                    disabled={status === "submitting"}
+                  >
+                    {status === "submitting" ? "Submitting..." : "Submit Enquiry"}
+                  </LiquidButton>
+                </form>
+              )}
             </div>
+
           </div>
         </div>
 
+        {/* Footer Bottom Links */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 border-t border-zinc-900 pt-8 light:border-zinc-200">
           <div className="flex flex-wrap gap-x-8 gap-y-4">
             {links.map((link, i) => (

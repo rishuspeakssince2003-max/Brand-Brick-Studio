@@ -11,6 +11,7 @@ export interface LiquidButtonProps {
   children?: React.ReactNode;
   onClick?: React.MouseEventHandler<any>;
   style?: React.CSSProperties;
+  type?: 'button' | 'submit' | 'reset';
 }
 
 export function LiquidButton({ 
@@ -23,6 +24,7 @@ export function LiquidButton({
   className = '',
   style = {},
   onClick,
+  type = 'button',
   ...props 
 }: LiquidButtonProps) {
   
@@ -90,7 +92,7 @@ export function LiquidButton({
 
   return (
     <motion.button
-      type="button"
+      type={type}
       {...(motionProps as any)}
     >
       {children}
