@@ -96,75 +96,19 @@ export function FounderStory() {
           >
             <p className="text-lg font-light">
               I started Brand Brick Studio because I saw tremendous opportunities for businesses to grow through{" "}
-              <span className="relative inline-block px-1">
-                {/* Highlight background sweep */}
-                <motion.span
-                  className="absolute inset-0 bg-gradient-to-r from-[#dc2626]/15 to-[#dc2626]/5 rounded-md -z-10"
-                  initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                  style={{ originX: 0 }}
-                />
-                {/* Glow underline highlight */}
-                <motion.span
-                  className="absolute bottom-1 left-0 right-0 h-[3px] bg-[#dc2626]/60 shadow-[0_0_8px_rgba(220,38,38,0.5)] -z-10"
-                  initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                  style={{ originX: 0 }}
-                />
-                <span className="text-white light:text-zinc-900 font-semibold transition-colors duration-300">
-                  strong branding, powerful websites, and a strategic digital presence.
-                </span>
+              <span className="text-white light:text-zinc-900 font-semibold transition-colors duration-300">
+                strong branding, powerful websites, and a strategic digital presence.
               </span>
             </p>
             
             <p className="text-base font-light">
               Ambitious brands don't need cookie-cutter templates or bloated agency teams that operate without direct alignment. They need{" "}
-              <span className="relative inline-block px-1">
-                <motion.span
-                  className="absolute inset-0 bg-gradient-to-r from-[#dc2626]/15 to-[#dc2626]/5 rounded-md -z-10"
-                  initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                  style={{ originX: 0 }}
-                />
-                <motion.span
-                  className="absolute bottom-1 left-0 right-0 h-[3px] bg-[#dc2626]/60 shadow-[0_0_8px_rgba(220,38,38,0.5)] -z-10"
-                  initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                  style={{ originX: 0 }}
-                />
-                <span className="text-white light:text-zinc-900 font-semibold transition-colors duration-300">
-                  unified execution
-                </span>
+              <span className="text-white light:text-zinc-900 font-semibold transition-colors duration-300">
+                unified execution
               </span>{" "}
               — where strategy, visual design, software engineering, and customer acquisition operate as a{" "}
-              <span className="relative inline-block px-1">
-                <motion.span
-                  className="absolute inset-0 bg-gradient-to-r from-[#dc2626]/15 to-[#dc2626]/5 rounded-md -z-10"
-                  initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                  style={{ originX: 0 }}
-                />
-                <motion.span
-                  className="absolute bottom-1 left-0 right-0 h-[3px] bg-[#dc2626]/60 shadow-[0_0_8px_rgba(220,38,38,0.5)] -z-10"
-                  initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                  style={{ originX: 0 }}
-                />
-                <span className="text-white light:text-zinc-900 font-semibold transition-colors duration-300">
-                  single engine.
-                </span>
+              <span className="text-white light:text-zinc-900 font-semibold transition-colors duration-300">
+                single engine.
               </span>
             </p>
             
