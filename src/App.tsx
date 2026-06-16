@@ -28,12 +28,7 @@ const seoRoutes = [
 
 export default function App() {
   const [loading, setLoading] = useState(true);
-  const [theme, setTheme] = useState<"dark" | "light">(() => {
-    if (typeof window !== "undefined") {
-      return (localStorage.getItem("theme") as "dark" | "light") || "dark";
-    }
-    return "dark";
-  });
+  const [theme, setTheme] = useState<"dark" | "light">("light");
 
   const [path, setPath] = useState(() => (typeof window !== "undefined" ? window.location.pathname.replace(/\/$/, "") : "/"));
 
@@ -93,16 +88,12 @@ export default function App() {
 
   useEffect(() => {
     const root = document.documentElement;
-    if (theme === "light") {
-      root.classList.add("light");
-    } else {
-      root.classList.remove("light");
-    }
-    localStorage.setItem("theme", theme);
-  }, [theme]);
+    root.classList.add("light");
+    localStorage.setItem("theme", "light");
+  }, []);
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+    // No-op to prevent theme toggling
   };
 
   // 1. Lenis Smooth Inertial Scroll

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, X, Sun, Moon } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { LiquidButton } from "./ui/LiquidButton";
 import { MenuBar } from "./ui/animated-menu-bar";
@@ -112,19 +112,6 @@ export function Navbar({ theme, toggleTheme, currentPath }: { theme: "dark" | "l
 
           {/* CTA Button + Discount Icon */}
           <div className="hidden lg:flex items-center gap-4 flex-shrink-0">
-            <button
-              onClick={toggleTheme}
-              className="relative p-2.5 rounded-full border border-zinc-800 hover:border-zinc-600 bg-zinc-900/50 hover:bg-zinc-800/20 text-zinc-400 hover:text-white transition-all duration-300 group flex items-center justify-center cursor-pointer light:border-zinc-200 light:bg-white/50 light:hover:bg-zinc-100 light:text-zinc-600 light:hover:text-zinc-950"
-              title={theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
-            >
-              <motion.div
-                initial={false}
-                animate={{ rotate: theme === "light" ? 180 : 0 }}
-                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              >
-                {theme === "light" ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
-              </motion.div>
-            </button>
             <LiquidButton href="https://wa.me/917383386318" target="_blank" rel="noreferrer" variant="solid" size="default">
               Start Chat
             </LiquidButton>
@@ -132,13 +119,6 @@ export function Navbar({ theme, toggleTheme, currentPath }: { theme: "dark" | "l
 
           {/* Mobile Actions Container */}
           <div className="lg:hidden flex items-center gap-3 relative z-50">
-            <button
-              onClick={toggleTheme}
-              className="p-2.5 rounded-full border border-zinc-800 bg-zinc-900/50 text-zinc-400 flex items-center justify-center active:border-zinc-600 cursor-pointer light:border-zinc-200 light:bg-white/50 light:text-zinc-600"
-              title={theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
-            >
-              {theme === "light" ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
-            </button>
             <button
               className="p-2 -mr-2 text-zinc-300 hover:text-white light:text-zinc-600 light:hover:text-zinc-950 transition-colors group"
               onClick={() => setIsOpen(!isOpen)}
