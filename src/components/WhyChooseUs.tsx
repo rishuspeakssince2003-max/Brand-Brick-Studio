@@ -31,7 +31,7 @@ const pillars = [
     title: "Founder-Led Execution",
     desc: "You will coordinate and plan strategy directly with founder Rishu Tripathi, ensuring zero account managers and pure alignment.",
     icon: UserCheck,
-    image: "/why_us_founder.png"
+    image: "/why_us_founder.jpg"
   },
   {
     title: "Business-Focused Thinking",

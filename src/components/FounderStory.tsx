@@ -30,7 +30,7 @@ export function FounderStory() {
         >
           {/* Founder Image */}
           <img 
-            src="/founder.png" 
+            src="/founder.jpg" 
             alt="Rishu Tripathi" 
             className="absolute inset-0 w-full h-full object-cover" 
           />
