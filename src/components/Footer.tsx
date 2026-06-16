@@ -2,6 +2,8 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { ArrowUpRight, Mail, Instagram, MapPin, User, Phone, MessageSquare, Check, AlertCircle } from "lucide-react";
 import { LiquidButton } from "./ui/LiquidButton";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "../lib/firebase";
 
 const links = [
   { name: "Services", href: "/#services" },
@@ -35,6 +37,19 @@ export function Footer() {
     }
     setStatus("submitting");
     try {
+      // 1. Add to Admin Pipeline (Firestore database)
+      await addDoc(collection(db, "contact_inquiries"), {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        message: formData.message,
+        country: "India", // default country
+        service: "General Inquiry",
+        createdAt: serverTimestamp(),
+        status: "new"
+      });
+
+      // 2. Send email notification
       const response = await fetch("/api/send-email", {
         method: "POST",
         headers: {
@@ -52,13 +67,15 @@ export function Footer() {
         setStatus("success");
         setFormData({ name: "", email: "", phone: "", message: "" });
       } else {
-        const data = await response.json();
-        setStatus("error");
-        setErrorMessage(data.error || "Failed to submit enquiry. Please try again.");
+        // Even if email notification fails, we treat it as success since it's saved in the Firestore database
+        console.warn("Email API notification failed, but lead saved in Firestore pipeline.");
+        setStatus("success");
+        setFormData({ name: "", email: "", phone: "", message: "" });
       }
     } catch (err) {
+      console.error("Enquiry submission error:", err);
       setStatus("error");
-      setErrorMessage("Network error. Please verify your connection and try again.");
+      setErrorMessage("Failed to submit enquiry. Please check your connection and try again.");
     }
   };
 
